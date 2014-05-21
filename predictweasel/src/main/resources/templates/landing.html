@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html  layout:decorator="/mainLayout">
+<head>
+	<title>Welcome</title>
+</head>
+<body>
+	<!-- 
+	<div layout:fragment="highlight">
+	    <div class="inner">
+				<div class="container">
+				<div class="row text-center">
+				  	<img src="img/slides/slide2.png" alt="Slide 2" />
+				</div>
+			</div>
+	    </div>
+	</div>
+	-->
+
+	<div layout:fragment="content">
+       	<div class="container">
+			<div class="row">
+	        	<div class="col-xs-12 col-md-8">
+	        		<h2 class="font-xs-x2 font-md-x2">Welcome to PredictWeasel</h2>
+	        		<p>PredictWeasel hosts score prediction games. 
+	        			You and the other players predict the results of sports fixtures and, 
+	        			the better your prediction, the more points you score. 
+	        			At the end of the competition, the players with the most points win the prizes.
+	        		</p>
+	        		<p>
+	        			The most recent leagues were based on <strong>The 2010 FIFA World Cup</strong> which ended on July 11th. There are currently no active competitions. 
+	        			The next is likely to be the <strong>UEFA Euro 2012</strong> championships, which start in Poland on 8th June 2012.
+	        		</p>
+	        	</div>
+				<div class="col-xs-6 col-md-4">
+			    	<div sec:authorize="hasRole('ROLE_ANONYMOUS')" th:include="loginForm :: login-form"></div>
+				</div>
+        	</div>
+		</div>
+	</div>
+</body>
+</html>

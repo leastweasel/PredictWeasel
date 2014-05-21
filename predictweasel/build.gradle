@@ -1,0 +1,78 @@
+buildscript {
+    repositories {
+        maven {
+            url "${artifactory_contextUrl}/plugins-release"
+            credentials {
+                username = "${artifactory_user}"
+                password = "${artifactory_password}"
+            }
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE")
+        classpath('org.jfrog.buildinfo:build-info-extractor-gradle:2.2.0')
+    }
+}
+
+/**
+ * Configure the only project (PredictWeasel).
+ */
+configure(rootProject) {
+
+    apply plugin: 'artifactory'
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	apply plugin: 'spring-boot'
+	
+	dependencies {
+		compile "org.springframework.boot:spring-boot-starter-web"
+		compile "org.springframework.boot:spring-boot-starter-data-jpa"
+		compile "org.springframework.boot:spring-boot-starter-security"
+		compile "org.thymeleaf:thymeleaf-spring4:2.1.2.RELEASE"
+		compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity3:2.1.1.RELEASE"
+		compile "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:1.2.4"
+		compile "commons-lang:commons-lang:2.6"
+		compile "org.hibernate:hibernate-validator"
+		
+		/* runtime "org.flywaydb:flyway-core:3.0" */
+		runtime "mysql:mysql-connector-java"
+		
+	    testCompile "org.springframework.boot:spring-boot-starter-test"
+	}
+}
+
+/**
+ * Configure the artifactory plugin.
+ */
+artifactory {
+        //The base Artifactory URL if not overridden by the publisher/resolver.
+        contextUrl = "${artifactory_contextUrl}"
+
+        // This is the artifactory repository we write to when publishing artifacts.
+        publish {
+                repository {
+                        repoKey = 'leastweasel-local'
+                        username = "${artifactory_user}"
+                        password = "${artifactory_password}"
+                        maven = true
+                }
+
+                defaults {
+                        publishPom = false
+                }
+        }
+
+        // This is the artifactory repository we use to resolve dependencies.
+        resolve {
+                repository {
+                        repoKey = 'leastweasel'
+                        username = "${artifactory_user}"
+                        password = "${artifactory_password}"
+                        maven = true
+                }
+        }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
