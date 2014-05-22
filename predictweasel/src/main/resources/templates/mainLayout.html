@@ -12,39 +12,39 @@
 	<meta name="author" content="The Leastweasel Organisation"/>
 
 	<!-- Bootstrap CSS -->
-	<link href="css/bootstrap.min.css" rel="stylesheet"/>
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
 
 	<!-- Bootstrap third-party plug-ins CSS -->
-	<link href="plugins/bootstrap-switch/build/css/bootstrap3/bootstrap-switch.min.css" media="screen" rel="stylesheet" />
+	<link th:href="@{/plugins/bootstrap-switch/build/css/bootstrap3/bootstrap-switch.min.css}" media="screen" rel="stylesheet" />
 	<!-- Font Awesome -->
-	<link href="css/font-awesome.min.css" rel="stylesheet"/>
+	<link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
 
 	<!-- Theme style -->
-	<link href="css/theme-style.min.css" rel="stylesheet"/>
+	<link th:href="@{/css/theme-style.min.css}" rel="stylesheet"/>
 
 	<!--Your custom colour override-->
-	<link href="css/colour-blue.css" id="colour-scheme" rel="stylesheet"/>
+	<link th:href="@{/css/colour-blue.css}" id="colour-scheme" rel="stylesheet"/>
 
 	<!-- Your custom override -->
-	<link href="css/custom-style.css" rel="stylesheet"/>
+	<link th:href="@{/css/custom-style.css}" rel="stylesheet"/>
 
 	<!-- HTML5 shiv & respond.js for IE6-8 support of HTML5 elements & media queries -->
 	<!--[if lt IE 9]>
-	<script src="plugins/html5shiv/dist/html5shiv.js"></script>
-	<script src="plugins/respond/respond.min.js"></script>
+	<script th:src="@{/plugins/html5shiv/dist/html5shiv.js}"></script>
+	<script th:src="@{/plugins/respond/respond.min.js}"></script>
 	<![endif]-->
 
 	<!-- Le fav and touch icons - @todo: fill with your icons or remove -->
-	<link rel="shortcut icon" href="img/icons/favicon.png"/>
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/icons/114x114.png"/>
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/icons/72x72.png"/>
-	<link rel="apple-touch-icon-precomposed" href="img/icons/default.png"/>
+	<link rel="shortcut icon" th:href="@{/img/icons/favicon.png}"/>
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" th:href="@{/img/icons/114x114.png}"/>
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" th:href="@{/img/icons/72x72.png}"/>
+	<link rel="apple-touch-icon-precomposed" th:href="@{/img/icons/default.png}"/>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'/>
 	<link href='http://fonts.googleapis.com/css?family=Rambla' rel='stylesheet' type='text/css'/>
 	<link href='http://fonts.googleapis.com/css?family=Calligraffitti' rel='stylesheet' type='text/css'/>
 
 	<!--Retina.js plugin - @see: http://retinajs.com/-->
-	<script src="plugins/retina/js/retina-1.1.0.min.js"></script>
+	<script th:src="@{/plugins/retina/js/retina-1.1.0.min.js}"></script>
 </head>
 <body class="page page-login">
 	<a href="#content" class="sr-only">Skip to content</a>
@@ -58,7 +58,7 @@
 					<div class="row">
 						<div class="col-md-8">
 							<!--branding/logo-->
-							<a class="navbar-brand" href="/" title="Home">
+							<a class="navbar-brand" th:href="@{/}" title="Home">
 								<h1><span>Predict</span>Weasel.</h1>
 							</a>
 							<div class="slogan">The On-line prediction game</div>
@@ -76,9 +76,9 @@
 
 					<!--user menu-->
 					<div class="btn-group user-menu pull-right"> 
-						<a sec:authorize="hasRole('ROLE_ANONYMOUS')" href="/signup" class="btn btn-primary signup">Sign Up</a> 
-						<a sec:authorize="hasRole('ROLE_ANONYMOUS')" href="/login" class="btn btn-primary dropdown-toggle login">Login</a> 
-						<a sec:authorize="!hasRole('ROLE_ANONYMOUS')" href="/logout" class="btn btn-primary dropdown-toggle logout">Logout</a> 
+						<a sec:authorize="hasRole('ROLE_ANONYMOUS')" th:href="@{/signup}" class="btn btn-primary signup">Sign Up</a> 
+						<a sec:authorize="hasRole('ROLE_ANONYMOUS')" th:href="@{/login}" class="btn btn-primary dropdown-toggle login">Login</a> 
+						<a sec:authorize="!hasRole('ROLE_ANONYMOUS')" th:href="@{/logout}" class="btn btn-primary dropdown-toggle logout">Logout</a> 
 					</div>
 			
 					<!--everything within this div is collapsed on mobile-->
@@ -119,10 +119,10 @@
 	</div>
 	
   	<!--Scripts -->
-    <script src="js/jquery.min.js"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
     
     <!-- Bootstrap JS -->
-    <script src="js/bootstrap.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
       
  </body>
 </html>
