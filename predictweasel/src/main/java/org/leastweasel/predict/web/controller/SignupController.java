@@ -106,7 +106,7 @@ public class SignupController {
         Map<String, Object> model = new HashMap<>();
         model.put("user", registeredUser);
 
-        /*
+        /* TODO: Send the sign up confirmation email
         mailService.sendFromTemplate(REGISTRATION_CONFIRMATION_TEMPLATE, registeredUser.getEmailAddress(),
                                      messageSource.getMessage(REGISTRATION_CONFIRMATION_SUBJECT, null, locale),
                                      model); */
@@ -117,7 +117,7 @@ public class SignupController {
         										  new Object [] { registeredUser.getUsername() }, 
         										  locale);
         
-        redirectAttributes.addFlashAttribute("flashMessage", new FlashMessage(message, FlashMessage.Status.SUCCESS));
+        FlashMessageHelper.addSuccessMessage(redirectAttributes, message);
     	
 		return SUCCESS_VIEW_NAME;
 	}
