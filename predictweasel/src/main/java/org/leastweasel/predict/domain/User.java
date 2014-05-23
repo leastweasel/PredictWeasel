@@ -53,6 +53,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
+	public static final int MIN_PASSWORD_LENGTH = 8;
+	
 	private static Logger logger = LoggerFactory.getLogger(User.class);
 
     /**
@@ -151,7 +153,7 @@ public class User implements UserDetails {
      * @return the user's password
      */
     @NotNull
-    @Size(min=8, max=60)
+    @Size(min=MIN_PASSWORD_LENGTH)
     public String getPassword() {
         return password;
     }

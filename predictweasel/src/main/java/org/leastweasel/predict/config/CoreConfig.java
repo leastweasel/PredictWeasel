@@ -4,6 +4,9 @@
  */
 package org.leastweasel.predict.config;
 
+import org.jasypt.digest.StandardStringDigester;
+import org.leastweasel.predict.service.PasswordResetTokenGenerator;
+import org.leastweasel.predict.service.support.JasyptPasswordResetTokenGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,4 +31,20 @@ public class CoreConfig {
     public PasswordEncoder configurePasswordEncoder() {
         return new BCryptPasswordEncoder(16);
     }
+	
+	/**
+	 * Create a bean with which we can generate password reset tokens using Jasypt.
+	 */
+	@Bean
+	public PasswordResetTokenGenerator passwordResetTokenGenerator() {
+		JasyptPasswordResetTokenGenerator generator = new JasyptPasswordResetTokenGenerator();
+		
+		StandardStringDigester digester = new StandardStringDigester();
+		digester.setAlgorithm("SHA-256");
+		digester.setIterations(100);
+		
+		generator.setStringDigester(digester);
+		
+		return generator;
+	}
 }

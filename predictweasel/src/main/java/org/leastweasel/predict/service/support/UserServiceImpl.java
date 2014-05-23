@@ -4,16 +4,22 @@
  */
 package org.leastweasel.predict.service.support;
 
-import javax.transaction.Transactional;
+import java.util.Calendar;
+import java.util.Date;
 
+import org.leastweasel.predict.domain.PasswordReset;
 import org.leastweasel.predict.domain.User;
+import org.leastweasel.predict.repository.PasswordResetRepository;
 import org.leastweasel.predict.repository.UserRepository;
+import org.leastweasel.predict.service.PasswordResetTokenGenerator;
 import org.leastweasel.predict.service.SecurityService;
 import org.leastweasel.predict.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of the {@link UserService}.
@@ -27,6 +33,15 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+    @Autowired
+    private PasswordResetRepository passwordResetRepository;
+
+    @Autowired
+    private PasswordResetTokenGenerator passwordResetTokenGenerator;
+    
+    @Value("${password.reset.expiry.interval.in.days}")
+    private int passwordResetExpiryIntervalInDays;
+    
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     
     /**
@@ -116,5 +131,91 @@ public class UserServiceImpl implements UserService {
         securityService.loginUser(insertedUser);
 
         return insertedUser;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    public void saveUser(User user) {
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("Attempting to save a user that is not persistent.");
+        }
+
+        // Encrypt the plain text password.
+        securityService.encryptPassword(user);
+
+        // Save the user details.
+        userRepository.save(user);
+
+        // Update the logged in user in the security context.
+        securityService.loginUser(user);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    public PasswordReset createPasswordReset(String username) {
+        User user = userRepository.findByUsername(username);
+        PasswordReset passwordReset = null;
+
+        if (user != null) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Creating password reset for user: \"{}\"", user.getUsername());
+            }
+            
+            passwordReset = new PasswordReset();
+            
+            passwordReset.setUser(user);
+            passwordReset.setToken(passwordResetTokenGenerator.generateToken(user));
+            
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, passwordResetExpiryIntervalInDays);
+            passwordReset.setExpiryDate(cal.getTime());
+            
+            passwordResetRepository.save(passwordReset);
+            
+            if (logger.isDebugEnabled()) {
+                logger.debug("Created password reset with ID: {}", passwordReset.getId());
+            }
+        }
+        
+        return passwordReset;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly=true)
+    public PasswordReset getPasswordReset(String token) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Attempting to fetch PasswordReset with token: \"{}\"", token);
+        }
+        
+        PasswordReset reset = passwordResetRepository.findByToken(token);
+        
+        if (reset != null) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Found matching PasswordReset, ID: {}", reset.getId());
+            }
+        }
+
+        return reset;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    public void resetPassword(PasswordReset reset, String newPassword, String newReminder) {
+        // Update the user's password.
+        reset.getUser().setPassword(newPassword);
+        reset.getUser().setPasswordReminder(newReminder);
+        saveUser(reset.getUser());
+
+        // Mark the reset so that it can't be used again.
+        reset.setUsedDate(new Date());
+        passwordResetRepository.save(reset);
     }
 }
