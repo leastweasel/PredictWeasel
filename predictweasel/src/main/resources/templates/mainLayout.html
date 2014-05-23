@@ -107,10 +107,10 @@
     </div>
     
 	<div id="content">
-	    <div th:if="${#httpServletRequest.getAttribute('flashMessage')}" class="container">
-			<div  class="alert" th:classappend="${#httpServletRequest.getAttribute('flashMessage').cssClass}">
+	    <div th:if="${flashMessage}" class="container">
+			<div  class="alert" th:classappend="${flashMessage.cssClass}">
 				<button type="button" class="close" data-dismiss="alert">×</button>
-				<h4 th:text="${#httpServletRequest.getAttribute('flashMessage').message}"></h4>
+				<h4 th:text="${flashMessage.message}"></h4>
 			</div>   
 	    </div>
 	   	<div layout:fragment="content">
