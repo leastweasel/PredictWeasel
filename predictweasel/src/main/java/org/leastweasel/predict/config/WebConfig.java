@@ -4,7 +4,14 @@
  */
 package org.leastweasel.predict.config;
 
+import java.util.List;
+
+import org.leastweasel.predict.web.controller.LeagueCodeResolvingHandlerInterceptor;
+import org.leastweasel.predict.web.controller.UserSubscriptionArgumentResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -14,6 +21,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
+	@Autowired
+	private LeagueCodeResolvingHandlerInterceptor gameReqestHandlerInterceptor;
+
+	@Autowired
+	private UserSubscriptionArgumentResolver userSubscriptionArgumentResolver;
+	
 	/**
 	 * Set up the view controllers we need. We use a view controller when
 	 * there's no need to write our own controller: we just need to navigate to
@@ -26,5 +39,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/resetPasswordFailed").setViewName("resetPasswordFailed");
+        registry.addViewController("/subscriptions").setViewName("landing");
     }
+	
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(gameReqestHandlerInterceptor).addPathPatterns("/", "/game/*");
+    }
+    
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+    		argumentResolvers.add(userSubscriptionArgumentResolver);
+	}
 }

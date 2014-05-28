@@ -101,7 +101,6 @@ public class User implements UserDetails {
      * Default constructor. Creates an empty, non-persistent user.
      */
     public User() {
-    	logger.info("Created a User objcet");
     }
 
     /**

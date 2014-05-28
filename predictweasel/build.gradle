@@ -34,6 +34,7 @@ configure(rootProject) {
 		compile "commons-lang:commons-lang:2.6"
 		compile "org.hibernate:hibernate-validator"
 		compile "org.jasypt:jasypt:1.9.2"
+		compile "joda-time:joda-time:2.3"
 		
 		/* runtime "org.flywaydb:flyway-core:3.0" */
 		runtime "mysql:mysql-connector-java"

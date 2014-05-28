@@ -1,7 +1,15 @@
+drop table if exists user_subscription;
+drop table if exists prediction;
+drop table if exists league;
 drop table if exists password_reset;
 drop table if exists user_role;
 drop table if exists user;
 drop table if exists role;
+drop table if exists fixture;
+drop table if exists assigned_team_category;
+drop table if exists team_category;
+drop table if exists team;
+drop table if exists competition;
 
 create table role (
   id bigint(20) not null auto_increment,
@@ -46,4 +54,82 @@ create table password_reset (
   user_id bigint(20) not null,
   primary key (id),
   constraint PASSWORD_RESET_USER_ID foreign key (user_id) references user (id)
+) type=InnoDB;
+
+create table competition (
+  id bigint(20) not null auto_increment,
+  name varchar(30) not null,
+  active tinyint(1) not null,
+  primary key (id)
+) type=InnoDB;
+
+create table team_category (
+  id bigint(20) not null auto_increment,
+  name varchar(30) not null,
+  parent_category_id bigint(20) not null,
+  primary key (id),
+  constraint TEAM_CATEGORY_PARENT_ID foreign key (parent_category_id) references team_category (id)
+) type=InnoDB;
+
+create table team (
+  id bigint(20) not null auto_increment,
+  name varchar(30) not null,
+  primary key (id)
+) type=InnoDB;
+
+create table assigned_team_category (
+  category_id bigint(20) not null,
+  team_id bigint(20) not null,
+  primary key (category_id, team_id),
+  constraint ASSIGNED_CATEGORY_TEAM_ID foreign key (team_id) references team (id),
+  constraint ASSIGNED_CATEGORY_CATEGORY_ID foreign key (category_id) references team_category (id)
+) type=InnoDB;
+
+create table fixture (
+  id bigint(20) not null auto_increment,
+  home_team_id bigint(20) not null,
+  away_team_id bigint(20) not null,
+  home_score int(11) not null,
+  away_score int(11) not null,
+  match_time datetime not null,
+  primary key (id),
+  constraint FIXTURE_HOME_TEAM_ID foreign key (home_team_id) references team (id),
+  constraint FIXTURE_AWAY_TEAM_ID foreign key (away_team_id) references team (id)
+) type=InnoDB;
+
+create table league (
+  id bigint(20) not null auto_increment,
+  name varchar(30) not null,
+  code varchar(10) not null,
+  state varchar(10) not null,
+  competition_id bigint(20) not null,
+  owner_id bigint(20) not null,
+  primary key (id),
+  unique key league_name (name),
+  unique key league_code (code),
+  constraint LEAGUE_COMP_ID foreign key (competition_id) references competition (id),
+  constraint LEAGUE_OWNER_ID foreign key (owner_id) references user (id)
+) type=InnoDB;
+
+create table user_subscription (
+  id bigint(20) not null auto_increment,
+  user_id bigint(20) not null,
+  league_id bigint(20) not null,
+  primary key (id),
+  unique key user_league (user_id, league_id),
+  key USER_SUBS_LEAGUE_ID (league_id),
+  key USER_SUBS_USER_ID (user_id),
+  constraint USER_SUBS_LEAGUE_ID foreign key (league_id) references league (id),
+  constraint USER_SUBS_USER_ID foreign key (user_id) references user (id)
+) type=InnoDB;
+
+create table prediction (
+  id bigint(20) not null auto_increment,
+  user_id bigint(20) not null,
+  fixture_id bigint(20) not null,
+  home_score int(11) not null,
+  away_score int(11) not null,
+  primary key (id),
+  constraint PREDICTION_FIXTURE_ID foreign key (fixture_id) references fixture (id),
+  constraint PREDICTION_USER_ID foreign key (user_id) references user (id)
 ) type=InnoDB;
