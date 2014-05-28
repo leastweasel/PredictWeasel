@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<div th:fragment="recent-results">
+
+	<h3 class="title-divider">
+		<span>Latest Results</span>
+	</h3>
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<th>Date</th>
+					<th></th>
+					<th>Score</th>
+					<th></th>
+				</tr>
+				<tr th:each="fixture : ${recentResults}">
+					<td th:text="${{fixture.matchTime}}">Tomorrow</td>
+					<td th:text="${fixture.homeTeam.name}">Welling</td>
+					<td
+						th:text="${fixture.result.homeScore} + '-' + ${fixture.result.awayScore}">0
+						0</td>
+					<td th:text="${fixture.awayTeam.name}">Braintree</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</div>

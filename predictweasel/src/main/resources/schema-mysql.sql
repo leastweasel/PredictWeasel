@@ -87,12 +87,14 @@ create table assigned_team_category (
 
 create table fixture (
   id bigint(20) not null auto_increment,
+  competition_id bigint(20) not null,
   home_team_id bigint(20) not null,
   away_team_id bigint(20) not null,
-  home_score int(11) not null,
-  away_score int(11) not null,
+  home_score int(11) null,
+  away_score int(11) null,
   match_time datetime not null,
   primary key (id),
+  constraint FIXTURE_COMPETITION_ID foreign key (competition_id) references competition (id),
   constraint FIXTURE_HOME_TEAM_ID foreign key (home_team_id) references team (id),
   constraint FIXTURE_AWAY_TEAM_ID foreign key (away_team_id) references team (id)
 ) type=InnoDB;

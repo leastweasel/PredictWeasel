@@ -4,12 +4,18 @@
  */
 package org.leastweasel.predict.web.controller;
 
+import java.util.List;
+
+import org.leastweasel.predict.domain.Fixture;
 import org.leastweasel.predict.domain.League;
 import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.domain.UserSubscription;
+import org.leastweasel.predict.repository.FixtureRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -22,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class LeagueController {
+	@Autowired
+	private FixtureRepository fixtureRepository;
 	
 	private static final Logger logger = LoggerFactory.getLogger(LeagueController.class);
 
@@ -49,5 +57,18 @@ public class LeagueController {
 		}
 		
 		return "league";
+	}
+	
+	@ModelAttribute("recentResults")
+	public List<Fixture> getRecentResults(UserSubscription subscription) {
+		if (subscription != null) {
+			List<Fixture> results = fixtureRepository.findByCompetitionAndResultIsNotNull(subscription.getLeague().getCompetition());
+			
+			logger.debug("Got {} results", results.size());
+			
+			return results;
+		}
+		
+		return null;
 	}
 }
