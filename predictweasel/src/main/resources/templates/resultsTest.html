@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
-<div th:fragment="recent-results">
+<div th:fragment="recent-results" th:class="col-xs-12">
 
 	<h3 class="title-divider">
-		<span>Latest Results</span>
+		Latest <span class="de-em">Results</span>
 	</h3>
 	<div class="table-responsive">
 		<table class="table table-striped">
@@ -13,14 +13,14 @@
 					<th></th>
 					<th>Score</th>
 					<th></th>
+					<th>Prediction</th>
 				</tr>
-				<tr th:each="fixture : ${recentResults}">
-					<td th:text="${{fixture.matchTime}}">Tomorrow</td>
-					<td th:text="${fixture.homeTeam.name}">Welling</td>
-					<td
-						th:text="${fixture.result.homeScore} + '-' + ${fixture.result.awayScore}">0
-						0</td>
-					<td th:text="${fixture.awayTeam.name}">Braintree</td>
+				<tr th:each="prediction : ${recentResults}">
+					<td th:text="${#calendars.format(prediction.fixture.matchTime,'dd MMM HH:mm')}">Tomorrow</td>
+					<td th:text="${prediction.fixture.homeTeam.name}">Welling</td>
+					<td	th:text="${{prediction.fixture.result}}"></td>
+					<td th:text="${prediction.fixture.awayTeam.name}">Braintree</td>
+					<td	th:text="${{prediction.predictedResult}}"></td>
 				</tr>
 			</tbody>
 		</table>

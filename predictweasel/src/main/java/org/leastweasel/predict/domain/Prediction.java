@@ -74,6 +74,8 @@ public class Prediction implements Serializable {
 	 * 
 	 * @return the predicting user
 	 */
+    @ManyToOne
+    @JoinColumn(name="user_id")
 	public User getPredictor() {
 		return predictor;
 	}

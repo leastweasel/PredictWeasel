@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordResetTokenGenerator passwordResetTokenGenerator;
     
-    @Value("${password.reset.expiry.interval.in.days}")
+    @Value("${predictWeasel.passwordResetExpiryIntervalDays}")
     private int passwordResetExpiryIntervalInDays;
     
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);

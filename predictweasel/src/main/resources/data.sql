@@ -24,9 +24,13 @@ insert into fixture(id, competition_id, home_team_id, away_team_id, home_score, 
 (7,1,1,4,1,1,'2013-09-19:19:30:00'),
 (8,1,2,5,null,null,'2013-09-19:19:30:00'),
 (9,1,6,3,null,null,'2013-09-19:19:30:00'),
-(10,1,5,1,null,null,'2013-09-20:15:00:00'),
-(11,1,2,6,null,null,'2013-09-20:15:00:00'),
-(12,1,4,3,null,null,'2013-09-20:15:00:00');
+(10,1,5,1,null,null,'2014-09-20:15:00:00'),
+(11,1,2,6,null,null,'2014-09-20:15:00:00'),
+(12,1,4,3,null,null,'2014-09-20:15:00:00'),
+(13,1,1,3,null,null,'2014-09-21:16:00:00'),
+(14,1,5,2,null,null,'2014-09-21:16:00:00'),
+(15,1,6,4,null,null,'2014-09-21:16:00:00');
+
 
 insert into league(id, name, code, state, competition_id, owner_id) values
 (1, 'Andrew''s Conference League', 'AN7h2KhA', 'OPEN', 1, 1),
@@ -36,3 +40,8 @@ insert into user_subscription(id, user_id, league_id) values
 (1, 2, 1),
 (2, 2, 2),
 (3, 3, 1);
+
+insert into prediction(id, user_id, fixture_id, home_score, away_score) values
+(1, 3, 11, 7, 2),
+(2, 3, 13, 1, 3),
+(3, 3, 5, 0, 1);

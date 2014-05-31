@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 
-<div th:fragment="upcoming-fixtures">
+<div th:fragment="upcoming-fixtures" th:class="col-xs-12">
 
 	<h3 class="title-divider">
-		<span>Upcoming Fixtures</span>
+		Upcoming <span class="de-em">Fixtures</span>
 	</h3>
 	<div class="table-responsive">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Date</th>
-					<th></th>
-					<th>Score</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="fixture : ${recentResults}">
-					<td th:text="${{fixture.matchTime}}">Tomorrow</td>
-					<td th:text="${fixture.homeTeam.name}">Welling</td>
-					<td
-						th:text="${fixture.result.homeScore} + '-' + ${fixture.result.awayScore}">0
-						0</td>
-					<td th:text="${fixture.awayTeam.name}">Braintree</td>
-				</tr>
-			</tbody>
-		</table>
+		<form action="" method="post" role="form">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th></th>
+						<th>Prediction</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="prediction : ${upcomingFixtures}">
+						<td th:text="${#calendars.format(prediction.fixture.matchTime,'dd MMM HH:mm')}">Tomorrow</td>
+						<td th:text="${prediction.fixture.homeTeam.name}">Welling</td>
+						<td><div class="col-xs-3"><input type="tel" class="form-control" th:autofocus="${predictionStat.first}" th:value="${prediction.predictedResult}"/></div></td>
+						<td th:text="${prediction.fixture.awayTeam.name}">Braintree</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
 	</div>
-
 </div>

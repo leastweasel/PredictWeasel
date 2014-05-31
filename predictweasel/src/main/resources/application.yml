@@ -1,0 +1,29 @@
+spring:
+    thymeleaf:
+        cache: false
+    datasource:
+        platform: mysql
+        url: jdbc:mysql://localhost/pw
+        username: pwuser
+        password: pwuser
+        driverClassName: com.mysql.jdbc.Driver
+    jpa:
+        show-sql: false
+
+# "ignored" property...
+# Determines which resources bypass the security filter chain altogether.
+# This is important for more than efficiency as, without it, you might find
+# the security system trying to redirect to one of these resources after a
+# login, which won't work in a variety of odd ways.
+# So, whenever you add a folder to /src/main/resources/public, you'll probably
+# want to add it here, too.  
+
+security:
+    ignored: /css/**,/js/**,/img/**,/fonts/**,/plugins/**,/**/favicon.ico
+
+
+# PredictWeasel properties
+
+predictWeasel:
+    passwordResetExpiryIntervalDays: 1
+    minimumNumberOfFixturesToDisplay: 3

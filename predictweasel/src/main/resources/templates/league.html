@@ -2,6 +2,7 @@
 <html layout:decorator="/mainLayout">
 <head>
 <title>Reset Password</title>
+<script th:src="@{/js/league.js}"></script>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -9,20 +10,12 @@
 			<h2 class="title-divider">
 				League<span class="de-em">Home</span> <small>Mick's Conference League</small>
 			</h2>
-			<div class="row">
-				<div class="col-sm-8">
-					<div th:include="fixturesTest :: upcoming-fixtures"></div>
-				</div>
+			<div th:include="fixturesTest :: upcoming-fixtures"></div>
+			<div th:include="resultsTest :: recent-results"></div>
+			<div class="col-lg-4">
+				<div th:include="standingsTest :: player-standings"></div>
 			</div>
-			<div class="row">
-				<div class="col-sm-8">
-					<div th:include="resultsTest :: recent-results"></div>
-				</div>
-				<div class="col-sm-6 col-md-4">
-					<div th:include="standingsTest :: player-standings"></div>
-				</div>
-			</div>
-			<div class="col-sm-12">
+			<div class="col-lg-8">
 				<div th:include="blogTest :: league-blog"></div>
 			</div>
 		</div>

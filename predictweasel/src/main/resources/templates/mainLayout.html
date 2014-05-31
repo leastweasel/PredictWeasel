@@ -45,6 +45,9 @@
 
 	<!--Retina.js plugin - @see: http://retinajs.com/-->
 	<script th:src="@{/plugins/retina/js/retina-1.1.0.min.js}"></script>
+	
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
 </head>
 <body class="page page-login">
 	<a href="#content" class="sr-only">Skip to content</a>
@@ -52,6 +55,7 @@
 	<!-- ======== @Region: #navigation ======== -->
 	<div id="navigation" class="wrapper">
 		<div class="navbar-static-top">
+			<!-- Header stuff -->
 			<!--Header & Branding region-->
 			<div class="header">
 				<div class="header-inner container">
@@ -69,7 +73,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="container" data-toggle="clingify">
+			<div class="container">
+				<!-- Nav stuff -->
 				<div class="navbar">
 					<!-- mobile collapse menu button - data-toggle="toggle" = default BS menu - data-toggle="jpanel-menu" = jPanel Menu -->
 					<a class="navbar-btn" data-toggle="jpanel-menu" data-target=".navbar-collapse"> <span class="bar"></span> <span class="bar"></span> <span class="bar"></span> <span class="bar"></span> </a>
@@ -77,8 +82,8 @@
 					<!--user menu-->
 					<div class="btn-group user-menu pull-right"> 
 						<a sec:authorize="hasRole('ROLE_ANONYMOUS')" th:href="@{/signup}" class="btn btn-primary signup">Sign Up</a> 
-						<a sec:authorize="hasRole('ROLE_ANONYMOUS')" th:href="@{/login}" class="btn btn-primary dropdown-toggle login">Login</a> 
-						<a sec:authorize="!hasRole('ROLE_ANONYMOUS')" th:href="@{/logout}" class="btn btn-primary dropdown-toggle logout">Logout</a> 
+						<a sec:authorize="hasRole('ROLE_ANONYMOUS')" th:href="@{/login}" class="btn btn-primary login">Login</a> 
+						<a sec:authorize="!hasRole('ROLE_ANONYMOUS')" th:href="@{/logout}" class="btn btn-primary logout">Logout</a> 
 					</div>
 			
 					<!--everything within this div is collapsed on mobile-->
@@ -101,10 +106,7 @@
 			</div>
 		</div>
 	</div>
-    <div id="highlighted">
-	   	<div layout:fragment="highlight">
-   		</div>
-    </div>
+   	<div th:replace="highlight"></div>
     
 	<div id="content">
 	    <div th:if="${flashMessage}" class="container">
@@ -117,12 +119,6 @@
    			<p>No content included from the template</p>
    		</div>
 	</div>
-	
-  	<!--Scripts -->
-    <script th:src="@{/js/jquery.min.js}"></script>
-    
-    <!-- Bootstrap JS -->
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-      
+     
  </body>
 </html>

@@ -44,7 +44,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(gameReqestHandlerInterceptor).addPathPatterns("/", "/game/*");
+        registry.addInterceptor(gameReqestHandlerInterceptor).addPathPatterns("/", "/league/*");
     }
     
     @Override

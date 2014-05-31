@@ -45,6 +45,9 @@ public class ExceptionHandlers {
 	 */
 	@ExceptionHandler(NoUserSubscriptionException.class)
 	public String handleNoUserSubscriptionException(NoUserSubscriptionException exception) {
+		
+		logger.error("Got an exception", exception);
+		
 		// Check how many subscriptions the user now has.
 		List<UserSubscription> subscriptions = subscriptionService.getSubscriptions();
 		
