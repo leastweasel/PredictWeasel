@@ -42,11 +42,24 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/subscriptions").setViewName("landing");
     }
 	
+	/**
+	 * Interceptors, as the name suggests, intercept requests to the configured paths. We want to
+	 * intercept any request that requires a league to ensure we know which one the user is
+	 * playing at the moment.  
+	 * 
+	 * @param registry the registry of interceptors
+	 */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(gameReqestHandlerInterceptor).addPathPatterns("/", "/league/*");
     }
     
+    /**
+     * An argument resolver allows a controller method to have a non-standard argument type.
+     * The resolver tries to work out what value should be passed in to the method.
+     * 
+     *  @param argumentResolvers the collection of argument resolvers
+     */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
     		argumentResolvers.add(userSubscriptionArgumentResolver);
