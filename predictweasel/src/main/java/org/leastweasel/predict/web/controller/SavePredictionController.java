@@ -43,32 +43,44 @@ public class SavePredictionController {
     
     /**
      * Submit the request to save the prediction. We return the formatted version of the updated
-     * prediction so that we can display it in the form. 
+     * prediction so that we can display it in the form.
+     * <p>
+     * Note that we deliberately pass in a String for the new prediction, rather than let Spring
+     * convert it to a {@link MatchResult} instance. This works well if the entered text is well
+     * formed, but causes an HTTP error status if it isn't. 
       * 
-	 * @param subscription the user and league for which we are receiving a prediction
-     * @param fixture the fixture for which this is a prediction 
-     * @param predictedResult the user's prediction for the fixture 
-     * @return a map, which will be converted to a JSON object, containing the updated prediction text
+	  * @param subscription the user and league for which we are receiving a prediction
+      * @param fixture the fixture for which this is a prediction 
+      * @param predictedResultText the user's prediction for the fixture, exactly as they entered it 
+      * @return a map, which will be converted to a JSON object, containing the updated prediction text and,
+      * 			if the input is badly formed, an error message to display         
       */
     @RequestMapping(value="/league/savePrediction", method = RequestMethod.POST, produces="application/json")
 	@ResponseBody
 	public Map<String, String> savePrediction(UserSubscription subscription,
 								 			 @RequestParam(value = "fixture", required = true) Fixture fixture,
-								 			 @RequestParam(value = "prediction", required = false) MatchResult predictedResult,
+								 			 @RequestParam(value = "predictionText", required = false) String predictedResultText,
 								 			 Locale locale) {
 
-		if (fixture != null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Got a prediction to save: fixture ID = {}, predictedResult = {}", fixture.getId(), predictedResult);
-			}
-			
-			// Update the prediction for this fixture, or create a new one.
-			predictionService.createOrUpdatePrediction(subscription, fixture, predictedResult);
-		}
-
 		Map<String, String> response = new HashMap<>();
-		
-		response.put("predictionText", matchResultFormatter.print(predictedResult, locale));
+
+		try {
+			MatchResult predictedResult = matchResultFormatter.parse(predictedResultText, locale);
+			
+			if (fixture != null) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("Got a prediction to save: fixture ID = {}, predictedResult = {}", fixture.getId(), predictedResult);
+				}
+				
+				// Update the prediction for this fixture, or create a new one.
+				predictionService.createOrUpdatePrediction(subscription, fixture, predictedResult);
+			}
+	
+			response.put("predictionText", matchResultFormatter.print(predictedResult, locale));
+			
+		} catch(Exception e) {
+			response.put("errorText", "Invalid prediction format: " + predictedResultText);
+		}
 		
 		return response;
 	}

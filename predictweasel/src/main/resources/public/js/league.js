@@ -10,30 +10,46 @@ $(document).ready(function() {
 	 * Each input field will be given an ID in the form 'fixture_<fixtureId>' (e.g. 'fixture_21').
 	 * When the user tabs out of the field a request will be made to save the prediction.
 	 */
-	$("#upcoming-fixtures input[name='prediction'").blur(function(event) {
+	$(":input[name='prediction']").blur(function(event) {
+		
 		var predictionFieldId = $(this).attr("id").valueOf();
 		var fixtureId = predictionFieldId.substr(predictionFieldId.indexOf("_") + 1,predictionFieldId.length);
 		var predictionText = $(this).val();
 		var originalPredictionText = $(this).next().val();
 		var CSRFToken = $('#_csrf').val();
 		var inputField = $(this);
-	
+		var errorMessageSpan = inputField.parent().next().children(); 
+
+		// Clear any error messages.
+		errorMessageSpan.html('');
+
 		// Only submit the request if the prediction has changed.
 		
 		if (predictionText != originalPredictionText) {
 			$.post('/league/savePrediction',
 	                {fixture: fixtureId,
-	                 prediction: predictionText,
+	                 predictionText: predictionText,
 	                 _csrf: CSRFToken},
 	                 function(data) {
-	                	 
-	                	 	// The response contains the updated prediction, which will have been formatted properly.
-	                	 	var updatedPredictionText = data['predictionText'];
+	                	 	// If there was a problem with the format of the prediction there
+	                	 	// will be an "errorText" value in the response.
+	                	 	var errorText = data['errorText'];
 	                	 	
-	         			// Update the "original value" field so that we don't keep triggering events, and
-	                	 	// the prediction input field so that we get proper formatting of the value.
-	         			inputField.val(data['predictionText']); 
-	         			inputField.next().val(data['predictionText']); 
+	                	 	if (errorText) {
+	                	 		// As well as displaying the error message we reset the prediction
+	                	 		// text and put back the focus in the field that caused the error.
+	                	 		errorMessageSpan.html(errorText);
+	                	 		inputField.val(originalPredictionText);
+	                	 		inputField.focus();
+	                	 	} else {
+		                	 	// The response contains the updated prediction, which will have been formatted properly.
+		                	 	var updatedPredictionText = data['predictionText'];
+		                	 	
+		         			// Update the "original value" field so that we don't keep triggering events, and
+		                	 	// the prediction input field so that we get proper formatting of the value.
+		         			inputField.val(updatedPredictionText); 
+		         			inputField.next().val(updatedPredictionText);
+	                	 	}
 
 	                 }).fail(function(qXHR, textStatus, errorThrown) {
 	                	 				alert("Fail! status='" + textStatus + "', error='" + errorThrown + "'");
