@@ -10,7 +10,6 @@ import org.leastweasel.predict.domain.League;
 import org.leastweasel.predict.domain.Prediction;
 import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.domain.UserSubscription;
-import org.leastweasel.predict.repository.FixtureRepository;
 import org.leastweasel.predict.service.PredictionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +28,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class LeagueController {
-	@Autowired
-	private FixtureRepository fixtureRepository;
-	
 	@Autowired
 	private PredictionService predictionService;
 	
