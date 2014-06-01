@@ -3,8 +3,6 @@
  * has been fully initialised.
  */
 $(document).ready(function() {
-	// alert("League page is ready!");
-
 	/**
 	 * Register a blur event handler (triggered when the field loses input focus) for each
 	 * of the edit fields where the user will enter their prediction for a given fixture.
