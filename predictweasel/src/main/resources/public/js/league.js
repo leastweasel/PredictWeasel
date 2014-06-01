@@ -16,13 +16,19 @@ $(document).ready(function() {
 		var predictionFieldId = $(this).attr("id").valueOf();
 		var fixtureId = predictionFieldId.substr(predictionFieldId.indexOf("_") + 1,predictionFieldId.length);
 		var predictionText = $(this).val();
+		var originalPredictionText = $(this).next().val();
 		var CSRFToken = $('#_csrf').val();
 		
-		$.post('/league/savePrediction.html',
-                {fixture: fixtureId,
-                 prediction: predictionText,
-                 _csrf: CSRFToken},
-                 function() {
-                 }, 'json');
+		if (predictionText != originalPredictionText) {
+			$.post('/league/savePrediction.html',
+	                {fixture: fixtureId,
+	                 prediction: predictionText,
+	                 _csrf: CSRFToken},
+	                 function() {
+	                 }, 'json');
+			
+			// Update the "original value" field so that we don't keep triggering events.
+			$(this).next().val(predictionText); 
+		}
 	})
 })
