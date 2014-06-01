@@ -5,8 +5,6 @@
 package org.leastweasel.predict.config;
 
 import org.jasypt.digest.StandardStringDigester;
-import org.leastweasel.predict.domain.MatchResult;
-import org.leastweasel.predict.format.MatchResultFormatter;
 import org.leastweasel.predict.service.PasswordResetTokenGenerator;
 import org.leastweasel.predict.service.support.JasyptPasswordResetTokenGenerator;
 import org.springframework.context.annotation.Bean;
@@ -48,13 +46,5 @@ public class CoreConfig {
 		generator.setStringDigester(digester);
 		
 		return generator;
-	}
-	
-	/**
-	 * A formatter formatter for {@link MatchResult}s.
-	 */
-	@Bean
-	public MatchResultFormatter matchResultFormatter() {
-		return new MatchResultFormatter();
 	}
 }

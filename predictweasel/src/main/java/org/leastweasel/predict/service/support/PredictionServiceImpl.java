@@ -12,6 +12,7 @@ import java.util.Set;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.leastweasel.predict.domain.Fixture;
+import org.leastweasel.predict.domain.MatchResult;
 import org.leastweasel.predict.domain.Prediction;
 import org.leastweasel.predict.domain.UserSubscription;
 import org.leastweasel.predict.repository.FixtureRepository;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * An implementation of the {@link PredictionService}. 
@@ -134,7 +136,46 @@ public class PredictionServiceImpl implements PredictionService {
 	
 		return null;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Transactional
+	public Prediction createOrUpdatePrediction(UserSubscription subscription,
+			   								  Fixture fixture,
+			   								  MatchResult predictedResult) {
+
+		Prediction prediction = 
+				predictionRepository.findByPredictorAndFixture(subscription.getUser(), fixture);
+		
+		if (prediction == null) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("No prediction exists for user ID {} and fixture ID {}", 
+							 subscription.getUser().getId(),
+							 fixture.getId());
+			}
+			
+			prediction = new Prediction();
+			
+			prediction.setFixture(fixture);
+			prediction.setPredictor(subscription.getUser());
+			prediction.setPredictedResult(predictedResult);
+			
+			prediction = predictionRepository.save(prediction);
+		} else {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Found prediction ID {} for user ID {} and fixture ID {}",
+							 prediction.getId(),
+							 subscription.getUser().getId(),
+							 fixture.getId());
+			}
+			
+			prediction.setPredictedResult(predictedResult);
+		}
+		
+		return prediction;
+	}
+
 	/**
 	 * Get the most relevant fixtures from the given list. What we want is a
 	 * minimum number of fixtures with an additional requirement being that

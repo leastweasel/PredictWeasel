@@ -5,7 +5,7 @@
 	<h3 class="title-divider">
 		Upcoming <span class="de-em">Fixtures</span>
 	</h3>
-	<div class="table-responsive">
+	<div id="upcoming-fixtures" class="table-responsive">
 		<form action="" method="post" role="form">
 			<table class="table table-striped">
 				<thead>
@@ -14,17 +14,23 @@
 						<th></th>
 						<th>Prediction</th>
 						<th></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="prediction : ${upcomingFixtures}">
-						<td th:text="${#calendars.format(prediction.fixture.matchTime,'dd MMM HH:mm')}">Tomorrow</td>
-						<td th:text="${prediction.fixture.homeTeam.name}">Welling</td>
-						<td><div class="col-xs-3"><input type="tel" class="form-control" th:autofocus="${predictionStat.first}" th:value="${prediction.predictedResult}"/></div></td>
-						<td th:text="${prediction.fixture.awayTeam.name}">Braintree</td>
+						<td th:text="${#calendars.format(prediction.fixture.matchTime,'dd MMM HH:mm')}"></td>
+						<td th:text="${prediction.fixture.homeTeam.name}"></td>
+						<td><div class="form-group col-xs-3 has-success">
+							<input type="tel" th:id="'fixture_' + ${prediction.fixture.id}" class="form-control" 
+								   th:value="${prediction.predictedResult}" name="prediction" 
+								   placeholder=" - " th:autofocus="${predictionStat.first}" />
+						</div></td>
+						<td th:text="${prediction.fixture.awayTeam.name}"></td>
 					</tr>
 				</tbody>
 			</table>
+			<input type="hidden" th:id="_csrf" th:value="${_csrf.token}"/>
 		</form>
 	</div>
 </div>

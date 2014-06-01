@@ -41,6 +41,7 @@ public class LeagueController {
 	 * Handle a GET request to navigate to a league's home page. From here the user can get
 	 * a quick view of predictions, results, standings and the blog from the league in question.     
 	 * 
+	 * @param subscription the user and league for which we will be displaying the page
 	 * @return the name of the view to navigate to (the league home page)
 	 */
 	@RequestMapping(value="/league/", method = RequestMethod.GET)
