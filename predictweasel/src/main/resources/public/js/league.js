@@ -16,17 +16,28 @@ $(document).ready(function() {
 		var predictionText = $(this).val();
 		var originalPredictionText = $(this).next().val();
 		var CSRFToken = $('#_csrf').val();
+		var inputField = $(this);
+	
+		// Only submit the request if the prediction has changed.
 		
 		if (predictionText != originalPredictionText) {
-			$.post('/league/savePrediction.html',
+			$.post('/league/savePrediction',
 	                {fixture: fixtureId,
 	                 prediction: predictionText,
 	                 _csrf: CSRFToken},
-	                 function() {
-	                 }, 'json');
-			
-			// Update the "original value" field so that we don't keep triggering events.
-			$(this).next().val(predictionText); 
+	                 function(data) {
+	                	 
+	                	 	// The response contains the updated prediction, which will have been formatted properly.
+	                	 	var updatedPredictionText = data['predictionText'];
+	                	 	
+	         			// Update the "original value" field so that we don't keep triggering events, and
+	                	 	// the prediction input field so that we get proper formatting of the value.
+	         			inputField.val(data['predictionText']); 
+	         			inputField.next().val(data['predictionText']); 
+
+	                 }).fail(function(qXHR, textStatus, errorThrown) {
+	                	 				alert("Fail! status='" + textStatus + "', error='" + errorThrown + "'");
+	                 			});
 		}
-	})
+	});
 })

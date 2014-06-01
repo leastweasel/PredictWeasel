@@ -23,10 +23,10 @@
 						<td th:text="${prediction.fixture.homeTeam.name}"></td>
 						<td><div class="form-group col-xs-3 has-success">
 							<input type="tel" th:id="'fixture_' + ${prediction.fixture.id}" class="form-control" 
-								   th:value="${prediction.predictedResult}" name="prediction" 
+								   th:value="${{prediction.predictedResult}}" name="prediction" 
 								   placeholder=" - " th:autofocus="${predictionStat.first}" />
 							<input type="hidden" th:id="'originalScore_' + ${prediction.fixture.id}" 
-								   th:value="${prediction.predictedResult}" />
+								   th:value="${{prediction.predictedResult}}" />
 						</div></td>
 						<td th:text="${prediction.fixture.awayTeam.name}"></td>
 					</tr>
