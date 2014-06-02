@@ -7,14 +7,7 @@ package org.leastweasel.predict.web.controller;
 import java.util.List;
 
 import org.leastweasel.predict.domain.Competition;
-import org.leastweasel.predict.domain.League;
-import org.leastweasel.predict.domain.Prediction;
-import org.leastweasel.predict.domain.User;
-import org.leastweasel.predict.domain.UserSubscription;
 import org.leastweasel.predict.service.CompetitionService;
-import org.leastweasel.predict.service.PredictionService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,8 +24,6 @@ public class CompetitionsController {
 	@Autowired
 	private CompetitionService competitionService;
 	
-	private static final Logger logger = LoggerFactory.getLogger(CompetitionsController.class);
-
 	/**
 	 * Handle a GET request to navigate to the page from which s/he can perform
 	 * {@link Competition} based actions, such as entering results for a competition's fixtures.     
