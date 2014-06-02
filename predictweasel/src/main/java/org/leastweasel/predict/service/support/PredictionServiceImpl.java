@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.leastweasel.predict.domain.Fixture;
 import org.leastweasel.predict.domain.MatchResult;
@@ -17,6 +16,7 @@ import org.leastweasel.predict.domain.Prediction;
 import org.leastweasel.predict.domain.UserSubscription;
 import org.leastweasel.predict.repository.FixtureRepository;
 import org.leastweasel.predict.repository.PredictionRepository;
+import org.leastweasel.predict.service.Clock;
 import org.leastweasel.predict.service.PredictionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +37,9 @@ public class PredictionServiceImpl implements PredictionService {
 	
 	@Autowired
 	private PredictionRepository predictionRepository;
+	
+	@Autowired
+	private Clock systemClock;
 	
 	@Value("${predictWeasel.minimumNumberOfFixturesToDisplay}")
 	private int minimumNumberOfFixturesToDisplay;
@@ -98,7 +101,7 @@ public class PredictionServiceImpl implements PredictionService {
 			// Get all the fixtures that haven't started yet.
 			List<Fixture> fixtures = 
 					fixtureRepository.findByCompetitionAndMatchTimeAfter(subscription.getLeague().getCompetition(),
-																		new DateTime());
+																		systemClock.getCurrentDateTime());
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("Got {} future fixtures", fixtures.size());

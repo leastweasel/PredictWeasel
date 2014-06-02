@@ -7,12 +7,12 @@ package org.leastweasel.predict.service.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.leastweasel.predict.domain.Competition;
 import org.leastweasel.predict.domain.Fixture;
 import org.leastweasel.predict.domain.MatchResult;
 import org.leastweasel.predict.repository.CompetitionRepository;
 import org.leastweasel.predict.repository.FixtureRepository;
+import org.leastweasel.predict.service.Clock;
 import org.leastweasel.predict.service.CompetitionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +31,9 @@ public class CompetitionServiceImpl implements CompetitionService {
 
 	@Autowired
 	private FixtureRepository fixtureRepository;
+	
+	@Autowired
+	private Clock systemClock;
 	
 	private static final Logger logger = LoggerFactory.getLogger(CompetitionServiceImpl.class);
 
@@ -68,7 +71,7 @@ public class CompetitionServiceImpl implements CompetitionService {
 			
 			List<Fixture> fixtures = 
 					fixtureRepository.findByCompetitionAndMatchTimeBeforeAndResultIsNull(competition,
-																					    new DateTime(),
+																					    systemClock.getCurrentDateTime(),
 																						sortOrder);
 		
 			if (logger.isDebugEnabled()) {

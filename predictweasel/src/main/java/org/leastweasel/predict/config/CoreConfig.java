@@ -5,7 +5,9 @@
 package org.leastweasel.predict.config;
 
 import org.jasypt.digest.StandardStringDigester;
+import org.leastweasel.predict.service.Clock;
 import org.leastweasel.predict.service.PasswordResetTokenGenerator;
+import org.leastweasel.predict.service.support.ElapsedTimeClock;
 import org.leastweasel.predict.service.support.JasyptPasswordResetTokenGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,5 +48,10 @@ public class CoreConfig {
 		generator.setStringDigester(digester);
 		
 		return generator;
+	}
+	
+	@Bean
+	public Clock systemClock() {
+		return new ElapsedTimeClock("2014-06-02T12:00:00+01:00");
 	}
 }
