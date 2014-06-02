@@ -241,9 +241,13 @@ public class User implements UserDetails {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
 
+        if (logger.isDebugEnabled()) {
+			logger.debug("Adding {} roles to user ID: {}", roles.size(), getId());
+		}
+        
         // We automatically assign a 'User' authority to all users.
         List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
-        list.add(new SimpleGrantedAuthority(Role.USER_AUTHORITY));
+        // list.add(new SimpleGrantedAuthority(Role.USER_AUTHORITY));
 
         for (Role role : roles) {
             list.add(new SimpleGrantedAuthority(role.getGrantedAuthority()));

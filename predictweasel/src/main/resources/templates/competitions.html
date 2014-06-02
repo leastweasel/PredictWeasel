@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html layout:decorator="/mainLayout">
+<head>
+<title>Administer Competitions</title>
+<script th:src="@{/js/competition.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<h2 class="title-divider">
+				Administer<span class="de-em">Competitions</span>
+			</h2>
+			<div class="row">
+		        	<div class="col-xs-12 col-md-8">
+		        		<p>Select one of the competitions from the list below, then
+		        		   click one a link to navigate to the appropriate page and
+		        		   operate on the selected competition.
+		        		</p>
+				</div>
+			</div>
+			<div class="row">
+		        	<div class="col-xs-12 col-md-8">
+					<select id="competitions-list">
+					  <option th:each="competition : ${competitions}" 
+					          th:value="${competition.id}" 
+					          th:text="${competition.name}"/>
+					</select>
+					<p/>				
+				</div>
+			</div>
+			<div class="row">
+		        	<div class="col-xs-12 col-md-8">
+		        		<ul id="competition-links">
+		        			<li class="requires-competition"><a th:href="@{/competition/results}">Enter or update results for the selected competition</a></li>
+		        			<li class="requires-competition"><a href="#">Amend details of the selected competition</a></li>
+		        			<li><a href="#">Create a new competition</a></li>
+		        		</ul>
+		        	</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

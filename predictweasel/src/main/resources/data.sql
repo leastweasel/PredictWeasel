@@ -3,8 +3,13 @@ insert into user(id,username,enabled,name,password,password_reminder) values
 (2,'andrew@leastweasel.org',1,'leastweasel','$2a$16$wTypytdnx85ToKp8kAAh1evnGoGZPp0THnr3FwQYQg4zFDZHMRn/W','Leastweasel''s reminder'), -- password is andrewyy
 (3,'mjwalsh1971@hotmail.com',1,'mick','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null); -- password is andrewzz
 
+insert into user_role(user_id, role_id) values
+(1, 2);
+
 insert into competition(id, name, active) values
-(1, 'Football Conference 2014', 1);
+(1, 'Football Conference 2014', 1),
+(2, 'World Cup 2014', 1),
+(3, 'World Cup 2010', 0);
 
 insert into team(id, name) values
 (1, 'Alfreton Town'),

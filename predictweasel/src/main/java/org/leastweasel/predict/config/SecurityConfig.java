@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 			.antMatchers("/", "/login", "/signup", "/forgottenPassword", "/resetPassword").permitAll()
+			.antMatchers("/competitions", "/competition/*").hasAnyRole("COMP_ADMIN")
 			.anyRequest().fullyAuthenticated()
 			.and()
 			.formLogin().loginPage("/login")
