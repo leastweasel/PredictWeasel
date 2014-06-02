@@ -21,6 +21,7 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * A league, comprising a group of {@link User}s making predictions on the outcome of fixtures in a competition.
@@ -40,6 +41,12 @@ public class League implements Serializable {
     private String name;
 
     private String code;
+
+    private String prizeOneCode;
+    
+    private String prizeTwoCode;
+    
+    private String prizeThreeCode;
     
     private LeagueState state;
     
@@ -194,8 +201,48 @@ public class League implements Serializable {
     public void setState (LeagueState state) {
     	this.state = state;
     }
-    
+
     /**
+     * Get the code of this league's main prize. Will not be null.
+     *  
+     * @return the main prize's code
+     */
+    @NotBlank
+    public String getPrizeOneCode() {
+		return prizeOneCode;
+	}
+
+	public void setPrizeOneCode(String prizeOneCode) {
+		this.prizeOneCode = prizeOneCode;
+	}
+
+    /**
+     * Get the code of this league's secondary prize. May be null.
+     *  
+     * @return the secondary prize's code
+     */
+	public String getPrizeTwoCode() {
+		return prizeTwoCode;
+	}
+
+	public void setPrizeTwoCode(String prizeTwoCode) {
+		this.prizeTwoCode = prizeTwoCode;
+	}
+
+    /**
+     * Get the code of this league's tertiary prize. May be null.
+     *  
+     * @return the tertiary prize's code
+     */
+	public String getPrizeThreeCode() {
+		return prizeThreeCode;
+	}
+
+	public void setPrizeThreeCode(String prizeThreeCode) {
+		this.prizeThreeCode = prizeThreeCode;
+	}
+
+	/**
      * Equality operator.
      *
      * @param other the object we're comparing against
@@ -217,10 +264,7 @@ public class League implements Serializable {
 
         final League league = (League) other;
 
-        return new EqualsBuilder().append(name, league.name)
-        						  .append(state, league.state)
-        						  .append(competition, league.competition)
-                                  .isEquals();
+        return new EqualsBuilder().append(id, league.id).isEquals();
     }
     
     /**
@@ -230,18 +274,8 @@ public class League implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(name)
-        							.append(state)
-        							.append(competition)
-                                    .toHashCode();
+        return new HashCodeBuilder().append(id).toHashCode();
     }
-
-    /**
-     * Get the scorer that is used to calculate the worth of the predictions.
-     * 
-     * @return a Scorer object
-    public Scorer getScorer();
-     */
 
     /**
      * Get the description of the game. This is some welcoming text that is displayed to the user so

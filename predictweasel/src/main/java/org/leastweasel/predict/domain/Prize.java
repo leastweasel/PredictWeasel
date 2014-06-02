@@ -4,8 +4,6 @@
  */
 package org.leastweasel.predict.domain;
 
-import java.util.List;
-
 /**
  * Defines what the players of PredictWeasel are playing for. A Prize defines how many points a 
  * {@link Prediction} is worth, as calculated by its associated {@link Scorer} instance, and whether a 
@@ -16,17 +14,65 @@ import java.util.List;
  * the players will appear in a separate set of standings.
  */
 public class Prize {
-	private Scorer scorer;
+	private final Scorer scorer;
 	
-	private List<FixtureFilter> fixtureFilters;
+	private FixtureFilter [] fixtureFilters;
+	
+	private final String code;
+	
+	private Scorer missingPredictionScorer;
 
 	/**
-	 * Set the prize scorer, which will calculate how many points each prediction is worth in this prize.
+	 * Constructor.
 	 * 
-	 * @param scorer the scorer
+	 * @param code the prize's code
+	 * @param scorer calculates how many points each prediction is worth in this prize
 	 */
-	public void setScorer(Scorer scorer) {
+	public Prize(String code, Scorer scorer) {
+		this.code = code;
 		this.scorer = scorer;
+	}
+	
+	/**
+	 * Calculate the score of the given prediction. We can't just pass in a prediction because,
+	 * although a Prediction contains both the fixture and predicted result, the prediction
+	 * might be null, so we wouldn't know the fixture.
+
+	 * @param fixture the fixture for which we're calculating the points scored
+	 * @param predictedScore the predicted score, which may be null
+	 * @return the number of points scored by the prediction in this prize
+	 */
+	public int calculatePointsScored(Fixture fixture, MatchResult predictedScore) {
+		
+		if (predictedScore == null) {
+			// A missing prediction often incurs a penalty, so get its score separately.
+			if (missingPredictionScorer != null) {
+				return missingPredictionScorer.getPointsScored(null, fixture.getResult());
+			} else {
+				return 0;
+			}
+		} else {
+			// If this prize doesn't accept all fixtures then check whether this fixture is a counter.
+			
+			if (fixtureFilters != null) {
+				for (FixtureFilter filter : fixtureFilters) {
+					if (!filter.accept(fixture)) {
+						return 0;
+					}
+				}
+			}
+			
+			return scorer.getPointsScored(predictedScore, fixture.getResult());
+		}
+	}
+	
+	/**
+	 * Set the scorer to use if the user fails to enter a prediction.
+	 * 
+	 * @param scorer the scorer to use
+	 */
+	public void setMissingPredictionScorer(Scorer scorer) {
+		this.missingPredictionScorer = scorer;
 	}
 
 	/**
@@ -34,7 +80,17 @@ public class Prize {
 	 * 
 	 * @param fixtureFilters the list of filters
 	 */
-	public void setFixtureFilters(List<FixtureFilter> fixtureFilters) {
+	public void setFixtureFilters(FixtureFilter... fixtureFilters) {
 		this.fixtureFilters = fixtureFilters;
+	}
+
+	/**
+	 * Get the code, which is how this prize is referenced elsewhere in the application. Prize
+	 * codes must be unique across the application.
+	 * 
+	 * @return the prize's code
+	 */
+	public String getCode() {
+		return code;
 	}
 }

@@ -49,4 +49,11 @@ public interface PredictionService {
 	Prediction createOrUpdatePrediction(UserSubscription subscription,
 									   Fixture fixture,
 									   MatchResult predictedResult);
+	
+	/**
+	 * Calculate the points scored for each prediction based on the given fixture.
+	 * 
+	 * @param fixture the fixture whose predictions we're going to evaluate
+	 */
+	void calculatePredictionScoresForFixture(Fixture fixture);
 }

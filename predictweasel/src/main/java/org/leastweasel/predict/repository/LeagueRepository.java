@@ -4,6 +4,9 @@
  */
 package org.leastweasel.predict.repository;
 
+import java.util.List;
+
+import org.leastweasel.predict.domain.Competition;
 import org.leastweasel.predict.domain.League;
 import org.springframework.data.repository.CrudRepository;
 
@@ -19,4 +22,12 @@ public interface LeagueRepository extends CrudRepository<League, Long> {
      * @return a league (or null if none match)
      */
     League findByCode(String code);
+    
+    /**
+     * Find the leagues based on the given {@link Competition}.
+     *
+     * @param competition the competition of the leagues to fetch
+     * @return a list of leagues (or null if none match)
+     */
+    List<League> findByCompetition(Competition competition);
 }

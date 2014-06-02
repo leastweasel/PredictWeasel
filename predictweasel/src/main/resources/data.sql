@@ -37,9 +37,9 @@ insert into fixture(id, competition_id, home_team_id, away_team_id, home_score, 
 (15,1,6,4,null,null,'2014-06-03:17:30:00');
 
 
-insert into league(id, name, code, state, competition_id, owner_id) values
-(1, 'Andrew''s Conference League', 'AN7h2KhA', 'OPEN', 1, 1),
-(2, 'Mick''s Conference League', 'G7AB3jSg', 'ACTIVE', 1, 3);
+insert into league(id, name, code, state, competition_id, owner_id, prize_one_code, prize_two_code, prize_three_code) values
+(1, 'Andrew''s Conference League', 'AN7h2KhA', 'OPEN', 1, 1, "O", null, null),
+(2, 'Mick''s Conference League', 'G7AB3jSg', 'ACTIVE', 1, 3, "O", "KO", "SO");
 
 insert into user_subscription(id, user_id, league_id) values
 (1, 2, 1),

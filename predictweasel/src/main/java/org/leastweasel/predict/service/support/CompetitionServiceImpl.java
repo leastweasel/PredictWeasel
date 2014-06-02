@@ -14,6 +14,7 @@ import org.leastweasel.predict.repository.CompetitionRepository;
 import org.leastweasel.predict.repository.FixtureRepository;
 import org.leastweasel.predict.service.Clock;
 import org.leastweasel.predict.service.CompetitionService;
+import org.leastweasel.predict.service.PredictionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class CompetitionServiceImpl implements CompetitionService {
 
 	@Autowired
 	private FixtureRepository fixtureRepository;
+
+	@Autowired
+	private PredictionService predictionService;
 	
 	@Autowired
 	private Clock systemClock;
@@ -90,5 +94,6 @@ public class CompetitionServiceImpl implements CompetitionService {
 	public void saveResult(Fixture fixture, MatchResult result) {
 		fixture.setResult(result);
 		fixtureRepository.save(fixture);
+		predictionService.calculatePredictionScoresForFixture(fixture);
 	}
 }

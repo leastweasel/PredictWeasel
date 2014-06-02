@@ -1,3 +1,4 @@
+drop table if exists prize_points;
 drop table if exists user_subscription;
 drop table if exists prediction;
 drop table if exists league;
@@ -104,6 +105,9 @@ create table league (
   name varchar(30) not null,
   code varchar(10) not null,
   state varchar(10) not null,
+  prize_one_code varchar(10) not null,
+  prize_two_code varchar(10) null,
+  prize_three_code varchar(10) null,
   competition_id bigint(20) not null,
   owner_id bigint(20) not null,
   primary key (id),
@@ -134,4 +138,15 @@ create table prediction (
   primary key (id),
   constraint PREDICTION_FIXTURE_ID foreign key (fixture_id) references fixture (id),
   constraint PREDICTION_USER_ID foreign key (user_id) references user (id)
+) type=InnoDB;
+
+create table prize_points (
+  id bigint(20) not null auto_increment,
+  subscription_id bigint(20) not null,
+  fixture_id bigint(20) not null,
+  prize_code varchar(10) not null,
+  points_scored int(11) not null,
+  primary key (id),
+  constraint PRIZE_POINTS_FIXTURE_ID foreign key (fixture_id) references fixture (id),
+  constraint PRIZE_POINTS_SUBSCRIPTON_ID foreign key (subscription_id) references user_subscription (id)
 ) type=InnoDB;

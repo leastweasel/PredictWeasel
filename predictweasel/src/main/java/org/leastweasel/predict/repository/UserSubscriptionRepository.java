@@ -32,4 +32,12 @@ public interface UserSubscriptionRepository extends CrudRepository<UserSubscript
      * @return the user's subscription, or null if one doesn't exist
      */
     UserSubscription findByUserAndLeague(User user, League league);
+
+    /**
+     * Fetch all the subscriptions to the given {@link League}.
+     *
+     * @param league the subscriptions we want are for this league
+     * @return a list of user subscriptions, or null if one doesn't exist
+     */
+    List<UserSubscription> findByLeague(League league);
 }
