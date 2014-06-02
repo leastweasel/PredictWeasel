@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html layout:decorator="/mainLayout">
+<head>
+	<title>Welcome</title>
+	<meta name="active-menu" content="#competition-menu"/>
+	<script th:src="@{/js/competition.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<h2 class="title-divider">
+				Enter <span class="de-em">Results</span>
+			</h2>
+			<div>
+				<div id="missing-results" class="table-responsive">
+					<form action="" method="post" role="form">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th></th>
+									<th>Result</th>
+									<th></th>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="fixture : ${fixtures}">
+									<td th:text="${#calendars.format(fixture.matchTime,'dd MMM HH:mm')}"></td>
+									<td th:text="${fixture.homeTeam.name}"></td>
+									<td><div class="form-group col-xs-3 col-md-4">
+										<input type="tel" th:id="'fixture_' + ${fixture.id}" class="form-control" 
+											   th:value="${{fixture.result}}" name="fixture" 
+											   placeholder=" - " th:autofocus="${fixtureStat.first}" />
+										<input type="hidden" th:id="'originalScore_' + ${fixture.id}" 
+											   th:value="${{fixture.result}}" />
+									</div>
+									<div><span class="text-danger"></span></div>
+									</td>
+									<td></td>
+									<td th:text="${fixture.awayTeam.name}"></td>
+								</tr>
+							</tbody>
+						</table>
+						<input type="hidden" th:id="_csrf" th:value="${_csrf.token}"/>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

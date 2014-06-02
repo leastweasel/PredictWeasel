@@ -7,8 +7,12 @@ package org.leastweasel.predict.service.support;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.leastweasel.predict.domain.Competition;
+import org.leastweasel.predict.domain.Fixture;
+import org.leastweasel.predict.domain.MatchResult;
 import org.leastweasel.predict.repository.CompetitionRepository;
+import org.leastweasel.predict.repository.FixtureRepository;
 import org.leastweasel.predict.service.CompetitionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +28,9 @@ import org.springframework.stereotype.Service;
 public class CompetitionServiceImpl implements CompetitionService {
 	@Autowired
 	private CompetitionRepository competitionRepository;
+
+	@Autowired
+	private FixtureRepository fixtureRepository;
 	
 	private static final Logger logger = LoggerFactory.getLogger(CompetitionServiceImpl.class);
 
@@ -47,5 +54,38 @@ public class CompetitionServiceImpl implements CompetitionService {
 		}
 
 		return competitions;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Fixture> getStartedFixturesWithNoResult(Competition competition) {
+		
+		if (competition != null) {
+			// Get all the fixtures that have started but have no result, ordered by match time. 
+			// We're interested in the fixture that started longest ago so we sort by ascending match time.
+			Sort sortOrder = new Sort(Direction.ASC, "matchTime");
+			
+			List<Fixture> fixtures = 
+					fixtureRepository.findByCompetitionAndMatchTimeBeforeAndResultIsNull(competition,
+																					    new DateTime(),
+																						sortOrder);
+		
+			if (logger.isDebugEnabled()) {
+				logger.debug("Got {} fixtures that might need a result", fixtures.size());
+			}
+			
+			return fixtures;
+		}
+		
+		return new ArrayList<Fixture>();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void saveResult(Fixture fixture, MatchResult result) {
+		fixture.setResult(result);
+		fixtureRepository.save(fixture);
 	}
 }
