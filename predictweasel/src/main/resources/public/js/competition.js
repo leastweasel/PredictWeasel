@@ -19,5 +19,8 @@ $(document).ready(function() {
 		alert("Click event handler: " + modifiedLink);
 		window.location.href = modifiedLink;
 	});
+	
+	// Make sure the competition menu is the only one selected.
+	selectNavMenu('#competition-menu');
 });
 		

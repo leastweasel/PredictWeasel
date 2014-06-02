@@ -48,6 +48,7 @@
 	
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/predictweasel.js}"></script>
 </head>
 <body class="page page-login">
 	<a href="#content" class="sr-only">Skip to content</a>
@@ -94,13 +95,13 @@
 						<a href="/"><i class="fa fa-home"></i><span class="hidden">Home</span></a>
 						</li>
 						<li sec:authorize="!hasRole('ROLE_ANONYMOUS')" class="dropdown">
-						<a href="play.htm" class="dropdown-toggle menu-item" id="features-drop" data-toggle="dropdown" data-hover="dropdown">Play +</a> 
+						<a href="play.htm" class="dropdown-toggle menu-item" data-toggle="dropdown" data-hover="dropdown">Play +</a> 
 						</li>
-						<li sec:authorize="hasRole('ROLE_COMP_ADMIN')" class="dropdown">
-						<a th:href="@{/competitions}" class="menu-item" id="competition-menu" data-hover="dropdown">Competition</a> 
+						<li sec:authorize="hasRole('ROLE_COMP_ADMIN')" id="competition-menu" class="dropdown">
+						<a th:href="@{/competitions}" class="menu-item" data-hover="dropdown">Competition</a> 
 						</li>
 						<li class="dropdown">
-						<a href="help.htm" class="dropdown-toggle" id="blog-drop" data-toggle="dropdown" data-hover="dropdown">Help +</a> 
+						<a href="help.htm" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Help +</a> 
 						</li>
 					</ul>		
 					</div>
