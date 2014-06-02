@@ -16,7 +16,6 @@ $(document).ready(function() {
 		// default link so that we operate on that competition.
 		var modifiedLink = $(this).attr('href') + '?competition=' + $('#competitions-list').val();
 		
-		alert("Click event handler: " + modifiedLink);
 		window.location.href = modifiedLink;
 	});
 	
