@@ -47,6 +47,18 @@
 					</form>
 				</div>
 			</div>
+			<div>
+				<p>
+					When you've finished entering all of the results you should recalculate
+					the player points totals for the prizes in all of this competition's leagues.
+				</p>
+			</div>
+			<div>
+				<a th:href="@{/competition/recalculatePointsTotals(competition=${param.competition})}">
+				<button type="button" class="btn btn-lg btn-primary">
+					Recalculate points 
+				</button> </a>
+			</div>
 		</div>
 	</div>
 </body>

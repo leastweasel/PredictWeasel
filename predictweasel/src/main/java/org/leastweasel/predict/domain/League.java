@@ -5,6 +5,7 @@
 package org.leastweasel.predict.domain;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -53,6 +55,8 @@ public class League implements Serializable {
     private Competition competition;
     
     private User owner;
+
+    private Set<UserSubscription> subscriptions;
     
     /**
      * Get the league's unique id.
@@ -153,6 +157,25 @@ public class League implements Serializable {
 	 */
 	public void setOwner(User owner) {
 		this.owner = owner;
+	}
+
+	/**
+	 * Get the collection of users who have subscribed to this League.
+	 * 
+	 * @return the league's subscribers
+	 */
+	@OneToMany(mappedBy="league")
+	public Set<UserSubscription> getSubscriptions() {
+		return subscriptions;
+	}
+
+	/**
+	 * Set the collection of subscriptions to this league.
+	 * 
+	 * @param subscriptions the new subscriptions
+	 */
+	public void setSubscriptions(Set<UserSubscription> subscriptions) {
+		this.subscriptions = subscriptions;
 	}
 
     /**
