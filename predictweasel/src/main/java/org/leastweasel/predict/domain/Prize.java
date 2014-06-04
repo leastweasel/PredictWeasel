@@ -20,6 +20,8 @@ public class Prize {
 	
 	private final String code;
 	
+	private final String name;
+	
 	private Scorer missingPredictionScorer;
 
 	/**
@@ -28,8 +30,9 @@ public class Prize {
 	 * @param code the prize's code
 	 * @param scorer calculates how many points each prediction is worth in this prize
 	 */
-	public Prize(String code, Scorer scorer) {
+	public Prize(String code, String name, Scorer scorer) {
 		this.code = code;
+		this.name = name;
 		this.scorer = scorer;
 	}
 	
@@ -44,6 +47,16 @@ public class Prize {
 	 */
 	public int calculatePointsScored(Fixture fixture, MatchResult predictedScore) {
 		
+		// If this prize doesn't accept all fixtures then check whether this fixture is a counter.
+		
+		if (fixtureFilters != null) {
+			for (FixtureFilter filter : fixtureFilters) {
+				if (!filter.accept(fixture)) {
+					return 0;
+				}
+			}
+		}
+		
 		if (predictedScore == null) {
 			// A missing prediction often incurs a penalty, so get its score separately.
 			if (missingPredictionScorer != null) {
@@ -52,16 +65,6 @@ public class Prize {
 				return 0;
 			}
 		} else {
-			// If this prize doesn't accept all fixtures then check whether this fixture is a counter.
-			
-			if (fixtureFilters != null) {
-				for (FixtureFilter filter : fixtureFilters) {
-					if (!filter.accept(fixture)) {
-						return 0;
-					}
-				}
-			}
-			
 			return scorer.getPointsScored(predictedScore, fixture.getResult());
 		}
 	}
@@ -92,5 +95,14 @@ public class Prize {
 	 */
 	public String getCode() {
 		return code;
+	}
+
+	/**
+	 * Get the name, which is how this prize is displayed to the user.
+	 * 
+	 * @return the prize's name
+	 */
+	public String getName() {
+		return name;
 	}
 }
