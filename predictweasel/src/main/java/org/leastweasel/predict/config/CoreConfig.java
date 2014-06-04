@@ -12,6 +12,7 @@ import org.leastweasel.predict.domain.LivermoreScoringModel;
 import org.leastweasel.predict.domain.Prize;
 import org.leastweasel.predict.domain.Prizes;
 import org.leastweasel.predict.domain.Scorer;
+import org.leastweasel.predict.domain.StandingsCache;
 import org.leastweasel.predict.service.Clock;
 import org.leastweasel.predict.service.PasswordResetTokenGenerator;
 import org.leastweasel.predict.service.support.ElapsedTimeClock;
@@ -81,17 +82,27 @@ public class CoreConfig {
 		Scorer mainScorer = new LivermoreScoringModel();
 		Scorer missingPredictionScorer = new DefaultMissingPredictionScoringModel(mainScorer);
 		
-		Prize prize1 = new Prize("O", mainScorer);
+		Prize prize1 = new Prize("O", "Overall", mainScorer);
 		prize1.setMissingPredictionScorer(missingPredictionScorer);
 		
-		Prize prize2 = new Prize("KO", mainScorer);
+		Prize prize2 = new Prize("KO", "Knockout", mainScorer);
 		prize2.setMissingPredictionScorer(missingPredictionScorer);
 		prize2.setFixtureFilters(new KnockoutStageFixtureFilter());
 
-		Prize prize3 = new Prize("SO", new DefaultSpotOnScoringModel());
+		Prize prize3 = new Prize("SO", "Spot-on", new DefaultSpotOnScoringModel());
 
 		prizes.setPrizes(prize1, prize2, prize3);
 		
 		return prizes;
+	}
+
+	/**
+	 * Create the bean that holds the standings for the various leagues.
+	 *  
+	 * @return the standings cache
+	 */
+	@Bean
+	public StandingsCache standingsCache() {
+		return new StandingsCache();
 	}
 }

@@ -266,6 +266,28 @@ public class League implements Serializable {
 	}
 
 	/**
+	 * Get the code of the prize with the given index.
+	 * Convenience method as prizes aren't stored in an array or
+	 * collection of some sort.
+	 * 
+	 * @param prizeNumber the index number of the prize whose code we want
+	 * @return the code for that prize
+	 */
+	@Transient
+	public String getPrizeCode(int prizeNumber) {
+		switch(prizeNumber) {
+		case 1:
+			return getPrizeOneCode();
+		case 2:
+			return getPrizeTwoCode();
+		case 3:
+			return getPrizeThreeCode();
+		default:
+			throw new IllegalArgumentException("Prize number index out of range(1-3): " + prizeNumber);
+		}
+	}
+	
+	/**
      * Equality operator.
      *
      * @param other the object we're comparing against

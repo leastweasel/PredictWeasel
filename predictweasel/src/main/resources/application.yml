@@ -29,6 +29,7 @@ spring:
 predictWeasel:
     passwordResetExpiryIntervalDays: 1
     minimumNumberOfFixturesToDisplay: 3
+    maximumNumberOfStandingsToDisplay: 5
 
 ---
 

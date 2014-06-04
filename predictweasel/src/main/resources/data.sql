@@ -1,7 +1,14 @@
 insert into user(id,username,enabled,name,password,password_reminder) values
-(1,'andrew@braycastle.co.uk',1,'andrew','$2a$16$gwzforw1NtmosQ2etXMDUem0hanbAbg5NbcEsjoxSjpC2g0OPMqy2','My reminder'), -- password is andrewxx
+(1,'andrew@braycastle.co.uk',1,'Andrew','$2a$16$gwzforw1NtmosQ2etXMDUem0hanbAbg5NbcEsjoxSjpC2g0OPMqy2','My reminder'), -- password is andrewxx
 (2,'andrew@leastweasel.org',1,'leastweasel','$2a$16$wTypytdnx85ToKp8kAAh1evnGoGZPp0THnr3FwQYQg4zFDZHMRn/W','Leastweasel''s reminder'), -- password is andrewyy
-(3,'mjwalsh1971@hotmail.com',1,'mick','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null); -- password is andrewzz
+(3,'mjwalsh1971@hotmail.com',1,'Mick','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
+(4,'harry@notmail.com',1,'Harry','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
+(5,'jimmy@notmail.com',1,'Jimmy','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
+(6,'willy@notmail.com',1,'Willy','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
+(7,'freddy@notmail.com',1,'Freddy','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
+(8,'perry@notmail.com',1,'Perry','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
+(9,'barry@notmail.com',1,'Barry','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
+(10,'kelly@notmail.com',1,'Kelly','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null); -- password is andrewzz
 
 insert into user_role(user_id, role_id) values
 (1, 2);
@@ -36,7 +43,6 @@ insert into fixture(id, competition_id, home_team_id, away_team_id, home_score, 
 (14,1,5,2,null,null,'2014-06-03:17:00:00'),
 (15,1,6,4,null,null,'2014-06-03:17:30:00');
 
-
 insert into league(id, name, code, state, competition_id, owner_id, prize_one_code, prize_two_code, prize_three_code) values
 (1, 'Andrew''s Conference League', 'AN7h2KhA', 'OPEN', 1, 1, "O", null, null),
 (2, 'Mick''s Conference League', 'G7AB3jSg', 'ACTIVE', 1, 3, "O", "KO", "SO");
@@ -44,9 +50,30 @@ insert into league(id, name, code, state, competition_id, owner_id, prize_one_co
 insert into user_subscription(id, user_id, league_id) values
 (1, 2, 1),
 (2, 2, 2),
-(3, 3, 1);
+(3, 3, 1),
+(4, 4, 2),
+(5, 5, 2),
+(6, 6, 2),
+(7, 7, 2),
+(8, 8, 2),
+(9, 9, 2),
+(10, 10, 2);
 
 insert into prediction(id, user_id, fixture_id, home_score, away_score) values
 (1, 3, 11, 7, 2),
 (2, 3, 13, 1, 3),
-(3, 3, 5, 0, 1);
+(3, 3, 5, 0, 1),
+(4, 4, 8, 5, 0),
+(5, 5, 8, 1, 2),
+(6, 6, 8, 3, 5),
+(7, 7, 8, 2, 2),
+(8, 8, 8, 4, 1),
+(9, 9, 8, 0, 3),
+(10, 10, 8, 1, 2),
+(11, 4, 9, 2, 4),
+(12, 5, 9, 3, 1),
+(13, 6, 9, 3, 3),
+(14, 7, 9, 1, 0),
+(15, 8, 9, 3, 2),
+(16, 9, 9, 1, 0),
+(17, 10, 9, 0, 2);

@@ -46,6 +46,8 @@ public class RecalculatePointsTotalsController {
 	
 		int numberOfLeagues = leagueService.recalculateCompetitionLeaguePointsTotals(competition);
 
+		leagueService.recalculateCompetitionLeagueStandings(competition);
+		
         // Indicate on the screen that the recalculation was successful. This can only be done right
         // at the end as it's important that the redirect happens.
         String message = messageSource.getMessage("flash.points.recalculated", 

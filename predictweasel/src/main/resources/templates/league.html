@@ -8,12 +8,12 @@
 	<div layout:fragment="content">
 		<div class="container">
 			<h2 class="title-divider">
-				League<span class="de-em">Home</span> <small>Mick's Conference League</small>
+				League<span class="de-em">Home</span> <small th:text="${currentLeague.name}">A Conference League</small>
 			</h2>
 			<div th:include="upcomingFixtures :: upcoming-fixtures"></div>
 			<div th:include="resultsTest :: recent-results"></div>
 			<div class="col-lg-4">
-				<div th:include="standingsTest :: player-standings"></div>
+				<div th:include="abbreviatedStandings :: player-standings"></div>
 			</div>
 			<div class="col-lg-8">
 				<div th:include="blogTest :: league-blog"></div>

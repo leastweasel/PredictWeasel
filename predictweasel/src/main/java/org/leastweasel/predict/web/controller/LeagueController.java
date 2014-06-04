@@ -4,13 +4,17 @@
  */
 package org.leastweasel.predict.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.leastweasel.predict.domain.League;
 import org.leastweasel.predict.domain.Prediction;
+import org.leastweasel.predict.domain.Prize;
 import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.domain.UserSubscription;
+import org.leastweasel.predict.service.LeagueService;
 import org.leastweasel.predict.service.PredictionService;
+import org.leastweasel.predict.service.StandingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LeagueController {
 	@Autowired
 	private PredictionService predictionService;
+	
+	@Autowired
+	private StandingsService standingsService;
+	
+	@Autowired
+	private LeagueService leagueService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(LeagueController.class);
 
@@ -61,6 +71,16 @@ public class LeagueController {
 	}
 	
 	/**
+	 * Set up the current league, so that we can show details of it in the view.     
+	 * 
+	 * @return the league currently being played by the logged in user
+	 */
+	@ModelAttribute("currentLeague")
+	public League getCurrentLeague(UserSubscription subscription) {
+		return subscription.getLeague();
+	}
+	
+	/**
 	 * Set up the most recent results, and their predictions, so that we can show
 	 * them in the view.     
 	 * 
@@ -81,5 +101,34 @@ public class LeagueController {
 	@ModelAttribute("upcomingFixtures")
 	public List<Prediction> getUpcomingFixtures(UserSubscription subscription) {
 		return predictionService.getPredictionsForUpcomingFixtures(subscription);
+	}
+
+	/**
+	 * Get the standings for the current league in each of the prize categories.    
+	 * 
+	 * @param subscription identifies the user and the league they're currently playing
+	 * @return a list of the player standings, each of which is itself a list
+	 */
+	@ModelAttribute("prizeStandings")
+	public List<List<PersonalisedPlayerStanding>> getPrizeStandings(UserSubscription subscription) {
+		List<List<PersonalisedPlayerStanding>> prizeStandings = new ArrayList<>();
+		
+		prizeStandings.add(standingsService.getAbbreviatedPrizeStandings(subscription, 1));
+		prizeStandings.add(standingsService.getAbbreviatedPrizeStandings(subscription, 2));
+		prizeStandings.add(standingsService.getAbbreviatedPrizeStandings(subscription, 3));
+		
+		return prizeStandings;
+	}
+	
+	/**
+	 * Get the prizes offered by the current league.    
+	 * 
+	 * @param subscription identifies the user and the league they're currently playing
+	 * @return a list of the prizes being played for
+	 */
+	@ModelAttribute("prizes")
+	public List<Prize> getPrizeCategories(UserSubscription subscription) {
+		
+		return leagueService.getLeaguePrizes(subscription.getLeague());
 	}
 }
