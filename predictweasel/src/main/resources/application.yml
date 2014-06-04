@@ -1,14 +1,6 @@
-spring:
-    thymeleaf:
-        cache: false
-    datasource:
-        platform: mysql
-        url: jdbc:mysql://localhost/pw
-        username: pwuser
-        password: pwuser
-        driverClassName: com.mysql.jdbc.Driver
-    jpa:
-        show-sql: false
+######################
+# Universal properties
+######################
 
 # "ignored" property...
 # Determines which resources bypass the security filter chain altogether.
@@ -21,9 +13,43 @@ spring:
 security:
     ignored: /css/**,/js/**,/img/**,/fonts/**,/plugins/**,/**/favicon.ico
 
+spring:
+    thymeleaf:
+        cache: true
+        prefix: templates/
+    jpa:
+        show-sql: false
+    datasource:
+        platform: mysql
+        driverClassName: com.mysql.jdbc.Driver
+        initialize: false
 
 # PredictWeasel properties
 
 predictWeasel:
     passwordResetExpiryIntervalDays: 1
     minimumNumberOfFixturesToDisplay: 3
+
+---
+
+spring:
+    profiles: test
+    
+    datasource:
+        url: jdbc:mysql://localhost/pwtest
+        username: pwtestuser
+        password: pwtest
+                
+---
+
+spring:
+    profiles: dev
+
+    thymeleaf:
+        cache: false
+    datasource:
+        url: jdbc:mysql://localhost/pw
+        username: pwuser
+        password: pwuser
+        initialize: true
+        
