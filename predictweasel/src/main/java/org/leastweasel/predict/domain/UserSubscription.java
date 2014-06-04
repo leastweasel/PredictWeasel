@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -98,7 +99,29 @@ public class UserSubscription implements Serializable {
 	}
 
 	/**
-     * Comparison operator. Two subscriptions are equal only if their respective leagues are equal.
+	 * Get the number of points scored in the prize with the given index.
+	 * Convenience method as prizes aren't stored in an array or
+	 * collection of some sort.
+	 * 
+	 * @param prizeNumber the index number of the prize whose points we want
+	 * @return the number of points scored for that prize
+	 */
+	@Transient
+	public int getPrizePoints(int prizeNumber) {
+		switch(prizeNumber) {
+		case 1:
+			return getPrizeOnePoints();
+		case 2:
+			return getPrizeTwoPoints();
+		case 3:
+			return getPrizeThreePoints();
+		default:
+			throw new IllegalArgumentException("Prize number index out of range(1-3): " + prizeNumber);
+		}
+	}
+	
+	/**
+     * Comparison operator.
      * 
      * @param o the object being compared
      * @return true if the objects are the same
@@ -119,19 +142,19 @@ public class UserSubscription implements Serializable {
 
         final UserSubscription subscription = (UserSubscription) other;
 
-        return new EqualsBuilder().append(league, subscription.league)
+        return new EqualsBuilder().append(id, subscription.id)
                                   .isEquals();
     }
 
     /**
      * Generate a hash code for this object. To be consistent with the <code>equals</code> method,
-     * only the league is included in the calculation.
+     * only the ID is included in the calculation.
      *
      * @return a hash code
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(league)
+        return new HashCodeBuilder().append(id)
                                     .toHashCode();
     }
 
