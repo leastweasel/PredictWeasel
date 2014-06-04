@@ -420,10 +420,10 @@ public class User implements UserDetails {
     }
 
     /**
-     * Implementation of the equals comparison on the basis of equality of the business key values.
+     * Implementation of the equals comparison on the basis of equality of the key value.
      *
      * @param other the object to compare
-     * @return boolean true if the business keys are equal
+     * @return boolean true if the unique IDs are equal
      */
     @Override
     public boolean equals(Object other) {
@@ -441,11 +441,7 @@ public class User implements UserDetails {
 
         User user = (User) other;
 
-        return new EqualsBuilder().append(name, user.name)
-                                  .append(username, user.username)
-                                  .append(passwordReminder, user.passwordReminder)
-                                  .append(enabled, user.enabled)
-                                  .append(roles, user.roles)
+        return new EqualsBuilder().append(id, user.id)
                                   .isEquals();
     }
 
@@ -456,11 +452,7 @@ public class User implements UserDetails {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(name)
-                                    .append(username)
-                                    .append(passwordReminder)
-                                    .append(enabled)
-                                    .append(roles)
+        return new HashCodeBuilder().append(id)
                                     .hashCode();
     }
 
