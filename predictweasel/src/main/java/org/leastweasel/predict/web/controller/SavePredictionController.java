@@ -12,6 +12,7 @@ import org.leastweasel.predict.domain.Fixture;
 import org.leastweasel.predict.domain.MatchResult;
 import org.leastweasel.predict.domain.UserSubscription;
 import org.leastweasel.predict.format.MatchResultFormatter;
+import org.leastweasel.predict.service.Clock;
 import org.leastweasel.predict.service.PredictionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,9 @@ public class SavePredictionController {
 
 	@Autowired
 	private MatchResultFormatter matchResultFormatter;
+	
+	@Autowired
+	private Clock systemClock;
 	
     private static Logger logger = LoggerFactory.getLogger(SavePredictionController.class);
 
@@ -68,12 +72,16 @@ public class SavePredictionController {
 			MatchResult predictedResult = matchResultFormatter.parse(predictedResultText, locale);
 			
 			if (fixture != null) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Got a prediction to save: fixture ID = {}, predictedResult = {}", fixture.getId(), predictedResult);
+				if (!fixture.getMatchTime().isAfter(systemClock.getCurrentDateTime())) {
+					response.put("errorText", "Sorry, the match has already started");
+				} else {
+					if (logger.isDebugEnabled()) {
+						logger.debug("Got a prediction to save: fixture ID = {}, predictedResult = {}", fixture.getId(), predictedResult);
+					}
+					
+					// Update the prediction for this fixture, or create a new one.
+					predictionService.createOrUpdatePrediction(subscription, fixture, predictedResult);
 				}
-				
-				// Update the prediction for this fixture, or create a new one.
-				predictionService.createOrUpdatePrediction(subscription, fixture, predictedResult);
 			}
 	
 			response.put("predictionText", matchResultFormatter.print(predictedResult, locale));
