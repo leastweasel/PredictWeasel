@@ -119,7 +119,7 @@ public class StandingsServiceImpl implements StandingsService {
 			}
 		}
 		
-		if (!addedHighlightStanding) {
+		if (!addedHighlightStanding && highlightStanding != null) {
 			desiredStandings.add(new PersonalisedPlayerStanding(highlightStanding, true));
 		}
 		
