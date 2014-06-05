@@ -24,4 +24,13 @@ public interface StandingsService {
 	 * @return the player standings for the league and prize
 	 */
 	List<PersonalisedPlayerStanding> getAbbreviatedPrizeStandings(UserSubscription subscription, int prizeNumber);
+	
+	/**
+	 * Get the full standings for a league and prize.
+	 * 
+	 * @param defines the player and the league being played
+	 * @param prizeNumber the index of the prize these standings are for(1, 2, 3)
+	 * @return the player standings for the league and prize
+	 */
+	List<PersonalisedPlayerStanding> getFullPrizeStandings(UserSubscription subscription, int prizeNumber);
 }

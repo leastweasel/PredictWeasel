@@ -56,7 +56,7 @@ public class StandingsServiceImpl implements StandingsService {
 	 * {@inheritDoc}
 	 */
 	public List<PersonalisedPlayerStanding> getAbbreviatedPrizeStandings(UserSubscription subscription, int prizeNumber) {
-		return  getMostRelevant(getPrizeStandings(subscription, prizeNumber),
+		return  getMostRelevant(getCachedStandings(subscription, prizeNumber),
 								subscription.getUser(),
 								maximumNumberOfStandingsToDisplay);
 	}
@@ -64,7 +64,12 @@ public class StandingsServiceImpl implements StandingsService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<PlayerStanding> getPrizeStandings(UserSubscription subscription, int prizeNumber) {
+	public List<PersonalisedPlayerStanding> getFullPrizeStandings(UserSubscription subscription, int prizeNumber) {
+		return getMostRelevant(getCachedStandings(subscription, prizeNumber), 
+							   subscription.getUser(), Integer.MAX_VALUE);
+	}
+	
+	private List<PlayerStanding> getCachedStandings(UserSubscription subscription, int prizeNumber) {
 		String prizeCode = subscription.getLeague().getPrizeCode(prizeNumber);
 		
 		if (prizeCode != null) {
@@ -73,6 +78,7 @@ public class StandingsServiceImpl implements StandingsService {
 		
 		return new ArrayList<>();
 	}
+	
 	/**
 	 * Get the most relevant standings from the given list. For this to work the standings must
 	 * have been sorted, by position, in the desired order.

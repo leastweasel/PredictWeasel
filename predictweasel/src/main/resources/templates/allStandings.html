@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head>
+<title>League Home</title>
+<script th:src="@{/js/league.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<div class="col-lg-8">
+				<div th:include="abbreviatedStandings :: player-standings"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
