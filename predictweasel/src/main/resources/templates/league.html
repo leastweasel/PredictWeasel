@@ -13,10 +13,7 @@
 			<div th:include="upcomingFixtures :: upcoming-fixtures"></div>
 			<div th:include="resultsTest :: recent-results"></div>
 			<div class="col-lg-4">
-				<div th:include="abbreviatedStandings :: player-standings"></div>
-				<div>
-					<a th:href="@{/league/standings}">View all standings</a>
-				</div>
+				<div th:include="abbreviatedStandings :: player-standings (true)"></div>
 			</div>
 			<div class="col-lg-8">
 				<div th:include="blogTest :: league-blog"></div>

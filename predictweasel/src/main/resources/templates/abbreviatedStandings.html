@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<div th:fragment="player-standings">
+<div th:fragment="player-standings (isAbbreviated)">
 
 	<h3 class="title-divider">
 		League <span class="de-em">Standings</span>
@@ -14,22 +14,30 @@
 		</ul>
 		<div id="standingsTabsContent" class="tab-content">
 			<div th:each="prize : ${prizes}" class="tab-pane fade" th:classappend="${prizeStat.first}? 'active in'" th:id="'tab' + ${prizeStat.count}">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Pos.</th>
-							<th>Player</th>
-							<th>Points</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="standing : ${prizeStandings[__${prizeStat.index}__]}" th:class="${standing.highlighted}? active">
-							<td th:class="${standing.highlighted}? h5" th:text="${standing.position}"></td>
-							<td th:class="${standing.highlighted}? h5" th:text="${standing.player.name}"></td>
-							<td th:class="${standing.highlighted}? h5" th:text="${standing.pointsScored}"></td>
-						</tr>
-					</tbody>
-				</table>
+				<div th:if="${#lists.isEmpty(prizeStandings[__${prizeStat.index}__])}">
+					<p>There are no standings to view</p>
+				</div>
+				<div th:unless="${#lists.isEmpty(prizeStandings[__${prizeStat.index}__])}" class="table">
+					<table th:unless="${#lists.isEmpty(prizeStandings[__${prizeStat.index}__])}" class="table">
+						<thead>
+							<tr>
+								<th>Pos.</th>
+								<th>Player</th>
+								<th>Points</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="standing : ${prizeStandings[__${prizeStat.index}__]}" th:class="${standing.highlighted}? active">
+								<td th:class="${standing.highlighted}? h5" th:text="${standing.position}"></td>
+								<td th:class="${standing.highlighted}? h5" th:text="${standing.player.name}"></td>
+								<td th:class="${standing.highlighted}? h5" th:text="${standing.pointsScored}"></td>
+							</tr>
+						</tbody>
+					</table>
+					<div th:if="${isAbbreviated}">
+						<a th:href="@{/league/standings}">View all standings</a>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
