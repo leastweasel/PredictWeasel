@@ -19,8 +19,8 @@ import org.leastweasel.predict.service.support.ElapsedTimeClock;
 import org.leastweasel.predict.service.support.JasyptPasswordResetTokenGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 /**
  * Spring Bean configuration for any core components,
@@ -33,13 +33,14 @@ public class CoreConfig {
 	 * to ensure the password is entered correctly.
 	 * <p>
 	 * I might have to change the type of encoder used as this takes 5 seconds to encrypt
-	 * a password! 
+	 * a password!
+	 * <p>Yes: have switched to an encoder using SHA-256 hashing.
 	 * 
-	 * @return a BCrypt password encoder bean
+	 * @return a password encoder bean
 	 */
 	@Bean
     public PasswordEncoder configurePasswordEncoder() {
-        return new BCryptPasswordEncoder(16);
+		return new StandardPasswordEncoder("bibblebobble");
     }
 	
 	/**

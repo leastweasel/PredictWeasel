@@ -1,14 +1,14 @@
 insert into user(id,username,enabled,name,password,password_reminder) values
-(1,'andrew@braycastle.co.uk',1,'Andrew','$2a$16$gwzforw1NtmosQ2etXMDUem0hanbAbg5NbcEsjoxSjpC2g0OPMqy2','My reminder'), -- password is andrewxx
-(2,'andrew@leastweasel.org',1,'leastweasel','$2a$16$wTypytdnx85ToKp8kAAh1evnGoGZPp0THnr3FwQYQg4zFDZHMRn/W','Leastweasel''s reminder'), -- password is andrewyy
-(3,'mjwalsh1971@hotmail.com',1,'Mick','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
-(4,'harry@notmail.com',1,'Harry','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
-(5,'jimmy@notmail.com',1,'Jimmy','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
-(6,'willy@notmail.com',1,'Willy','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
-(7,'freddy@notmail.com',1,'Freddy','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
-(8,'perry@notmail.com',1,'Perry','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
-(9,'barry@notmail.com',1,'Barry','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null), -- password is andrewzz
-(10,'kelly@notmail.com',1,'Kelly','$2a$16$VsnlSUKcE7w1bC709WDvPegod9yfqob61TIjSHsbYyCo02k2zpXpe', null); -- password is andrewzz
+(1,'andrew@braycastle.co.uk',1,'Andrew','1b07c720496b2c5eb2ca6078b621fce7d4d71a91091ce9c8d24b99ed91b7eb48a6d914a588067477','My reminder'), -- password is andrewxx
+(2,'andrew@leastweasel.org',1,'leastweasel','79ffb6131bb61b55184986d157b2f4704e414832761ef2c341377f9261d03e6a3771c87b7a76a5df','Leastweasel''s reminder'), -- password is andrewyy
+(3,'mjwalsh1971@hotmail.com',1,'Mick','a744fcb3307bd4c607afc741688d9515ad491a17761f7947038038eb92ec7514ff0caab833098c0f', null), -- password is andrewzz
+(4,'harry@notmail.com',1,'Harry','a744fcb3307bd4c607afc741688d9515ad491a17761f7947038038eb92ec7514ff0caab833098c0f', null), -- password is andrewzz
+(5,'jimmy@notmail.com',1,'Jimmy','a744fcb3307bd4c607afc741688d9515ad491a17761f7947038038eb92ec7514ff0caab833098c0f', null), -- password is andrewzz
+(6,'willy@notmail.com',1,'Willy','a744fcb3307bd4c607afc741688d9515ad491a17761f7947038038eb92ec7514ff0caab833098c0f', null), -- password is andrewzz
+(7,'freddy@notmail.com',1,'Freddy','a744fcb3307bd4c607afc741688d9515ad491a17761f7947038038eb92ec7514ff0caab833098c0f', null), -- password is andrewzz
+(8,'perry@notmail.com',1,'Perry','a744fcb3307bd4c607afc741688d9515ad491a17761f7947038038eb92ec7514ff0caab833098c0f', null), -- password is andrewzz
+(9,'barry@notmail.com',1,'Barry','a744fcb3307bd4c607afc741688d9515ad491a17761f7947038038eb92ec7514ff0caab833098c0f', null), -- password is andrewzz
+(10,'kelly@notmail.com',1,'Kelly','a744fcb3307bd4c607afc741688d9515ad491a17761f7947038038eb92ec7514ff0caab833098c0f', null); -- password is andrewzz
 
 insert into user_role(user_id, role_id) values
 (1, 2);
