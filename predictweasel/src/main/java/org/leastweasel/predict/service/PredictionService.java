@@ -32,9 +32,22 @@ public interface PredictionService {
 	 * fixture then the fixture will be wrapped in an empty prediction. 
 	 * 
 	 * @param subscription defines the {@link User} and the {@link League} they're playing
-	 * @return the list of predictions for the next batch of fixtures to be played
+	 * @param predictions an empty list of predictions, to which the next batch of fixtures to be played
+	 *        can be added
+	 * @return the total number of fixtures to be played, not just in this batch
 	 */
-	List<Prediction> getPredictionsForUpcomingFixtures(UserSubscription subscription);
+	int getPredictionsForUpcomingFixtures(UserSubscription subscription, List<Prediction> predictions);
+	
+	/**
+	 * Get the predictions that have been made (if any) by the given user for all fixtures that have yet
+	 * to be played. If the player hasn't made a prediction for a particular fixture then the fixture
+	 * will be wrapped in an empty prediction. 
+	 * 
+	 * @param subscription defines the {@link User} and the {@link League} they're playing
+	 * @param predictions an empty list of predictions, to which the remaining fixtures to be played
+	 *        can be added
+	 */
+	void getPredictionsForFutureFixtures(UserSubscription subscription, List<Prediction> predictions);
 	
 	/**
 	 * Either create, or update, a prediction by a user for the given fixture. If no

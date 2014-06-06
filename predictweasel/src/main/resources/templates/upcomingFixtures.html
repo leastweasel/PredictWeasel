@@ -1,46 +1,18 @@
 <!DOCTYPE html>
 
-<div th:fragment="upcoming-fixtures" th:class="col-xs-12">
+<div th:fragment="upcoming-fixtures (isAbbreviated)" th:class="col-xs-12">
 
-	<h3 class="title-divider">
-		Upcoming <span class="de-em">Fixtures</span>
-	</h3>
-	<div th:if="${#lists.isEmpty(upcomingFixtures)}" th:class="${'bs-callout bs-callout-info'}">
+	<div th:if="${#lists.isEmpty(predictionFixtures)}" th:class="${'bs-callout bs-callout-info'}">
 		<h4>No fixtures</h4>
 		<p>There are no fixtures in the near future.</p>
 	</div>
-	<div id="upcoming-fixtures" class="table-responsive" th:unless="${#lists.isEmpty(upcomingFixtures)}">
-		<form action="" method="post" role="form">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>Date</th>
-						<th></th>
-						<th>Prediction</th>
-						<th></th>
-						<th></th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="prediction : ${upcomingFixtures}">
-						<td th:text="${#calendars.format(prediction.fixture.matchTime,'dd MMM HH:mm')}"></td>
-						<td th:text="${prediction.fixture.homeTeam.name}"></td>
-						<td><div class="form-group col-xs-3 col-md-4">
-							<input type="tel" th:id="'fixture_' + ${prediction.fixture.id}" class="form-control" 
-								   th:value="${{prediction.predictedResult}}" name="prediction" 
-								   placeholder=" - " th:autofocus="${predictionStat.first}" />
-							<input type="hidden" th:id="'originalScore_' + ${prediction.fixture.id}" 
-								   th:value="${{prediction.predictedResult}}" />
-						</div>
-						<div><span class="text-danger"></span></div>
-						</td>
-						<td></td>
-						<td th:text="${prediction.fixture.awayTeam.name}"></td>
-					</tr>
-				</tbody>
-			</table>
-			<input type="hidden" th:id="_csrf" th:value="${_csrf.token}"/>
-		</form>
+	<div class="blog-roll" th:unless="${#lists.isEmpty(predictionFixtures)}">
+		<div id="upcoming-fixtures" class="table-responsive">
+			<div th:replace="predictionFixturesForm"></div>
+		</div>
+		<div class="pagination" th:if="${isAbbreviated}">
+			<a th:href="@{/league/futurePredictions}">
+			<button type="button" class="btn btn-default btn-lg btn-block">View All</button></a>
+		</div>
 	</div>
 </div>

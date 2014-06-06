@@ -17,6 +17,7 @@ import org.leastweasel.predict.domain.Prediction;
 import org.leastweasel.predict.domain.Prize;
 import org.leastweasel.predict.domain.PrizePoints;
 import org.leastweasel.predict.domain.Prizes;
+import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.domain.UserSubscription;
 import org.leastweasel.predict.repository.FixtureRepository;
 import org.leastweasel.predict.repository.LeagueRepository;
@@ -114,8 +115,43 @@ public class PredictionServiceImpl implements PredictionService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Prediction> getPredictionsForUpcomingFixtures(UserSubscription subscription) {
+	public int getPredictionsForUpcomingFixtures(UserSubscription subscription,
+												List<Prediction> predictionsToReturn) {
 		
+		int numberOfEditableFixtures = 0;
+		
+		if (subscription != null) {
+			// Get all the fixtures that haven't started yet.
+			List<Fixture> fixtures = 
+					fixtureRepository.findByCompetitionAndMatchTimeAfter(subscription.getLeague().getCompetition(),
+																		systemClock.getCurrentDateTime());
+
+			numberOfEditableFixtures = fixtures.size();
+			
+			if (logger.isDebugEnabled()) {
+				logger.debug("Got {} future fixtures", numberOfEditableFixtures);
+			}
+
+			// Trim the list down to the desired number.
+			fixtures = getMostRelevant(fixtures, minimumNumberOfFixturesToDisplay);
+			
+			if (logger.isDebugEnabled()) {
+				logger.debug("Got the {} most relevant upcoming fixtures", fixtures.size());
+			}
+
+			// Get any existing predictions for these fixtures, or create a dummy one if none exists.
+			generatePredictionsFromFixtures(subscription.getUser(), fixtures, predictionsToReturn);
+		}
+		
+		return numberOfEditableFixtures;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void getPredictionsForFutureFixtures(UserSubscription subscription,
+				  							   List<Prediction> predictionsToReturn) {
+
 		if (subscription != null) {
 			// Get all the fixtures that haven't started yet.
 			List<Fixture> fixtures = 
@@ -126,39 +162,11 @@ public class PredictionServiceImpl implements PredictionService {
 				logger.debug("Got {} future fixtures", fixtures.size());
 			}
 
-			// Trim the list down to the desired number.
-			fixtures = getMostRelevant(fixtures, minimumNumberOfFixturesToDisplay);
-			
-			if (logger.isDebugEnabled()) {
-				logger.debug("Got the {} most relevant upcoming fixtures", fixtures.size());
-			}
-
-			// Get any existing predictions for these fixtures.
-			List<Prediction> predictions = new ArrayList<>();
-
-			for (Fixture fixture : fixtures) {
-				Prediction prediction = 
-						predictionRepository.findByPredictorAndFixture(subscription.getUser(), fixture);
-
-				// If there's no real prediction, wrap the fixture in a fake one so that
-				// the user can see they've yet to enter one.
-				
-				if (prediction == null) {
-					prediction = new Prediction();
-					
-					prediction.setFixture(fixture);
-					prediction.setPredictor(subscription.getUser());
-				}
-
-				predictions.add(prediction);
-			}
-
-			return predictions;
+			// Get any existing predictions for these fixtures, or create a dummy one if none exists.
+			generatePredictionsFromFixtures(subscription.getUser(), fixtures, predictionsToReturn);
 		}
-	
-		return null;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -231,6 +239,35 @@ public class PredictionServiceImpl implements PredictionService {
 				createPrizePoints(subscription, fixture, predictedResult, prizes.getPrizeForCode(league.getPrizeTwoCode()));
 				createPrizePoints(subscription, fixture, predictedResult, prizes.getPrizeForCode(league.getPrizeThreeCode()));
 			}
+		}
+	}
+
+	/**
+	 * Generate a list of predictions for the given list of fixtures. We're also given the
+	 * user who is to make those prdictions. If there's already a prediction by that user
+	 * then we return it. Otherwise we wrap the fixture in a fake one.
+	 * 
+	 * @param user the user who is to have made the predictions
+	 * @param fixtures the fixtures we want to convert into predictions
+	 * @param predictionsToReturn the predictions are added here
+	 */
+	private	void generatePredictionsFromFixtures(User user, List<Fixture> fixtures, List<Prediction> predictionsToReturn) {
+		for (Fixture fixture : fixtures) {
+			
+			Prediction prediction = 
+					predictionRepository.findByPredictorAndFixture(user, fixture);
+
+			// If there's no real prediction, wrap the fixture in a fake one so that
+			// the user can see they've yet to enter one.
+			
+			if (prediction == null) {
+				prediction = new Prediction();
+				
+				prediction.setFixture(fixture);
+				prediction.setPredictor(user);
+			}
+
+			predictionsToReturn.add(prediction);
 		}
 	}
 	

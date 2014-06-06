@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,14 +53,6 @@ public class LeagueController {
 	 */
 	@RequestMapping(value="/league/", method = RequestMethod.GET)
 	public String navigateToPage(UserSubscription subscription) {
-		
-		if (subscription == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Can't navigate to league page as user subscription is null");
-			}
-			
-			return "redirect:/";
-		}
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug("Rendering view of league with code: {} for user ID: {}",
@@ -98,9 +91,17 @@ public class LeagueController {
 	 * @param subscription identifies the user and the league they're currently playing
 	 * @return a list of the predictions for the next batch of fixtures to be played
 	 */
-	@ModelAttribute("upcomingFixtures")
-	public List<Prediction> getUpcomingFixtures(UserSubscription subscription) {
-		return predictionService.getPredictionsForUpcomingFixtures(subscription);
+	@ModelAttribute("predictionFixtures")
+	public List<Prediction> upcomingFixtures(UserSubscription subscription,
+			 			    		 Model model) {
+		
+		List<Prediction> fixtures = new ArrayList<>();
+		
+		int numberOfFixtures = predictionService.getPredictionsForUpcomingFixtures(subscription, fixtures);
+		
+		model.addAttribute("moreFixtures", numberOfFixtures > fixtures.size()); 
+		
+		return fixtures;
 	}
 
 	/**

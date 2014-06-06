@@ -10,7 +10,10 @@
 			<h2 class="title-divider">
 				League<span class="de-em">Home</span> <small th:text="${currentLeague.name}">A Conference League</small>
 			</h2>
-			<div th:include="upcomingFixtures :: upcoming-fixtures"></div>
+			<h3 class="title-divider">
+				Upcoming <span class="de-em">Fixtures</span>
+			</h3>
+			<div th:include="upcomingFixtures :: upcoming-fixtures (true)"></div>
 			<div th:include="recentResults :: recent-results"></div>
 			<div class="col-lg-4">
 				<div th:include="abbreviatedStandings :: player-standings (true)"></div>

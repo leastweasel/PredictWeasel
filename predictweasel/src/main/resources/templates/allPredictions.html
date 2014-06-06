@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head>
+<title>Future Fixtures</title>
+<script th:src="@{/js/league.js}"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<h3 class="title-divider">
+				Future <span class="de-em">Fixtures</span>
+			</h3>
+			<div>
+				<div th:include="upcomingFixtures :: upcoming-fixtures (false)"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
