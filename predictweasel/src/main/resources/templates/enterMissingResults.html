@@ -11,7 +11,11 @@
 			<h2 class="title-divider">
 				Enter <span class="de-em">Results</span>
 			</h2>
-			<div>
+			<div th:if="${#lists.isEmpty(fixtures)}" th:class="${'bs-callout bs-callout-info'}">
+				<h4>No fixtures</h4>
+				<p>There are no fixtures with missing results.</p>
+			</div>
+			<div th:unless="${#lists.isEmpty(fixtures)}">
 				<div id="missing-results" class="table-responsive">
 					<form action="" method="post" role="form">
 						<table class="table table-striped">
@@ -47,10 +51,13 @@
 					</form>
 				</div>
 			</div>
-			<div>
+			<div class="col-xs-6">
 				<p>
 					When you've finished entering all of the results you should recalculate
 					the player points totals for the prizes in all of this competition's leagues.
+				</p>
+				<p>
+					You can still recalculate the points totals even if you don't enter any new results.
 				</p>
 			</div>
 			<div>

@@ -5,7 +5,11 @@
 	<h3 class="title-divider">
 		Upcoming <span class="de-em">Fixtures</span>
 	</h3>
-	<div id="upcoming-fixtures" class="table-responsive">
+	<div th:if="${#lists.isEmpty(upcomingFixtures)}" th:class="${'bs-callout bs-callout-info'}">
+		<h4>No fixtures</h4>
+		<p>There are no fixtures in the near future.</p>
+	</div>
+	<div id="upcoming-fixtures" class="table-responsive" th:unless="${#lists.isEmpty(upcomingFixtures)}">
 		<form action="" method="post" role="form">
 			<table class="table table-striped">
 				<thead>

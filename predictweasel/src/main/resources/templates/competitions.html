@@ -11,32 +11,48 @@
 			<h2 class="title-divider">
 				Administer<span class="de-em">Competitions</span>
 			</h2>
-			<div class="row">
-		        	<div class="col-xs-12 col-md-8">
-		        		<p>Select one of the competitions from the list below, then
-		        		   click one a link to navigate to the appropriate page and
-		        		   operate on the selected competition.
-		        		</p>
+			<div th:if="${#lists.isEmpty(competitions)}">
+				<div th:class="${'bs-callout bs-callout-info'}">
+					<h4>No competitions</h4>
+					<p>There are no competitions to manage.</p>
+					<p>Do you want to create a new one?</p>
+				</div>
+				<div class="row">
+			        	<div class="col-xs-12 col-md-8">
+			        		<ul id="competition-links">
+			        			<li><a href="#">Create a new competition</a></li>
+			        		</ul>
+			        	</div>
 				</div>
 			</div>
-			<div class="row">
-		        	<div class="col-xs-12 col-md-8">
-					<select id="competitions-list">
-					  <option th:each="competition : ${competitions}" 
-					          th:value="${competition.id}" 
-					          th:text="${competition.name}"/>
-					</select>
-					<p/>				
+			<div th:unless="${#lists.isEmpty(competitions)}">
+				<div th:class="row">
+			        	<div class="col-xs-12 col-md-8">
+			        		<p>Select one of the competitions from the list below, then
+			        		   click one a link to navigate to the appropriate page and
+			        		   operate on the selected competition.
+			        		</p>
+					</div>
 				</div>
-			</div>
-			<div class="row">
-		        	<div class="col-xs-12 col-md-8">
-		        		<ul id="competition-links">
-		        			<li class="requires-competition"><a th:href="@{/competition/missingResults}">Enter or update results for the selected competition</a></li>
-		        			<li class="requires-competition"><a href="#">Amend details of the selected competition</a></li>
-		        			<li><a href="#">Create a new competition</a></li>
-		        		</ul>
-		        	</div>
+				<div class="row">
+			        	<div class="col-xs-12 col-md-8">
+						<select id="competitions-list">
+						  <option th:each="competition : ${competitions}" 
+						          th:value="${competition.id}" 
+						          th:text="${competition.name}"/>
+						</select>
+						<p/>				
+					</div>
+				</div>
+				<div class="row">
+			        	<div class="col-xs-12 col-md-8">
+			        		<ul id="competition-links">
+			        			<li class="requires-competition"><a th:href="@{/competition/missingResults}">Enter or update results for the selected competition</a></li>
+			        			<li class="requires-competition"><a href="#">Amend details of the selected competition</a></li>
+			        			<li><a href="#">Create a new competition</a></li>
+			        		</ul>
+			        	</div>
+				</div>
 			</div>
 		</div>
 	</div>

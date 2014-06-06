@@ -6,7 +6,11 @@
 		Latest <span class="de-em">Results</span>
 	</h3>
 	<div class="table-responsive">
-		<table class="table table-striped">
+		<div th:if="${#lists.isEmpty(recentResults)}" th:class="${'bs-callout bs-callout-info'}">
+			<h4>No results</h4>
+			<p>There are no recent results.</p>
+		</div>
+		<table th:unless="${#lists.isEmpty(recentResults)}" class="table table-striped">
 			<tbody>
 				<tr>
 					<th>Date</th>

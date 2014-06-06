@@ -11,7 +11,7 @@
 				League<span class="de-em">Home</span> <small th:text="${currentLeague.name}">A Conference League</small>
 			</h2>
 			<div th:include="upcomingFixtures :: upcoming-fixtures"></div>
-			<div th:include="resultsTest :: recent-results"></div>
+			<div th:include="recentResults :: recent-results"></div>
 			<div class="col-lg-4">
 				<div th:include="abbreviatedStandings :: player-standings (true)"></div>
 			</div>
