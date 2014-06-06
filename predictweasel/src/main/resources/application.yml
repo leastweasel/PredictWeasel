@@ -40,7 +40,10 @@ spring:
         url: jdbc:mysql://localhost/pwtest
         username: pwtestuser
         password: pwtest
-                
+
+server:
+    port: 80
+                        
 ---
 
 spring:
