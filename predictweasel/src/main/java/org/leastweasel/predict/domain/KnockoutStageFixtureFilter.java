@@ -16,7 +16,6 @@ public class KnockoutStageFixtureFilter implements FixtureFilter {
 	 */
 	@Override
 	public boolean accept(Fixture fixture) {
-		// TODO Add property to Fixture so we can tell it's a knock-out fixture
-		return false;
+		return fixture.isKnockoutFixture();
 	}
 }

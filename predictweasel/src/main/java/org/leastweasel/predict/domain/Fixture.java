@@ -39,6 +39,8 @@ public class Fixture implements Serializable, Comparable<Fixture> {
 
     private DateTime matchTime;
 
+    private boolean knockoutFixture;
+    
     private MatchResult result;
 
     /**
@@ -173,6 +175,24 @@ public class Fixture implements Serializable, Comparable<Fixture> {
     }
 
     /**
+     * Is this fixture in a knock-out part of the competition.
+     * 
+     * @return true if this is a knock-out fixture
+     */
+    public boolean isKnockoutFixture() {
+		return knockoutFixture;
+	}
+
+    /**
+     * Set whether this fixture is in a knock-out part of the competition.
+     * 
+     * @param knockoutFixture true if this is a knock-out fixture
+     */
+	public void setKnockoutFixture(boolean knockoutFixture) {
+		this.knockoutFixture = knockoutFixture;
+	}
+
+	/**
      * Equality operator.
      *
      * @param other the object we're comparing against

@@ -94,6 +94,7 @@ create table fixture (
   home_score int(11) null,
   away_score int(11) null,
   match_time datetime not null,
+  knockout_fixture tinyint(1) not null,
   primary key (id),
   constraint FIXTURE_COMPETITION_ID foreign key (competition_id) references competition (id),
   constraint FIXTURE_HOME_TEAM_ID foreign key (home_team_id) references team (id),
