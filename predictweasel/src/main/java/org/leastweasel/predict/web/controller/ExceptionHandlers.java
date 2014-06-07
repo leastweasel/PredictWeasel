@@ -54,7 +54,7 @@ public class ExceptionHandlers {
 		if (subscriptions.isEmpty()) {
 			return "redirect:/";
 		} else {
-			return "redirect:/subscriptions?wobble=yes";
+			return "redirect:/";
 		}
 	}
 }
