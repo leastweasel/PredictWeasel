@@ -10,10 +10,7 @@
               <div class="col-sm-6">
                 <form th:action="@{/signup}" th:object="${signupRequest}" role="form" class="form-login form-wrapper form-medium" method="post">
 				  <h3 class="title-divider">
-				    <span class="visible-xs">Sign Up XS</span> 
-				    <span class="visible-sm">Sign Up SM</span> 
-				    <span class="visible-md">Sign Up MD</span> 
-				    <span class="visible-lg">Sign Up LG</span> 
+				    <span>Sign Up</span> 
 					<small>Fields with an asterisk (*) are mandatory</small> 
 				  </h3>
                   <div th:class="${#fields.hasErrors('user.username')}? 'form-group has-error' : 'form-group'">
