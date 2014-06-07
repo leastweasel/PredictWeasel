@@ -12,7 +12,7 @@
 			</thead>
 			<tbody>
 				<tr th:each="prediction : ${predictionFixtures}">
-					<td th:text="${#calendars.format(prediction.fixture.matchTime,'dd MMM HH:mm')}"></td>
+					<td th:text="${#calendars.format(prediction.fixture.matchTime,'E dd MMM HH:mm')}"></td>
 					<td th:text="${prediction.fixture.homeTeam.name}"></td>
 					<td><div class="form-group col-xs-8 col-sm-5 col-md-4 col-lg-3">
 						<input type="tel" th:id="'fixture_' + ${prediction.fixture.id}" class="form-control" 
