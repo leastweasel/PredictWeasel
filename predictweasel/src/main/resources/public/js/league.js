@@ -22,6 +22,7 @@ $(document).ready(function() {
 
 		// Clear any error messages.
 		messageSpan.html('');
+		messageSpan.show();
 
 		// Only submit the request if the prediction has changed.
 		
