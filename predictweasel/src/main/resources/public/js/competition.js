@@ -34,7 +34,7 @@ $(document).ready(function() {
 		var originalResultText = $(this).next().val();
 		var CSRFToken = $('#_csrf').val();
 		var inputField = $(this);
-		var errorMessageSpan = inputField.parent().next().children(); 
+		var errorMessageSpan = inputField.parent().next().next().children(); 
 
 		// Clear any error messages.
 		errorMessageSpan.html('');

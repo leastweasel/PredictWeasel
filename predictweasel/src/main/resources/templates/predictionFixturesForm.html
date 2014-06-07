@@ -1,32 +1,26 @@
 	<form action="" method="post" role="form">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Date</th>
-					<th></th>
-					<th>Prediction</th>
-					<th></th>
-					<th></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="prediction : ${predictionFixtures}">
-					<td th:text="${#calendars.format(prediction.fixture.matchTime,'E dd MMM HH:mm')}"></td>
-					<td th:text="${prediction.fixture.homeTeam.name}"></td>
-					<td><div class="form-group col-xs-8 col-sm-5 col-md-4 col-lg-3">
-						<input type="tel" th:id="'fixture_' + ${prediction.fixture.id}" class="form-control" 
-							   th:value="${{prediction.predictedResult}}" name="prediction" 
-							   placeholder=" - " th:autofocus="${predictionStat.first}" />
-						<input type="hidden" th:id="'originalScore_' + ${prediction.fixture.id}" 
-							   th:value="${{prediction.predictedResult}}" />
-					</div>
-					<div><span class="text-danger"></span></div>
-					</td>
-					<td></td>
-					<td th:text="${prediction.fixture.awayTeam.name}"></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="table">
+			<div class="row">
+			<div class="col-xs-3 col-sm-3 col-md-2"><strong>Date</strong></div>
+			<div class="col-xs-2"><strong></strong></div>
+			<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1"><strong>Prediction</strong></div>
+			<div class="col-xs-2"><strong></strong></div>
+			<div class="col-xs-2 col-sm-3"><strong></strong></div>
+			</div>
+			<div class="row" th:each="prediction : ${predictionFixtures}">
+				<div class="col-xs-3 col-sm-3 col-md-2" th:text="${#calendars.format(prediction.fixture.matchTime,'E dd MMM HH:mm')}"></div>
+				<div class="col-xs-2" th:text="${prediction.fixture.homeTeam.name}"></div>
+				<div class="form-group col-xs-3 col-sm-2 col-md-2 col-lg-1">
+					<input type="tel" th:id="'fixture_' + ${prediction.fixture.id}" class="form-control" 
+						   th:value="${{prediction.predictedResult}}" name="prediction" 
+						   th:autofocus="${predictionStat.first}" />
+					<input type="hidden" th:id="'originalScore_' + ${prediction.fixture.id}" 
+						   th:value="${{prediction.predictedResult}}" />
+				</div>
+				<div class="col-xs-2 text-right" th:text="${prediction.fixture.awayTeam.name}"></div>
+				<div class="col-xs-2 col-sm-3"><span class="text-danger"></span></div>
+			</div>
+		</div>					
+					
 		<input type="hidden" th:id="_csrf" th:value="${_csrf.token}"/>
 	</form>
