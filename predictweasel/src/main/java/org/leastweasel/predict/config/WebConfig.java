@@ -9,7 +9,12 @@ import java.util.List;
 import org.leastweasel.predict.web.controller.LeagueCodeResolvingHandlerInterceptor;
 import org.leastweasel.predict.web.controller.UserSubscriptionArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.ErrorPage;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -40,6 +45,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/resetPasswordFailed").setViewName("resetPasswordFailed");
         registry.addViewController("/subscriptions").setViewName("landing");
+        registry.addViewController("/error/404").setViewName("403");
+        registry.addViewController("/error/404").setViewName("404");
     }
 	
 	/**
@@ -64,4 +71,31 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
     		argumentResolvers.add(userSubscriptionArgumentResolver);
 	}
+
+    /**
+     * A bean that customises the servlet container (embeded Tomcat in our case).
+     *   
+     * @return a servlet container customiser
+     */
+    @Bean
+    public EmbeddedServletContainerCustomizer containerCustomizer() {
+    		return new MyServletContainerCustomizer();
+    }
+
+    /**
+     * A class that can customise our embedded Tomcat environment.
+     */
+    private static class MyServletContainerCustomizer implements EmbeddedServletContainerCustomizer {
+    		/**
+    		 * Customise Tomcat. At the moment just create a few error pages to display for specific HTTP
+    		 * status values.
+    		 * 
+    		 * @param factory how to customise Tomcat
+    		 */
+    		@Override
+    		public void customize(ConfigurableEmbeddedServletContainer factory) {
+    			factory.addErrorPages(new ErrorPage(HttpStatus.FORBIDDEN, "/error/403"));
+    			factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/error/404"));
+    		}
+    }
 }
