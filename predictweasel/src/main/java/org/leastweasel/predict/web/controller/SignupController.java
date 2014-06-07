@@ -14,14 +14,10 @@ import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.service.UserService;
 import org.leastweasel.predict.web.domain.SignupRequest;
 import org.leastweasel.predict.web.validation.RegisterRequestValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,8 +35,6 @@ public class SignupController {
 
 	private static final String FORM_VIEW_NAME = "signUp";
     private static final String SUCCESS_VIEW_NAME = "redirect:/";
-
-    private static Logger logger = LoggerFactory.getLogger(SignupController.class);
 
     @Autowired
     private RegisterRequestValidator registerRequestValidator;
@@ -88,16 +82,12 @@ public class SignupController {
 							 Locale locale,
 							 RedirectAttributes redirectAttributes) {
 		
-    	// Always validate with our own validator, too.
+		// Always validate with our own validator, too.
   		registerRequestValidator.validate(signupForm, errors);
     	
-		for (ObjectError err : errors.getFieldErrors()) {
-			logger.info("Validation field error codes: {}", StringUtils.arrayToCommaDelimitedString(err.getCodes()));
+		if (errors.hasErrors()) {
+			return FORM_VIEW_NAME;
 		}
-
-    	if (errors.hasErrors()) {
-    		return FORM_VIEW_NAME;
-    	}
 
         // Register the user.
         User registeredUser = userService.registerUser(signupForm.getUser());
@@ -114,8 +104,8 @@ public class SignupController {
         // Indicate on the screen that the registration was successful. This can only be done right
         // at the end as it's important that the redirect happens.
         String message = messageSource.getMessage("flash.user.registered", 
-        										  new Object [] { registeredUser.getUsername() }, 
-        										  locale);
+        										  	 new Object [] { registeredUser.getUsername() }, 
+        										  	 locale);
         
         FlashMessageHelper.addSuccessMessage(redirectAttributes, message);
     	
