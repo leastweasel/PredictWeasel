@@ -10,24 +10,22 @@
 			<h4>No results</h4>
 			<p>There are no recent results.</p>
 		</div>
-		<table th:unless="${#lists.isEmpty(recentResults)}" class="table table-striped">
-			<tbody>
-				<tr>
-					<th>Date</th>
-					<th></th>
-					<th>Score</th>
-					<th></th>
-					<th>Prediction</th>
-				</tr>
-				<tr th:each="prediction : ${recentResults}">
-					<td th:text="${#calendars.format(prediction.fixture.matchTime,'dd MMM HH:mm')}">Tomorrow</td>
-					<td th:text="${prediction.fixture.homeTeam.name}">Welling</td>
-					<td	th:text="${{prediction.fixture.result}}"></td>
-					<td th:text="${prediction.fixture.awayTeam.name}">Braintree</td>
-					<td	th:text="${{prediction.predictedResult}}"></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="table" th:unless="${#lists.isEmpty(recentResults)}">
+			<div class="row">
+			<div class="col-xs-3 col-sm-3 col-md-2"><strong>Date</strong></div>
+			<div class="col-xs-2"><strong></strong></div>
+			<div class="col-xs-1 text-center"><strong>Score</strong></div>
+			<div class="col-xs-2"><strong></strong></div>
+			<div class="col-xs-1 text-center"><strong>Prediction</strong></div>
+			</div>
+			<div class="row" th:each="prediction : ${recentResults}">
+				<div class="col-xs-3 col-sm-3 col-md-2" th:text="${#calendars.format(prediction.fixture.matchTime,'E dd MMM HH:mm')}"></div>
+				<div class="col-xs-2" th:text="${prediction.fixture.homeTeam.name}"></div>
+				<div class="col-xs-1 text-center" th:text="${prediction.fixture.result}"></div>
+				<div class="col-xs-2 text-right" th:text="${prediction.fixture.awayTeam.name}"></div>
+				<div class="col-xs-1 text-center" th:text="${prediction.fixture.result}"></div>
+			</div>
+		</div>					
 	</div>
 
 </div>

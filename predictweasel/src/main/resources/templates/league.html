@@ -15,11 +15,13 @@
 			</h3>
 			<div th:include="upcomingFixtures :: upcoming-fixtures (true)"></div>
 			<div th:include="recentResults :: recent-results"></div>
+			<div class="row">
 			<div class="col-lg-4">
 				<div th:include="abbreviatedStandings :: player-standings (true)"></div>
 			</div>
 			<div class="col-lg-8">
 				<div th:include="blogTest :: league-blog"></div>
+			</div>
 			</div>
 		</div>
 	</div>
