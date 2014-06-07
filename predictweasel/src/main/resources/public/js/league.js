@@ -18,10 +18,10 @@ $(document).ready(function() {
 		var originalPredictionText = $(this).next().val();
 		var CSRFToken = $('#_csrf').val();
 		var inputField = $(this);
-		var errorMessageSpan = inputField.parent().next().next().children(); 
+		var messageSpan = inputField.parent().next().next().children(); 
 
 		// Clear any error messages.
-		errorMessageSpan.html('');
+		messageSpan.html('');
 
 		// Only submit the request if the prediction has changed.
 		
@@ -38,13 +38,22 @@ $(document).ready(function() {
 	                	 	if (errorText) {
 	                	 		// As well as displaying the error message we reset the prediction
 	                	 		// text and put back the focus in the field that caused the error.
-	                	 		errorMessageSpan.html(errorText);
+	                	 		messageSpan.removeClass('text-info').addClass('text-danger');
+	                	 		messageSpan.html(errorText);
 	                	 		inputField.val(originalPredictionText);
 	                	 		inputField.focus();
 	                	 	} else {
 		                	 	// The response contains the updated prediction, which will have been formatted properly.
 		                	 	var updatedPredictionText = data['predictionText'];
-		                	 	
+		                	 	var infoText = data['infoText'];
+
+		                	 	// Display an information message, if there is one.
+		                	 	if (infoText) {
+		                	 		messageSpan.removeClass('text-danger').addClass('text-info');
+		                	 		messageSpan.html(infoText);
+		                	 		messageSpan.fadeOut(1000);
+		                	 	}
+
 		         			// Update the "original value" field so that we don't keep triggering events, and
 		                	 	// the prediction input field so that we get proper formatting of the value.
 		         			inputField.val(updatedPredictionText); 

@@ -85,6 +85,7 @@ public class SavePredictionController {
 			}
 	
 			response.put("predictionText", matchResultFormatter.print(predictedResult, locale));
+			response.put("infoText", "Saved");
 			
 		} catch(Exception e) {
 			response.put("errorText", "Invalid prediction format: " + predictedResultText);
