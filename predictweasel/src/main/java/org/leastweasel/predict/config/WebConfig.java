@@ -45,7 +45,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/resetPasswordFailed").setViewName("resetPasswordFailed");
         registry.addViewController("/subscriptions").setViewName("landing");
-        registry.addViewController("/error/404").setViewName("403");
+        registry.addViewController("/error/403").setViewName("403");
         registry.addViewController("/error/404").setViewName("404");
     }
 	
