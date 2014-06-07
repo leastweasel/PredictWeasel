@@ -90,15 +90,15 @@ public class SecurityServiceImpl implements SecurityService {
      */
 	@Override
 	public boolean verifyPasswordsMatch(String plainTextPassword, String encryptedPassword) {
-    	if (plainTextPassword == null || encryptedPassword == null) {
-    		return false;
-    	}
-    	
-    	if (passwordEncoder == null) {
-    		return plainTextPassword.equals(encryptedPassword);
-    	} else {
-    		return passwordEncoder.matches(encryptedPassword, plainTextPassword);
-    	}
+		if (plainTextPassword == null || encryptedPassword == null) {
+			return false;
+		}
+
+		if (passwordEncoder == null) {
+			return plainTextPassword.equals(encryptedPassword);
+		} else {
+			return passwordEncoder.matches(plainTextPassword, encryptedPassword);
+		}
 	}
     
     /**
