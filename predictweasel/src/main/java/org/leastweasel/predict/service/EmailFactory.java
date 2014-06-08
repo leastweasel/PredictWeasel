@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import org.leastweasel.predict.domain.EmailDetails;
 import org.leastweasel.predict.domain.PasswordReset;
+import org.leastweasel.predict.domain.User;
 
 /**
  * An interface for creating system emails.
@@ -21,4 +22,13 @@ public interface EmailFactory {
 	 * @return details of the email to send
 	 */
 	EmailDetails createPasswordReminderEmail(PasswordReset passwordReset, Locale locale);
+	
+	/**
+	 * Create the email sent as a result of a user signing up to PredictWeasel.
+	 * 
+	 * @param user identifies who it is that has just signed up
+     * @param locale the locale to use for any internationalisation
+	 * @return details of the email to send
+	 */
+	EmailDetails createSignUpConfirmationEmail(User user, Locale locale);
 }

@@ -9,6 +9,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.leastweasel.predict.domain.EmailDetails;
 import org.leastweasel.predict.domain.PasswordReset;
+import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.service.EmailFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,11 +75,51 @@ public class HandCraftedEmailFactory implements EmailFactory {
 			// Won't happen.
 		}
 		
-		str.append("\n\n");
-
-		str.append("Thank you for playing PredictWeasel.\n");
+		str.append("\n\nThank you for playing PredictWeasel.\n");
 		
         String emailSubject = messageSource.getMessage("password.reminder.subject", null, locale);
+
+		EmailDetails emailDetails = new EmailDetails();
+		emailDetails.setMessageText(str.toString());
+        emailDetails.setSubject(emailSubject);
+        
+		return emailDetails;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public EmailDetails createSignUpConfirmationEmail(User user, Locale locale) {
+		StringBuilder str = new StringBuilder();
+		
+		str.append("Hello ");
+		str.append(user.getName());
+		str.append(",\n\n");
+	
+		str.append("You have received this email because you have registered with PredictWeasel.\n\n");
+		str.append("You can now join leagues and start making predictions!\n\n");
+
+		str.append("Sign in to the site at ");
+		str.append(webApplicationProtocol);
+		str.append("://");
+		str.append(webApplicationHostname);
+		str.append("/login");
+
+		str.append("\n\nFor future reference, your login details are:\n\n");
+
+		str.append("Login ID: ");
+		str.append(user.getUsername());
+		str.append("\nPassword reminder: ");
+		
+		if (StringUtils.isNotBlank(user.getPasswordReminder())) {
+			str.append(user.getPasswordReminder());
+		}
+
+		str.append("\n\n");
+		str.append("I hope you enjoy using PredictWeasel.\n");
+
+        String emailSubject = messageSource.getMessage("user.registration.subject", null, locale);
 
 		EmailDetails emailDetails = new EmailDetails();
 		emailDetails.setMessageText(str.toString());

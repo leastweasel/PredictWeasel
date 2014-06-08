@@ -4,16 +4,19 @@
  */
 package org.leastweasel.predict.web.controller;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.leastweasel.predict.domain.EmailDetails;
 import org.leastweasel.predict.domain.User;
+import org.leastweasel.predict.service.EmailFactory;
+import org.leastweasel.predict.service.EmailService;
 import org.leastweasel.predict.service.UserService;
 import org.leastweasel.predict.web.domain.SignupRequest;
 import org.leastweasel.predict.web.validation.RegisterRequestValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -43,8 +46,16 @@ public class SignupController {
     private UserService userService;
     
     @Autowired
-    private MessageSource messageSource;
+    private EmailService emailService;
     
+    @Autowired
+    private EmailFactory emailFactory;
+    
+    @Autowired
+    private MessageSource messageSource;
+
+	private static final Logger logger = LoggerFactory.getLogger(SignupController.class);
+	
     /**
      * Create the object that contains the form data.
      * 
@@ -92,15 +103,16 @@ public class SignupController {
         // Register the user.
         User registeredUser = userService.registerUser(signupForm.getUser());
         
-        // Notify the newly registered user via email.
-        Map<String, Object> model = new HashMap<>();
-        model.put("user", registeredUser);
+        EmailDetails emailDetails = emailFactory.createSignUpConfirmationEmail(registeredUser, locale);
 
-        /* TODO: Send the sign up confirmation email
-        mailService.sendFromTemplate(REGISTRATION_CONFIRMATION_TEMPLATE, registeredUser.getEmailAddress(),
-                                     messageSource.getMessage(REGISTRATION_CONFIRMATION_SUBJECT, null, locale),
-                                     model); */
-
+        if (logger.isDebugEnabled()) {
+        	logger.debug("Signup confirmation email: {}", emailDetails.getSubject());
+        	logger.debug("Signup confirmation email: {}", emailDetails.getMessageText());
+		}
+	        
+	    // Send the sign up confirmation email.
+	    emailService.send(emailDetails, registeredUser.getEmailAddress());
+	        
         // Indicate on the screen that the registration was successful. This can only be done right
         // at the end as it's important that the redirect happens.
         String message = messageSource.getMessage("flash.user.registered", 
