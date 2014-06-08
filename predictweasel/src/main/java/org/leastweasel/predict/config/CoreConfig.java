@@ -14,11 +14,18 @@ import org.leastweasel.predict.domain.Prizes;
 import org.leastweasel.predict.domain.Scorer;
 import org.leastweasel.predict.domain.StandingsCache;
 import org.leastweasel.predict.service.Clock;
+import org.leastweasel.predict.service.EmailFactory;
 import org.leastweasel.predict.service.PasswordResetTokenGenerator;
 import org.leastweasel.predict.service.support.ElapsedTimeClock;
+import org.leastweasel.predict.service.support.HandCraftedEmailFactory;
 import org.leastweasel.predict.service.support.JasyptPasswordResetTokenGenerator;
+import org.leastweasel.predict.service.support.RealTimeClock;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
@@ -27,6 +34,15 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
  */
 @Configuration
 public class CoreConfig {
+    @Value("${email.host}")
+    private String mailHost;
+
+    @Value("${email.port}")
+    private Integer mailPort;
+
+	@Value("${predictWeasel.elapsedTimeClockStartTime}")
+	private String startingTime;
+
 	/**
 	 * Create a bean for encoding passwords. This is used by both the sign up process (to
 	 * encrypt the password chosen by the user), and Spring Security during authentication
@@ -65,9 +81,22 @@ public class CoreConfig {
 	 * 
 	 * @return the current date and time
 	 */
-	@Bean
+	@Bean @Profile({"dev", "test"})
 	public Clock systemClock() {
-		return new ElapsedTimeClock("2014-06-02T12:00:00+01:00");
+		
+		return new ElapsedTimeClock(startingTime);
+	}
+	
+	/**
+	 * Create a bean that will allow us to query the actual current date and time,
+	 * for use in the live environment.
+	 * 
+	 * @return the current date and time
+	 */
+	@Bean @Profile("live")
+	public Clock liveSystemClock() {
+		
+		return new RealTimeClock();
 	}
 	
 	/**
@@ -106,4 +135,19 @@ public class CoreConfig {
 	public StandingsCache standingsCache() {
 		return new StandingsCache();
 	}
+	
+    @Bean
+    public JavaMailSender javaMailService() {
+        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+
+        javaMailSender.setHost(mailHost);
+        javaMailSender.setPort(mailPort);
+
+        return javaMailSender;
+    }
+    
+    @Bean
+    public EmailFactory emailFactory() {
+    		return new HandCraftedEmailFactory();
+    }
 }
