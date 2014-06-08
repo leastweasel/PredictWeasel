@@ -47,6 +47,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/subscriptions").setViewName("landing");
         registry.addViewController("/error/403").setViewName("403");
         registry.addViewController("/error/404").setViewName("404");
+        registry.addViewController("/error/500").setViewName("500");
     }
 	
 	/**
@@ -90,12 +91,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     		 * Customise Tomcat. At the moment just create a few error pages to display for specific HTTP
     		 * status values.
     		 * 
-    		 * @param factory how to customise Tomcat
+    		 * @param factory for customising Tomcat
     		 */
     		@Override
     		public void customize(ConfigurableEmbeddedServletContainer factory) {
-    			factory.addErrorPages(new ErrorPage(HttpStatus.FORBIDDEN, "/error/403"));
-    			factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/error/404"));
+    			factory.addErrorPages(new ErrorPage(HttpStatus.FORBIDDEN, "/error/403"),
+    								  new ErrorPage(HttpStatus.NOT_FOUND, "/error/404"),
+    								  new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/error/500"));
+
+    			factory.addErrorPages(new ErrorPage(Exception.class, "/error/500"));
     		}
     }
 }
