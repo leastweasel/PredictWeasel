@@ -49,6 +49,7 @@
 	
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js}"></script>
     <script th:src="@{/js/predictweasel.js}"></script>
 </head>
 <body class="page page-login">
@@ -96,14 +97,21 @@
 						<li id="home-menu" class="home-link">
 						<a href="/"><i class="fa fa-home"></i><span class="hidden">Home</span></a>
 						</li>
+						<!--
 						<li sec:authorize="!hasRole('ROLE_ANONYMOUS')" class="dropdown">
 						<a href="play.htm" class="dropdown-toggle menu-item" data-toggle="dropdown" data-hover="dropdown">Play +</a> 
 						</li>
-						<li sec:authorize="hasRole('ROLE_COMP_ADMIN')" id="competition-menu" class="dropdown">
-						<a th:href="@{/competitions}" class="menu-item" data-hover="dropdown">Competition</a> 
+						-->
+						<li sec:authorize="hasRole('ROLE_COMP_ADMIN')" id="competition-menu">
+						<a th:href="@{/competitions}" class="menu-item">Competition</a> 
 						</li>
-						<li class="dropdown">
-						<a href="help.htm" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Help +</a> 
+						<li id="help-menu" class="dropdown">
+							<a th:href="@{/help/start}" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Help +</a>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="about-drop">
+	                      		<li class="active" role="presentation"><a role="menuitem" th:href="@{/help/start}" tabindex="-1" class="menu-item">Getting Started</a></li>
+	                      		<li role="presentation"><a role="menuitem" th:href="@{/help/playing}" tabindex="-1" class="menu-item">Playing the game</a></li>
+	                      		<li role="presentation"><a role="menuitem" th:href="@{/help/scoring}" tabindex="-1" class="menu-item">Scoring Predictions</a></li>
+							</ul> 
 						</li>
 					</ul>		
 					</div>

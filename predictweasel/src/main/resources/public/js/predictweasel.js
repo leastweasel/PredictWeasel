@@ -8,6 +8,12 @@ $(document).ready(function() {
 	if (activeMenu) {
 		selectNavMenu(activeMenu);
 	}
+	
+	var helpMenu = $('meta[name=help-menu]').attr("content");
+	
+	if (helpMenu) {
+		selectSectionMenu(helpMenu);
+	}
 });
 
 /*
@@ -17,5 +23,15 @@ $(document).ready(function() {
  */
 function selectNavMenu(menuSelector) {
 	$('.navbar-nav li').removeClass('active');
+	$(menuSelector).addClass('active');
+}
+
+/*
+ * Select (by giving it an extra "active" class) the menu item identified
+ * by the given jQuery selector.
+ * Also deselects all other list items in the nav menu.
+ */
+function selectSectionMenu(menuSelector) {
+	$('.nav-list li').removeClass('active');
 	$(menuSelector).addClass('active');
 }

@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/", "/login", "/signup", "/forgottenPassword", "/resetPassword", "/error/*").permitAll()
+			.antMatchers("/", "/login", "/signup", "/forgottenPassword", "/resetPassword", "/error/*", "/help/*").permitAll()
 			.antMatchers("/competitions", "/competition/*").hasAnyRole("COMP_ADMIN")
 			.anyRequest().fullyAuthenticated()
 			.and()

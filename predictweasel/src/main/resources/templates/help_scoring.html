@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html layout:decorator="helpLayout">
+<head>
+	<meta name="help-menu" content="#help-scoring"/>
+</head>
+<body>
+	<div layout:fragment="help-content">
+		<!--main content-->
+		<div class="col-md-9">
+			<h2 class="title-divider">
+				<span>Scoring <span class="de-em">Predictions</span></span> <small>How many points are your predictions worth?</small>
+			</h2>
+			<!-- Scoring -->
+			<p>It's not possible to give a definitive guide on how many points a particular
+				prediction will score as the scoring method can potentially vary from league
+				to league. The following is a description of the default scoring method,
+				<em>The Livermore Scoring Model</em>, that has been used in all past versions
+				of PredictWeasel and is, in fact, the only one available at the moment.</p>
+			<h4>The Livermore Scoring Model</h4>
+			<p>For each fixture, the first named team is the 'home' team,
+   				the other team is the 'away' team.</p>
+			<ul>
+			    <li>Correctly guessing the result; home win, away win or draw, scores <strong>7</strong> points</li>
+			    <li>You gain extra points for correctly guessing how many goals either side scores, <strong>1</strong> point per goal</li>
+			    <li>You also gain points for correctly guessing the difference in the scores of the two teams. Again, score <strong>1</strong> point per goal</li>
+			    <li>However, you lose points for incorrectly guessing a team's score; <strong>1</strong> point for each goal by which you are wrong.</li>
+			</ul>
+			<p>As an example, suppose that a friendly, Arsenal v Lincoln City, ends
+				in an improbable 1-3 win for the mighty Imps.</p>
+			<p>Mick played the percentages and went for a comfortable 2-0 win for the
+				former champions. Apart from the embarrassment he also had to suffer scoring -4 point for
+				his prediction: 0 points for getting the result wrong, -1 for Arsenal's goals,
+				and -3 for Lincoln's goals.</p>
+			<p>Being a Lincoln fan, Andrew ignored common sense and went for a 1-2 win. He
+				scored 7 for the result and 1 for Arsenal's goal but lost a point for being
+				one out with Lincoln's goals. Total score, 7 points.</p>
+			<h4>Extra time and penalties</h4>
+			<p>If there were a Frequently Asked Questions page on this site it would have one
+				question on it and that would ask how we score matches that go into extra time.</p>
+			<p>The answer is that it's the score at the end of normal play that counts. So, if
+				there's extra time, it's the score at the end of extra time that counts. If not,
+				it's the score at the end of 90 minutes. The score of a penalty shoot-out is
+				never used.</p>
+		</div>
+	</div>
+</body>
+</html>

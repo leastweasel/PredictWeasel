@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head>
+	<title>Help Layout</title>
+	<meta name="active-menu" content="#help-menu"/>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container" id="about">
+			<div class="row">
+				<!-- sidebar -->
+				<div class="col-md-3 sidebar">
+					<div class="section-menu">
+						<ul class="nav nav-list">
+							<li class="nav-header">Help Section</li>
+							<li class="active" id="help-start"><a th:href="@{/help/start}" class="first">
+									Getting Started <small>Your first steps</small> <i
+									class="fa fa-angle-right"></i>
+							</a></li>
+							<li id="help-playing"><a th:href="@{/help/playing}"> Playing the Game <small>How
+										to play PredictWeasel</small> <i class="fa fa-angle-right"></i>
+							</a></li>
+							<li id="help-scoring"><a th:href="@{/help/scoring}"> Scoring Predictions <small>How many points?</small> <i class="fa fa-angle-right"></i>
+							</a></li>
+						</ul>
+					</div>
+				</div>
+			   	<div layout:fragment="help-content"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

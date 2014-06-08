@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html layout:decorator="helpLayout">
+<head>
+	<meta name="help-menu" content="#help-playing"/>
+</head>
+<body>
+	<div layout:fragment="help-content">
+		<!--main content-->
+		<div class="col-md-9">
+			<h2 class="title-divider">
+				<span>Scoring <span class="de-em">Playing PredictWeasel</span></span> <small>Playing the game</small>
+			</h2>
+			<!-- Playing -->
+			<p>The aim of the game is to score as many points as you can by predicting the outcome of various
+				matches. The more accurate your prediction, the more points it will score. How you define accurate
+				is, of course, rather subjective and can vary from league to league, but there is a 
+				<a th:href="@{/help/scoring}">default formula</a>.</p>
+			<h4>Campetitions</h4>
+			<p>In PredictWeasel you're predicting the results of matches that form part of a real-world
+				competition. The FIFA World Cup, for example. An administrator will set up a competition
+				and enter its fixtures into the system. It's now possible to create leagues based on
+				that competition.</p>
+			<h4>Leagues</h4>
+			<p>A league exists only within PredictWeasel. Any player can create a league by giving it a name,
+			selecting the competition it is to be based on, and offering one, two or three prizes (see below).
+			Players subscribe to a league, normally as a result of receiving an invitation from the player
+			who created the league (who is also allowed to play in it). Players will soon be
+			able to play in more than one league simultaneously but only one subscription is possible
+			at the moment.</p>
+			<h4>Prizes</h4>
+			<p>Players in a league compete to score more points than each other in up
+				to three prizes. Each prize has its own way of calculating how many points your
+				predictions are worth, or even whether a fixture should be included. There are
+				currently three prize categories in PredictWeasel:</p>
+				<dl class="dl-horizontal">
+					<dt>Overall</dt><dd>Adds up the points scored by all fixtures in the competition</dd>
+					<dt>Knock-out</dt><dd>Adds up the points scored by all knock-out fixtures 
+					in the competition. This prize is normally included so that players who've had a
+					shocker in the group stages still have something to play for.</dd>
+					<dt>Spot-on</dt><dd>You score one point for each prediction where you get the score exactly right.</dd>
+				</dl>
+			<p>You can always see how you're doing in your league by checking the abbreviated standings
+			   shown in the league's home page, or the full standings, which are linked to from the
+			   abbreviated ones.</p> 
+			<h4>Entering predictions</h4>
+			<p>You can enter predictions in two places: from the league's home page, which shows the
+			next few fixtures to be played, or the full list of fixtures. It's the same procedure in
+			both places. There's an input field for each fixture. Type in your prediction, which should
+			be in the form of a number, a space or a dash. then another number.</p>
+			<p>Your prediction will be submitted as soon as you tab out of (or otherwise leave) the
+			input field. If you get the format wrong you'll get an error message, and the prediction will revert
+			to your previously saved version, or blank if this is a new prediction. If it's OK you'll be
+			told it has been saved.</p>
+		</div>
+	</div>
+</body>
+</html>
