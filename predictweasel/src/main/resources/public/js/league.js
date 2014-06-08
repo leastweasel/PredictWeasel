@@ -62,7 +62,7 @@ $(document).ready(function() {
 	                	 	}
 
 	                 }).fail(function(qXHR, textStatus, errorThrown) {
-	                	 				alert("Fail! status='" + textStatus + "', error='" + errorThrown + "'");
+	                	 				alert("Fail! An error occurred trying to save the prediction");
 	                 			});
 		}
 	});
