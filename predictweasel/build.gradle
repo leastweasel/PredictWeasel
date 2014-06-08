@@ -29,11 +29,13 @@ configure(rootProject) {
 		compile "org.springframework.boot:spring-boot-starter-data-jpa"
 		compile "org.springframework.boot:spring-boot-starter-security"
 		compile "org.springframework.boot:spring-boot-starter-thymeleaf"
+		compile "org.springframework:spring-context-support"
 		compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity3:2.1.1.RELEASE"
 		compile "commons-lang:commons-lang:2.6"
 		compile "org.hibernate:hibernate-validator"
 		compile "org.jasypt:jasypt:1.9.2"
 		compile "joda-time:joda-time:2.3"
+		compile "javax.mail:mail:1.4.4"
 		
 		/* runtime "org.flywaydb:flyway-core:3.0" */
 		runtime "mysql:mysql-connector-java"
