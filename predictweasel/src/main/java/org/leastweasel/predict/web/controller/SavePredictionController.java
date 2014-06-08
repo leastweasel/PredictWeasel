@@ -4,10 +4,13 @@
  */
 package org.leastweasel.predict.web.controller;
 
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.leastweasel.predict.domain.Fixture;
 import org.leastweasel.predict.domain.MatchResult;
 import org.leastweasel.predict.domain.UserSubscription;
@@ -76,7 +79,9 @@ public class SavePredictionController {
 					response.put("errorText", "Sorry, the match has already started");
 				} else {
 					if (logger.isDebugEnabled()) {
-						logger.debug("Got a prediction to save: fixture ID = {}, predictedResult = {}", fixture.getId(), predictedResult);
+						DateTimeFormatter format = DateTimeFormat.forPattern("dd/MM HH:mm:ss Z");
+						logger.debug("Got a prediction to save: fixture ID = {}, matchTime = {}, predictedResult = {}", 
+									fixture.getId(), format.print(fixture.getMatchTime()), predictedResult);
 					}
 					
 					// Update the prediction for this fixture, or create a new one.
