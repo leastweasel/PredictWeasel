@@ -12,7 +12,10 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.leastweasel.predict.domain.EmailDetails;
 import org.leastweasel.predict.domain.PasswordReset;
+import org.leastweasel.predict.service.EmailFactory;
+import org.leastweasel.predict.service.EmailService;
 import org.leastweasel.predict.service.UserService;
 import org.leastweasel.predict.web.domain.ForgottenPasswordRequest;
 import org.leastweasel.predict.web.validation.ForgottenPasswordRequestValidator;
@@ -45,6 +48,12 @@ public class ForgottenPasswordController {
     
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
+    
+    @Autowired
+    private EmailFactory emailFactory;
     
     @Autowired
     private MessageSource messageSource;
@@ -72,7 +81,7 @@ public class ForgottenPasswordController {
     /**
      * Submit the form. The form is validated and the request handed on to the user service. If all
      * goes well a message is added which will tell the user what they should do next.
-      * 
+     * 
      * @param forgottenPasswordRequest the submitted form backing object
      * @param errors to which validation errors are added
      * @param locale the locale used in the request
@@ -85,12 +94,12 @@ public class ForgottenPasswordController {
 							 Locale locale,
 							 RedirectAttributes redirectAttributes) {
 		
-    	// Always validate with our own validator, too.
+		// Always validate with our own validator, too.
 		forgottenPasswordRequestValidator.validate(forgottenPasswordRequest, errors);
     	
-    	if (errors.hasErrors()) {
-    		return FORM_VIEW_NAME;
-    	}
+		if (errors.hasErrors()) {
+			return FORM_VIEW_NAME;
+		}
 
         PasswordReset passwordReset = 
                 userService.createPasswordReset(forgottenPasswordRequest.getUsername());
@@ -105,11 +114,16 @@ public class ForgottenPasswordController {
 	        } catch(UnsupportedEncodingException e) {
 	            throw new IllegalArgumentException("Exception URL encoding password reset token", e);
 	        }
-	
-	        /* TODO: Send the password reminder email
-	        mailService.sendFromTemplate(PASSWORD_REMINDER_TEMPLATE, forgottenPasswordRequest.getUsername(),
-	                messageSource.getMessage(PASSWORD_REMINDER_SUBJECT, null, locale),
-	                model); */
+
+	        EmailDetails emailDetails = emailFactory.createPasswordReminderEmail(passwordReset, locale);
+
+	        if (logger.isDebugEnabled()) {
+				logger.debug("Password reminder email: {}", emailDetails.getSubject());
+				logger.debug("Password reminder email: {}", emailDetails.getMessageText());
+			}
+	        
+	        // Send the password reminder email.
+	        emailService.send(emailDetails, forgottenPasswordRequest.getUsername());
         }
         
         // Indicate on the screen that the password reminder has been sent, even if it hasn't because the email address

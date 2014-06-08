@@ -24,6 +24,15 @@ spring:
         driverClassName: com.mysql.jdbc.Driver
         initialize: false
 
+email:
+    host: localhost
+    port: 25
+    defaultSender: no-reply@predictweasel.org
+
+webapp:
+    hostname: predictweasel.org
+    protocol: http
+
 # PredictWeasel properties
 
 predictWeasel:
@@ -69,4 +78,10 @@ spring:
         username: pwuser
         password: pwuser
         initialize: true
+        
+email:
+    port: 12345
+
+webapp:
+    hostname: localhost:8080
         
