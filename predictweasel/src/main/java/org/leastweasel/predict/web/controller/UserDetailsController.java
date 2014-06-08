@@ -29,7 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/userDetails")
 public class UserDetailsController {
 	private static final String FORM_VIEW_NAME = "userDetails";
-    private static final String SUCCESS_VIEW_NAME = "redirect:/";
+    private static final String SUCCESS_VIEW_NAME = "redirect:/userDetails";
     
 	@Autowired
 	private SecurityService securityService;
