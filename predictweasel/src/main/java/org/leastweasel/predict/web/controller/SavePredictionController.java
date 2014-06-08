@@ -4,7 +4,6 @@
  */
 package org.leastweasel.predict.web.controller;
 
-import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
