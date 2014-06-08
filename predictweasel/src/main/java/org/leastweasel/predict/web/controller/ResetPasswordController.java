@@ -4,12 +4,12 @@
  */
 package org.leastweasel.predict.web.controller;
 
-import java.util.Date;
 import java.util.Locale;
 
 import javax.validation.Valid;
 
 import org.leastweasel.predict.domain.PasswordReset;
+import org.leastweasel.predict.service.Clock;
 import org.leastweasel.predict.service.UserService;
 import org.leastweasel.predict.web.domain.ResetPasswordRequest;
 import org.leastweasel.predict.web.validation.ResetPasswordRequestValidator;
@@ -43,6 +43,9 @@ public class ResetPasswordController {
     
     @Autowired
     private MessageSource messageSource;
+    
+    @Autowired
+    private Clock systemClock;
     
     /**
      * Create the object that contains the form data.
@@ -142,7 +145,7 @@ public class ResetPasswordController {
             messageCode = "password.reset.inactive.user";
         } else if (reset.getUsedDate() != null) {
             messageCode = "password.reset.already.used";
-        } else if (reset.getExpiryDate().before(new Date())) {
+        } else if (reset.getExpiryDate().isBefore(systemClock.getCurrentDateTime())) {
             messageCode = "password.reset.expired";
         }
         

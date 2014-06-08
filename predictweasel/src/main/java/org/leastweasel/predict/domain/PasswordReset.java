@@ -4,9 +4,8 @@
  */
 package org.leastweasel.predict.domain;
 
-import java.util.Date;
-
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,6 +17,7 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.joda.time.DateTime;
 
 /**
  * A request to reset a user's password. As user passwords are encrypted it isn't possible to send
@@ -35,11 +35,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class PasswordReset {
     private Long id;
 
-    private Date expiryDate;
+    private DateTime expiryDate;
     
     private String token;
     
-    private Date usedDate;
+    private DateTime usedDate;
 
     private User user = new User();
     
@@ -94,8 +94,8 @@ public class PasswordReset {
      * 
      * @return the expiry date and time
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getExpiryDate() {
+    @Convert(converter = DateTimeToDateConverter.class)
+    public DateTime getExpiryDate() {
         return expiryDate;
     }
 
@@ -104,7 +104,7 @@ public class PasswordReset {
      * 
      * @param expiryDate the expiry date to set
      */
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(DateTime expiryDate) {
         this.expiryDate = expiryDate;
     }
 
@@ -134,8 +134,8 @@ public class PasswordReset {
      * 
      * @return the used date
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getUsedDate() {
+    @Convert(converter = DateTimeToDateConverter.class)
+    public DateTime getUsedDate() {
         return usedDate;
     }
 
@@ -144,7 +144,7 @@ public class PasswordReset {
      * 
      * @param usedDate the used date to set
      */
-    public void setUsedDate(Date usedDate) {
+    public void setUsedDate(DateTime usedDate) {
         this.usedDate = usedDate;
     }
 

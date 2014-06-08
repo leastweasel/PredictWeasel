@@ -4,13 +4,12 @@
  */
 package org.leastweasel.predict.service.support;
 
-import java.util.Calendar;
-import java.util.Date;
-
+import org.joda.time.DateTime;
 import org.leastweasel.predict.domain.PasswordReset;
 import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.repository.PasswordResetRepository;
 import org.leastweasel.predict.repository.UserRepository;
+import org.leastweasel.predict.service.Clock;
 import org.leastweasel.predict.service.PasswordResetTokenGenerator;
 import org.leastweasel.predict.service.SecurityService;
 import org.leastweasel.predict.service.UserService;
@@ -38,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordResetTokenGenerator passwordResetTokenGenerator;
+    
+    @Autowired
+    private Clock systemClock;
     
     @Value("${predictWeasel.passwordResetExpiryIntervalDays}")
     private int passwordResetExpiryIntervalInDays;
@@ -85,21 +87,21 @@ public class UserServiceImpl implements UserService {
         	logger.debug("Checking for user with name \"{}\"", user.getName());
         }
         	
-    	User existingUser = userRepository.findByName(user.getName());
-    	boolean found = false;
+        User existingUser = userRepository.findByName(user.getName());
+        boolean found = false;
     	
-    	if (existingUser != null) {
-    		// Ignore the existing user if we're updating the same user.
-    		if (user.getId() == null || !user.getId().equals(existingUser.getId())) {
-    			found = true;
-    		}
-    	}
+        if (existingUser != null) {
+        	// Ignore the existing user if we're updating the same user.
+        	if (user.getId() == null || !user.getId().equals(existingUser.getId())) {
+        		found = true;
+        	}
+        }
 
         if (logger.isDebugEnabled()) {
         	logger.debug("Found user with name {}: {}", user.getName(), found);
         }
     	
-    	return found;
+        return found;
     }
 
     /**
@@ -107,15 +109,15 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     public User registerUser(User user) {
-    	if (logger.isDebugEnabled()) {
-            logger.debug("Registering user with username: \"{}\"", user.getUsername());
-    	}
+    		if (logger.isDebugEnabled()) {
+    			logger.debug("Registering user with username: \"{}\"", user.getUsername());
+    		}
     	
-    	// We should only ever be registering new users.
-        if (user.getId() != null) {
+    		// We should only ever be registering new users.
+    		if (user.getId() != null) {
             throw new IllegalArgumentException("Attempting to register a user that is "
                                                + "already persistent: " + user.getId());
-        }
+    		}
 
         // Encrypt the plain text password.
         securityService.encryptPassword(user);
@@ -123,9 +125,9 @@ public class UserServiceImpl implements UserService {
         // Insert the object.
         User insertedUser = userRepository.save(user);
 
-    	if (logger.isDebugEnabled()) {
-    		logger.debug("Inserted user, ID: {}", insertedUser.getId());
-    	}
+        if (logger.isDebugEnabled()) {
+        		logger.debug("Inserted user, ID: {}", insertedUser.getId());
+        }
     	
         // Login the user.
         securityService.loginUser(insertedUser);
@@ -170,9 +172,9 @@ public class UserServiceImpl implements UserService {
             passwordReset.setUser(user);
             passwordReset.setToken(passwordResetTokenGenerator.generateToken(user));
             
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, passwordResetExpiryIntervalInDays);
-            passwordReset.setExpiryDate(cal.getTime());
+            DateTime expiryDate = systemClock.getCurrentDateTime();
+            expiryDate = expiryDate.plusDays(passwordResetExpiryIntervalInDays);
+            passwordReset.setExpiryDate(expiryDate);
             
             passwordResetRepository.save(passwordReset);
             
@@ -215,7 +217,7 @@ public class UserServiceImpl implements UserService {
         saveUser(reset.getUser());
 
         // Mark the reset so that it can't be used again.
-        reset.setUsedDate(new Date());
+        reset.setUsedDate(systemClock.getCurrentDateTime());
         passwordResetRepository.save(reset);
     }
 }

@@ -4,18 +4,20 @@
  */
 package org.leastweasel.predict.service.support;
 
-import java.util.Date;
-
 import org.jasypt.digest.StringDigester;
 import org.leastweasel.predict.domain.User;
+import org.leastweasel.predict.service.Clock;
 import org.leastweasel.predict.service.PasswordResetTokenGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Implementation of a {@link PasswordResetTokenGenerator} that uses Jasypt to create the token.
  */
 public class JasyptPasswordResetTokenGenerator implements PasswordResetTokenGenerator {
+	@Autowired
+	private Clock systemClock;
 	
     private StringDigester stringDigester;
     
@@ -49,7 +51,7 @@ public class JasyptPasswordResetTokenGenerator implements PasswordResetTokenGene
         str.append(user.getUsername());
         str.append(user.getPassword());
         str.append(user.getPasswordReminder());
-        str.append(new Date());
+        str.append(systemClock.getCurrentDateTime());
         
         return str.toString();
     }
