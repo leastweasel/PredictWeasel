@@ -23,6 +23,12 @@ spring:
         platform: mysql
         driverClassName: com.mysql.jdbc.Driver
         initialize: false
+        test-on-borrow: true
+        validation-query: do 1
+        test-while-idle: false
+        time-between-eviction-runs-millis: 30000
+        min-evictable-idle-time-millis: 30000
+        max-wait-millis: 10000
 
 email:
     host: localhost
