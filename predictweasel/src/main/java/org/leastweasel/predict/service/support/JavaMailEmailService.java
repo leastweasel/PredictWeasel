@@ -30,6 +30,9 @@ public class JavaMailEmailService implements EmailService {
 
 	private static final Logger logger = LoggerFactory.getLogger(JavaMailEmailService.class);
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void send(EmailDetails email, String recipient) {
         SimpleMailMessage message = new SimpleMailMessage();
