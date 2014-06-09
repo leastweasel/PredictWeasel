@@ -31,4 +31,14 @@ public interface EmailFactory {
 	 * @return details of the email to send
 	 */
 	EmailDetails createSignUpConfirmationEmail(User user, Locale locale);
+
+	/**
+	 * Create the email sent as a result of an unhandled exception being thrown.
+	 * 
+	 * @param handler the handler that was processing the request at the time
+	 * @param ex the exception that was thrown
+     * @param locale the locale to use for any internationalisation
+	 * @return details of the email to send
+	 */
+	EmailDetails createGenericExceptionEmail(Object handler, Exception e, Locale locale);
 }

@@ -127,4 +127,24 @@ public class HandCraftedEmailFactory implements EmailFactory {
         
 		return emailDetails;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public EmailDetails createGenericExceptionEmail(Object handler, Exception e, Locale locale) {
+		StringBuilder str = new StringBuilder();
+
+		str.append("An unexpected error was thrown by a handler.\n\n");
+		str.append(handler);
+		str.append("\n\n");
+		str.append("Details of the exception can be found in the application log.\n\n");
+
+        String emailSubject = messageSource.getMessage("unexpected.error.subject", null, locale);
+
+		EmailDetails emailDetails = new EmailDetails();
+		emailDetails.setMessageText(str.toString());
+        emailDetails.setSubject(emailSubject);
+        
+		return emailDetails;
+	}
 }

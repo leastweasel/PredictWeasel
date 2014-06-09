@@ -98,8 +98,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     			factory.addErrorPages(new ErrorPage(HttpStatus.FORBIDDEN, "/error/403"),
     								  new ErrorPage(HttpStatus.NOT_FOUND, "/error/404"),
     								  new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/error/500"));
-
-    			factory.addErrorPages(new ErrorPage(Exception.class, "/error/500"));
     		}
     }
 }
