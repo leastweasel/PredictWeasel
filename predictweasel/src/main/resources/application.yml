@@ -47,6 +47,8 @@ predictWeasel:
     maximumNumberOfStandingsToDisplay: 5
     elapsedTimeClockStartTime:
     adminEmailAddress: andrew@leastweasel.org            
+    allowAutoSubscription: true
+    
 ---
 
 spring:

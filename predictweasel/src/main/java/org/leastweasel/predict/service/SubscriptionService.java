@@ -6,6 +6,7 @@ package org.leastweasel.predict.service;
 
 import java.util.List;
 
+import org.leastweasel.predict.domain.League;
 import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.domain.UserSubscription;
 
@@ -52,4 +53,13 @@ public interface SubscriptionService {
 	 * @return the logged in user's subscription to the league, or null if the user has no subscription to that league
 	 */
 	UserSubscription getSubscriptionFromLeagueCode(String leagueCode);
+
+	/**
+	 * Create a subscription for the given user to the league.
+	 * 
+	 * @param league the league the user is to subscribe to
+	 * @param user the user who is subscribing to the league
+	 * @return the newly created subscription
+	 */
+	UserSubscription createSubscription(League league, User user);
 }

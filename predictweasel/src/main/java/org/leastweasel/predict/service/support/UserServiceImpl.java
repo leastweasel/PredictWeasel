@@ -4,14 +4,21 @@
  */
 package org.leastweasel.predict.service.support;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
+import org.leastweasel.predict.domain.League;
+import org.leastweasel.predict.domain.LeagueState;
 import org.leastweasel.predict.domain.PasswordReset;
 import org.leastweasel.predict.domain.User;
+import org.leastweasel.predict.domain.UserSubscription;
+import org.leastweasel.predict.repository.LeagueRepository;
 import org.leastweasel.predict.repository.PasswordResetRepository;
 import org.leastweasel.predict.repository.UserRepository;
 import org.leastweasel.predict.service.Clock;
 import org.leastweasel.predict.service.PasswordResetTokenGenerator;
 import org.leastweasel.predict.service.SecurityService;
+import org.leastweasel.predict.service.SubscriptionService;
 import org.leastweasel.predict.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +39,12 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private SubscriptionService subscriptionService;
+	
+	@Autowired
+	private LeagueRepository leagueRepository;
+	
     @Autowired
     private PasswordResetRepository passwordResetRepository;
 
@@ -43,6 +56,9 @@ public class UserServiceImpl implements UserService {
     
     @Value("${predictWeasel.passwordResetExpiryIntervalDays}")
     private int passwordResetExpiryIntervalInDays;
+    
+    @Value("${predictWeasel.allowAutoSubscription}")
+    private boolean allowAutoSubscription;
     
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     
@@ -129,6 +145,24 @@ public class UserServiceImpl implements UserService {
         		logger.debug("Inserted user, ID: {}", insertedUser.getId());
         }
     	
+        // If there's only one open league, and we're configured to allow auto-subscription,
+        // then automatically subscribe the user to that league.
+        
+        if (allowAutoSubscription && leagueRepository.countByState(LeagueState.OPEN) == 1) {
+        	
+        	List<League> openLeagues = leagueRepository.findByState(LeagueState.OPEN);
+        	League leagueToSubscribeTo = (openLeagues != null && !openLeagues.isEmpty() ? openLeagues.get(0) : null);
+        	
+        	if (leagueToSubscribeTo != null) {
+        		UserSubscription subscription = 
+        				subscriptionService.createSubscription(leagueToSubscribeTo, insertedUser);
+        	
+        		if (logger.isDebugEnabled()) {
+        			logger.debug("Auto subscription enabled and one open league, so auto-subscribing (new ID: {})", subscription.getId());
+        		}
+        	}
+        }
+        
         // Login the user.
         securityService.loginUser(insertedUser);
 

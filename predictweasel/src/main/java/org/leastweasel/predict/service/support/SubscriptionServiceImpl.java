@@ -117,4 +117,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		
 		return null;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public UserSubscription createSubscription(League league, User user) {
+		UserSubscription subscription = new UserSubscription();
+		
+		subscription.setLeague(league);
+		subscription.setUser(user);
+		
+		return subscriptionRepository.save(subscription);
+	}
 }
