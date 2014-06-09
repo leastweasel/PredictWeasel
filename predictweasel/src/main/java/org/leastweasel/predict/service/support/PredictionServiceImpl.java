@@ -184,14 +184,20 @@ public class PredictionServiceImpl implements PredictionService {
 							 subscription.getUser().getId(),
 							 fixture.getId());
 			}
-			
-			prediction = new Prediction();
-			
-			prediction.setFixture(fixture);
-			prediction.setPredictor(subscription.getUser());
-			prediction.setPredictedResult(predictedResult);
-			
-			prediction = predictionRepository.save(prediction);
+
+			if (predictedResult != null) {
+				prediction = new Prediction();
+				
+				prediction.setFixture(fixture);
+				prediction.setPredictor(subscription.getUser());
+				prediction.setPredictedResult(predictedResult);
+				
+				prediction = predictionRepository.save(prediction);
+			} else {
+				if (logger.isDebugEnabled()) {
+					logger.debug("New prediction is null so nothing to save.");
+				}
+			}
 		} else {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Found prediction ID {} for user ID {} and fixture ID {}",
@@ -199,8 +205,19 @@ public class PredictionServiceImpl implements PredictionService {
 							 subscription.getUser().getId(),
 							 fixture.getId());
 			}
-			
-			prediction.setPredictedResult(predictedResult);
+
+			if (predictedResult == null) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("Deleting existing prediction ID {} for user ID {} and fixture ID {}",
+								 prediction.getId(),
+								 subscription.getUser().getId(),
+								 fixture.getId());
+				}
+				
+				predictionRepository.delete(prediction);
+			} else {
+				prediction.setPredictedResult(predictedResult);
+			}
 		}
 		
 		return prediction;

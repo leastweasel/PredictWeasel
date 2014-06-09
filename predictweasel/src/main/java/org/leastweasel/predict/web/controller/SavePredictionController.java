@@ -83,7 +83,7 @@ public class SavePredictionController {
 									fixture.getId(), format.print(fixture.getMatchTime()), predictedResult);
 					}
 					
-					// Update the prediction for this fixture, or create a new one.
+					// Update the prediction for this fixture, create a new one, or even delete the original.
 					predictionService.createOrUpdatePrediction(subscription, fixture, predictedResult);
 				}
 			}
