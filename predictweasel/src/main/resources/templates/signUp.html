@@ -15,7 +15,7 @@
 				  </h3>
                   <div th:class="${#fields.hasErrors('user.username')}? 'form-group has-error' : 'form-group'">
                     <label for="user.username">Email address *</label>
-                    <input type="email" th:field="*{user.username}" class="form-control"/>
+                    <input type="email" th:field="*{user.username}" class="form-control" autofocus="autofocus"/>
                     <ul class="list-unstyled" th:if="${#fields.hasErrors('user.username')}">
   						<li th:each="err : ${#fields.errors('user.username')}" th:text="${err}" />
 					</ul>
