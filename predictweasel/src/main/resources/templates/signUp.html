@@ -14,35 +14,35 @@
 					<small>Fields with an asterisk (*) are mandatory</small> 
 				  </h3>
                   <div th:class="${#fields.hasErrors('user.username')}? 'form-group has-error' : 'form-group'">
-                    <label class="sr-only" for="user.username">Email address</label>
-                    <input type="email" th:field="*{user.username}" class="form-control" placeholder="Email address *"/>
+                    <label for="user.username">Email address *</label>
+                    <input type="email" th:field="*{user.username}" class="form-control"/>
                     <ul class="list-unstyled" th:if="${#fields.hasErrors('user.username')}">
   						<li th:each="err : ${#fields.errors('user.username')}" th:text="${err}" />
 					</ul>
                   </div>
                   <div th:class="${#fields.hasErrors('user.password')}? 'form-group has-error' : 'form-group'">
-                    <label class="sr-only" for="user.password">Password</label>
-                    <input type="password" th:field="*{user.password}" class="form-control" placeholder="Password *"/>
+                    <label for="user.password">Password *</label>
+                    <input type="password" th:field="*{user.password}" class="form-control"/>
                     <ul class="list-unstyled" th:if="${#fields.hasErrors('user.password')}">
   						<li th:each="err : ${#fields.errors('user.password')}" th:text="${err}" />
 					</ul>
                   </div>
                   <div th:class="${#fields.hasErrors('confirmPassword')}? 'form-group has-error' : 'form-group'">
-                    <label class="sr-only" for="confirmPassword">Confirm Password</label>
-                    <input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="Confirm password *"/>
+                    <label for="confirmPassword">Confirm password *</label>
+                    <input type="password" th:field="*{confirmPassword}" class="form-control"/>
                     <ul class="list-unstyled" th:if="${#fields.hasErrors('confirmPassword')}">
   						<li th:each="err : ${#fields.errors('confirmPassword')}" th:text="${err}" />
 					</ul>
                   </div>
                   <div th:class="${#fields.hasErrors('user.passwordReminder')}? 'form-group has-error' : 'form-group'">
-                    <label class="sr-only" for="user.passwordReminder">Password reminder</label>
-                    <input type="text" th:field="*{user.passwordReminder}" class="form-control" placeholder="Password reminder"/>
+                    <label for="user.passwordReminder">Password reminder</label>
+                    <input type="text" th:field="*{user.passwordReminder}" class="form-control"/>
                     <ul class="list-unstyled" th:if="${#fields.hasErrors('user.passwordReminder')}">
   						<li th:each="err : ${#fields.errors('user.passwordReminder')}" th:text="${err}" />
 					</ul>
                   </div>
                   <div th:class="${#fields.hasErrors('user.name')}? 'form-group has-error' : 'form-group'">
-                    <label class="sr-only" for="user.name">Name</label>
+                    <label for="user.name">Name *</label>
                     <input type="text" th:field="*{user.name}" class="form-control" placeholder="Name *"/>
                     <ul class="list-unstyled" th:if="${#fields.hasErrors('user.name')}">
   						<li th:each="err : ${#fields.errors('user.name')}" th:text="${err}" />
@@ -58,10 +58,10 @@
 				</h3>
 				<p>Please fill in the form to register as a user of PredictWeasel. Until you've registered, you won't be able to make predictions or join any leagues.</p>
                 <p>You'll be able to change your details later if you wish.</p>
-				<p>Your <strong>Email Address</strong> is what you'll use to log in to PredictWeasel. It must be unique and you will be told if someone has
+				<p>Your <strong>Email address</strong> is what you'll use to log in to PredictWeasel. It must be unique and you will be told if someone has
                 already registered with that address. This is also the address PredictWeasel will use to notify you of anything important.</p>
                 <p>You'll also have to supply a <strong>Password</strong> when you log in. Enter the same value for the <strong>Password</strong>
-                and <strong>Confirm Password</strong> fields. In case you forget your password you can also enter a <strong>Password Reminder</strong>.
+                and <strong>Confirm password</strong> fields. In case you forget your password you can also enter a <strong>Password reminder</strong>.
                 If you later need to reset your password, because you've forgotten it, we'll email you this reminder.</p>
                 <p>The <strong>Name</strong> is how you'll appear as to others on the web site, so bear that in mind!</p>				  
               </div>

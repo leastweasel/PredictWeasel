@@ -15,42 +15,42 @@
 						</h3>
 		                <div th:class="${#fields.hasErrors('user.username')}? 'form-group has-error' : 'form-group'">
 		                		<label for="user.username">Email address *</label>
-		                  	<input type="email" th:field="*{user.username}" class="form-control" placeholder="Email address"/>
+		                  	<input type="email" th:field="*{user.username}" class="form-control"/>
 		                  	<ul class="list-unstyled" th:if="${#fields.hasErrors('user.username')}">
 								<li th:each="err : ${#fields.errors('user.username')}" th:text="${err}" />
 							</ul>
 		                </div>
 						<div th:class="${#fields.hasErrors('oldPassword')}? 'form-group has-error' : 'form-group'">
-							<label class="sr-only" for="oldPassword">Password</label>
-		                  	<input type="password" th:field="*{oldPassword}" class="form-control" placeholder="Old password"/>
+							<label for="oldPassword">Old password</label>
+		                  	<input type="password" th:field="*{oldPassword}" class="form-control"/>
 		                  	<ul class="list-unstyled" th:if="${#fields.hasErrors('oldPassword')}">
 								<li th:each="err : ${#fields.errors('oldPassword')}" th:text="${err}" />
 							</ul>
 		                </div>
 						<div th:class="${#fields.hasErrors('newPassword')}? 'form-group has-error' : 'form-group'">
-							<label class="sr-only" for="newPassword">Password</label>
-		                  	<input type="password" th:field="*{newPassword}" class="form-control" placeholder="New password"/>
+							<label for="newPassword">New password</label>
+		                  	<input type="password" th:field="*{newPassword}" class="form-control"/>
 		                  	<ul class="list-unstyled" th:if="${#fields.hasErrors('newPassword')}">
 								<li th:each="err : ${#fields.errors('newPassword')}" th:text="${err}" />
 							</ul>
 		                </div>
 		                <div th:class="${#fields.hasErrors('confirmPassword')}? 'form-group has-error' : 'form-group'">
-		                		<label class="sr-only" for="confirmPassword">Confirm Password</label>
-		                  	<input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="Confirm new password"/>
+		                		<label for="confirmPassword">Confirm new password</label>
+		                  	<input type="password" th:field="*{confirmPassword}" class="form-control"/>
 		                  	<ul class="list-unstyled" th:if="${#fields.hasErrors('confirmPassword')}">
 								<li th:each="err : ${#fields.errors('confirmPassword')}" th:text="${err}" />
 							</ul>
 		                </div>
 		                <div th:class="${#fields.hasErrors('user.passwordReminder')}? 'form-group has-error' : 'form-group'">
 							<label for="user.passwordReminder">Password reminder</label>
-							<input type="text" th:field="*{user.passwordReminder}" class="form-control" placeholder="Password reminder"/>
+							<input type="text" th:field="*{user.passwordReminder}" class="form-control"/>
 							<ul class="list-unstyled" th:if="${#fields.hasErrors('user.passwordReminder')}">
 								<li th:each="err : ${#fields.errors('user.passwordReminder')}" th:text="${err}" />
 							</ul>
 		                </div>
 		                <div th:class="${#fields.hasErrors('user.name')}? 'form-group has-error' : 'form-group'">
 							<label for="user.name">Name *</label>
-							<input type="text" th:field="*{user.name}" class="form-control" placeholder="Name"/>
+							<input type="text" th:field="*{user.name}" class="form-control"/>
 							<ul class="list-unstyled" th:if="${#fields.hasErrors('user.name')}">
 								<li th:each="err : ${#fields.errors('user.name')}" th:text="${err}" />
 							</ul>
@@ -63,8 +63,8 @@
 						<span>Notes</span> 
 					</h3>
 					<p>
-						If you don't want to change your password, leave the <strong>Old Password</strong>, <strong>New Password</strong> 
-						and <strong>Confirm Password</strong> fields blank. If you do want to change your password, you'll have to enter
+						If you don't want to change your password, leave the <strong>Old password</strong>, <strong>New password</strong> 
+						and <strong>Confirm password</strong> fields blank. If you do want to change your password, you'll have to enter
 						your existing password again and confirm the new one. Don't forget to update your password reminder too.
 					</p>
 					<p>
