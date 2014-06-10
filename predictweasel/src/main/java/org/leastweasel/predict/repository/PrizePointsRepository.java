@@ -37,5 +37,5 @@ public interface PrizePointsRepository extends CrudRepository<PrizePoints, Long>
 	 *  @return the total number of points scored for the prize 
 	 */
 	@Query("select sum(pp.pointsScored) from PrizePoints pp where pp.subscription = ?1 and pp.prizeCode = ?2")
-	int getTotalSubscriptionPointsForPrize(UserSubscription subscription, String prizeCode);
+	Integer getTotalSubscriptionPointsForPrize(UserSubscription subscription, String prizeCode);
 }

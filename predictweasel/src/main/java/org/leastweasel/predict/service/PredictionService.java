@@ -27,6 +27,22 @@ public interface PredictionService {
 	List<Prediction> getPredictionsForRecentResults(UserSubscription subscription);
 
 	/**
+	 * Get the predictions that were made by the given user for all completed {@link Fixture}s.
+	 * 
+	 * @param subscription defines the {@link User} and the {@link League} they're playing
+	 * @return the list of predictions for the played fixtures
+	 */
+	List<Prediction> getPredictionsForAllResults(UserSubscription subscription);
+
+	/**
+	 * Get the predictions that were made by the given user for all started {@link Fixture}s.
+	 * 
+	 * @param subscription defines the {@link User} and the {@link League} they're playing
+	 * @return the list of predictions for the started fixtures
+	 */
+	List<Prediction> getFixedPredictions(UserSubscription subscription);
+
+	/**
 	 * Get the predictions that have been made (if any) by the given user for the next batch
 	 * of fixtures to be played. If the player hasn't made a prediction for a particular
 	 * fixture then the fixture will be wrapped in an empty prediction. 

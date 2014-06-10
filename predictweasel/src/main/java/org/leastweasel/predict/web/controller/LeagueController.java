@@ -79,7 +79,7 @@ public class LeagueController {
 	 * 
 	 * @return a list of the predictions for the most recently completed fixtures
 	 */
-	@ModelAttribute("recentResults")
+	@ModelAttribute("matchResults")
 	public List<Prediction> getRecentResults(UserSubscription subscription) {
 		return predictionService.getPredictionsForRecentResults(subscription);
 	}

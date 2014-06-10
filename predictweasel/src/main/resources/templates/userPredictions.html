@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-
-<div th:fragment="recent-results" th:class="col-xs-12">
-
-	<h3 class="title-divider">
-		Latest <span class="de-em">Results</span>
-	</h3>
-	<div class="table-responsive">
-		<div th:if="${#lists.isEmpty(recentResults)}" th:class="${'bs-callout bs-callout-info'}">
-			<h4>No results</h4>
-			<p>There are no recent results.</p>
-		</div>
-		<div class="table" th:unless="${#lists.isEmpty(recentResults)}">
-			<div class="row">
+<html layout:decorator="mainLayout">
+<head>
+<title>User Predictions</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<h3 class="title-divider">
+				User <span class="de-em">Predictions</span>
+			</h3>
+			<div th:if="${user != null}" th:class="${'bs-callout bs-callout-info'}">
+				<h4 th:text="'Predictions made by ' + ${user.name}"></h4>
+			</div>
+			<div th:if="${#lists.isEmpty(userPredictions)}" th:class="${'bs-callout bs-callout-info'}">
+				<h4>No predictions</h4>
+				<p>There are no predictions to see for this user.</p>
+			</div>
+			<div class="row result-row">
 			<div class="col-xs-3 col-sm-3 col-md-2"><strong>Date</strong></div>
 			<div class="col-xs-2"><strong></strong></div>
 			<div class="col-xs-1 text-center"><strong>Score</strong></div>
@@ -19,7 +24,7 @@
 			<div class="col-xs-1 text-center"><strong>Prediction</strong></div>
 			<div class="col-xs-1 text-center"></div>
 			</div>
-			<div class="row" th:each="prediction : ${recentResults}">
+			<div class="row result-row" th:each="prediction : ${userPredictions}">
 				<div class="col-xs-3 col-sm-3 col-md-2" th:text="${#calendars.format(prediction.fixture.matchTime,'E dd MMM HH:mm')}"></div>
 				<div class="col-xs-2" th:text="${prediction.fixture.homeTeam.name}"></div>
 				<div class="col-xs-1 text-center" th:text="${prediction.fixture.result}"></div>
@@ -27,8 +32,8 @@
 				<div class="col-xs-1 text-center" th:text="${prediction.predictedResult}"></div>
 				<div class="col-xs-1 text-center"><a th:if="${prediction.started}" 
 												    th:href="@{/league/fixturePredictions(fixture=${prediction.fixture.id})}"><span class="glyphicon glyphicon-expand"></span></a></div>
-
 			</div>
-		</div>					
+		</div>
 	</div>
-</div>
+</body>
+</html>

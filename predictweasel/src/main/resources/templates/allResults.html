@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head>
+<title>Match Results</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<h3 class="title-divider">
+				Match <span class="de-em">Results</span>
+			</h3>
+			<div>
+				<div th:include="recentResults :: recent-results (false)"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

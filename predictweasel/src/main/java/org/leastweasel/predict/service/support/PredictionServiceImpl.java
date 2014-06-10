@@ -9,7 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.leastweasel.predict.domain.Competition;
 import org.leastweasel.predict.domain.Fixture;
 import org.leastweasel.predict.domain.League;
 import org.leastweasel.predict.domain.MatchResult;
@@ -73,50 +75,54 @@ public class PredictionServiceImpl implements PredictionService {
 	public List<Prediction> getPredictionsForRecentResults(UserSubscription subscription) {
 		
 		if (subscription != null) {
-			// Get all the fixtures that have a result, ordered by match time. We're interested
-			// in the most recent results so we sort by descending match time.
-			Sort sortOrder = new Sort(Direction.DESC, "matchTime");
+			List<Fixture> results = getResults(subscription.getLeague().getCompetition(), true);
 			
-			List<Fixture> results = 
-					fixtureRepository.findByCompetitionAndResultIsNotNull(subscription.getLeague().getCompetition(),
-																		 sortOrder);
-		
-			if (logger.isDebugEnabled()) {
-				logger.debug("Got {} results", results.size());
-			}
-
-			// Trim the list down to the desired number.
-			results = getMostRelevant(results, minimumNumberOfFixturesToDisplay);
-			
-			if (logger.isDebugEnabled()) {
-				logger.debug("Got the {} most relevant results", results.size());
-			}
-
-			List<Prediction> predictions = new ArrayList<>();
-
-			for (Fixture fixture : results) {
-				Prediction prediction = predictionRepository.findByPredictorAndFixture(subscription.getUser(), fixture);
-				
-				if (prediction == null) {
-					prediction = new Prediction();
-					
-					prediction.setFixture(fixture);
-					prediction.setPredictor(subscription.getUser());
-				}
-
-				// Wrap the prediction in a bean that will allow us to test whether the match has started.
-				PredictionBean bean = new PredictionBean(prediction);
-				bean.setStarted(fixture.getMatchTime().isBefore(systemClock.getCurrentDateTime()));
-				
-				predictions.add(bean);
-			}
-			
-			return predictions;
+			return createPredictionBeansForResults(results, subscription.getUser());
 		}
 		
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Prediction> getPredictionsForAllResults(UserSubscription subscription) {
+		
+		if (subscription != null) {
+			List<Fixture> results = getResults(subscription.getLeague().getCompetition(), false);
+			
+			return createPredictionBeansForResults(results, subscription.getUser());
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Prediction> getFixedPredictions(UserSubscription subscription) {
+		// Get all the fixtures that have started, ordered by match time. We're interested
+		// in the most recent results so we sort by descending match time.
+		Sort sortOrder = new Sort(Direction.DESC, "matchTime");
+		DateTime now = systemClock.getCurrentDateTime();
+		
+		List<Fixture> results = 
+				fixtureRepository.findByCompetitionAndMatchTimeBefore(subscription.getLeague().getCompetition(),
+																	 now, sortOrder);
+	
+		if (logger.isDebugEnabled()) {
+			logger.debug("Got {} results", results.size());
+		}
+		
+		List<Prediction> predictions = createPredictionBeansForResults(results, subscription.getUser());
+		
+		if (predictions == null) {
+			predictions = new ArrayList<>();
+		}
+
+		return predictions;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -391,5 +397,67 @@ public class PredictionServiceImpl implements PredictionService {
 		}
 		
 		return desiredFixtures;
+	}
+	
+	/**
+	 * Get the results (i.e. completed fixtures) from the given competition.
+	 * 
+	 * @param competition the competition whose fixtures we're after
+	 * @param recentOnly if true then only return the most recent results
+	 * @return the competition's results
+	 */
+	private List<Fixture> getResults(Competition competition, boolean recentOnly) {
+		// Get all the fixtures that have a result, ordered by match time. We're interested
+		// in the most recent results so we sort by descending match time.
+		Sort sortOrder = new Sort(Direction.DESC, "matchTime");
+		
+		List<Fixture> results = 
+				fixtureRepository.findByCompetitionAndResultIsNotNull(competition,
+																	 sortOrder);
+	
+		if (logger.isDebugEnabled()) {
+			logger.debug("Got {} results", results.size());
+		}
+
+		if (recentOnly) {
+			// Trim the list down to the desired number.
+			results = getMostRelevant(results, minimumNumberOfFixturesToDisplay);
+			
+			if (logger.isDebugEnabled()) {
+				logger.debug("Got the {} most relevant results", results.size());
+			}
+		}
+		
+		return results;
+	}
+	
+	/**
+	 * Create prediction beans from the given set of fixtures.
+	 * 
+	 * @param results the fixtures whose predictions we want to fetch
+	 * @param predictor the person who made all the predictions
+	 * @return a list of prediction beans for the fixtures
+	 */
+	private List<Prediction> createPredictionBeansForResults(List<Fixture> results, User predictor) {
+		List<Prediction> predictions = new ArrayList<>();
+
+		for (Fixture fixture : results) {
+			Prediction prediction = predictionRepository.findByPredictorAndFixture(predictor, fixture);
+			
+			if (prediction == null) {
+				prediction = new Prediction();
+				
+				prediction.setFixture(fixture);
+				prediction.setPredictor(predictor);
+			}
+
+			// Wrap the prediction in a bean that will allow us to test whether the match has started.
+			PredictionBean bean = new PredictionBean(prediction);
+			bean.setStarted(fixture.getMatchTime().isBefore(systemClock.getCurrentDateTime()));
+			
+			predictions.add(bean);
+		}
+		
+		return predictions;
 	}
 }

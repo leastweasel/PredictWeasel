@@ -161,11 +161,18 @@ public class LeagueServiceImpl implements LeagueService {
 		// Only the first prize is mandatory.
 		
 		if (prizeCode != null) {
-			points = prizePointsRepository.getTotalSubscriptionPointsForPrize(subscription, prizeCode);
+			Integer pointsInt = prizePointsRepository.getTotalSubscriptionPointsForPrize(subscription, prizeCode);
 			
-			if (logger.isDebugEnabled()) {
-				logger.debug("Total points for subscription ID: {} and prize code {} is {}",
-							 subscription.getId(), prizeCode, points);
+			if (pointsInt == null) {
+				logger.warn("Got null from calculating total points for subscription ID {} and prizeCode {}",
+							subscription.getId(), prizeCode);
+			} else {
+				points = pointsInt;
+				
+				if (logger.isDebugEnabled()) {
+					logger.debug("Total points for subscription ID: {} and prize code {} is {}",
+								 subscription.getId(), prizeCode, points);
+				}
 			}
 		}
 		

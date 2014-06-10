@@ -1,0 +1,17 @@
+<div class="row result-row">
+<div class="col-xs-3 col-sm-3 col-md-2"><strong>Date</strong></div>
+<div class="col-xs-2"><strong></strong></div>
+<div class="col-xs-1 text-center"><strong>Score</strong></div>
+<div class="col-xs-2"><strong></strong></div>
+<div class="col-xs-1 text-center"><strong>Prediction</strong></div>
+<div class="col-xs-1 text-center"></div>
+</div>
+<div class="row result-row" th:each="prediction : ${matchResults}">
+	<div class="col-xs-3 col-sm-3 col-md-2" th:text="${#calendars.format(prediction.fixture.matchTime,'E dd MMM HH:mm')}"></div>
+	<div class="col-xs-2" th:text="${prediction.fixture.homeTeam.name}"></div>
+	<div class="col-xs-1 text-center" th:text="${prediction.fixture.result}"></div>
+	<div class="col-xs-2 text-right" th:text="${prediction.fixture.awayTeam.name}"></div>
+	<div class="col-xs-1 text-center" th:text="${prediction.predictedResult}"></div>
+	<div class="col-xs-1 text-center"><a th:if="${prediction.started}" 
+									    th:href="@{/league/fixturePredictions(fixture=${prediction.fixture.id})}"><span class="glyphicon glyphicon-expand"></span></a></div>
+</div>

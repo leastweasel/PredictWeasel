@@ -14,7 +14,10 @@
 				Upcoming <span class="de-em">Fixtures</span>
 			</h3>
 			<div th:include="upcomingFixtures :: upcoming-fixtures (true)"></div>
-			<div th:include="recentResults :: recent-results"></div>
+			<h3 class="title-divider">
+				Latest <span class="de-em">Results</span>
+			</h3>
+			<div th:include="recentResults :: recent-results (true)"></div>
 			<div class="row">
 			<div class="col-lg-4">
 				<div th:include="abbreviatedStandings :: player-standings (true)"></div>

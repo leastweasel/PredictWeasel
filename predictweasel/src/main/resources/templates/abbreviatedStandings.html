@@ -29,7 +29,7 @@
 						<tbody>
 							<tr th:each="standing : ${prizeStandings[__${prizeStat.index}__]}" th:class="${standing.highlighted}? active">
 								<td th:class="${standing.highlighted}? h5" th:text="${standing.position}"></td>
-								<td th:class="${standing.highlighted}? h5" th:text="${standing.player.name}"></td>
+								<td th:class="${standing.highlighted}? h5"><a th:href="@{/league/userPredictions(user=${standing.player.id})}" th:text="${standing.player.name}"></a></td>
 								<td th:class="${standing.highlighted}? h5" th:text="${standing.pointsScored}"></td>
 							</tr>
 						</tbody>

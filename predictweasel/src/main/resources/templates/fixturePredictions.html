@@ -26,7 +26,9 @@
 				</div>
 				</div>
 				<div class="row" th:each="prediction : ${fixturePredictions}">
-					<div class="col-xs-3 col-sm-3 col-md-2" th:text="${prediction.predictor.name}"></div>
+					<div class="col-xs-3 col-sm-3 col-md-2">
+						<a th:href="@{/league/userPredictions(user=${prediction.predictor.id})}" th:text="${prediction.predictor.name}"></a>
+					</div>
 					<div class="col-xs-2 text-center" th:text="${prediction.predictedResult}"></div>
 					<div class="col-xs-2 text-center" th:each="prize : ${prizes}">
 						<span th:text="${prediction.pointsPerPrize[__${prizeStat.index}__]}"></span>
