@@ -59,8 +59,8 @@ public class FixturePredictionsController {
      * Do the same for the prizes offered by the league, and the fixture in question. 
      * 
 	 * @param subscription the user and league the user is currently playing
-     * @param fixture the fixture for which this is a prediction 
-     * @param model madel attributes should be added here 
+     * @param fixture the fixture whose predictions we're after 
+     * @param model model attributes should be added here 
      * @return the name of the view to navigate to         
      */
     @RequestMapping(value="/league/fixturePredictions", method = RequestMethod.GET)
