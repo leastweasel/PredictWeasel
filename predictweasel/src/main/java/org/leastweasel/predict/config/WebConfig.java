@@ -27,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 	@Autowired
-	private LeagueCodeResolvingHandlerInterceptor gameReqestHandlerInterceptor;
+	private LeagueCodeResolvingHandlerInterceptor leagueReqestHandlerInterceptor;
 
 	@Autowired
 	private UserSubscriptionArgumentResolver userSubscriptionArgumentResolver;
@@ -59,7 +59,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	 */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(gameReqestHandlerInterceptor).addPathPatterns("/", "/league/*");
+        registry.addInterceptor(leagueReqestHandlerInterceptor).addPathPatterns("/", "/league/*");
     }
     
     /**
