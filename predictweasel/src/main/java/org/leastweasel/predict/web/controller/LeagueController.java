@@ -7,11 +7,13 @@ package org.leastweasel.predict.web.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.leastweasel.predict.domain.BlogPost;
 import org.leastweasel.predict.domain.League;
 import org.leastweasel.predict.domain.Prediction;
 import org.leastweasel.predict.domain.Prize;
 import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.domain.UserSubscription;
+import org.leastweasel.predict.service.BlogService;
 import org.leastweasel.predict.service.LeagueService;
 import org.leastweasel.predict.service.PredictionService;
 import org.leastweasel.predict.service.StandingsService;
@@ -41,6 +43,9 @@ public class LeagueController {
 	
 	@Autowired
 	private LeagueService leagueService;
+	
+	@Autowired
+	private BlogService blogService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(LeagueController.class);
 
@@ -131,5 +136,16 @@ public class LeagueController {
 	public List<Prize> getPrizeCategories(UserSubscription subscription) {
 		
 		return leagueService.getLeaguePrizes(subscription.getLeague());
+	}
+	
+	/**
+	 * Get the most recent post from the given league's blog.
+	 * 
+	 * @param subscription identifies the user and the league they're currently playing
+	 * @return the league's blog's most recent post
+	 */
+	@ModelAttribute("blogPost")
+	public BlogPost getLatestBlogPost(UserSubscription subscription) {
+		return blogService.getLatestPostForLeague(subscription.getLeague());
 	}
 }

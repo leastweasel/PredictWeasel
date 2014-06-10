@@ -77,3 +77,8 @@ insert into prediction(id, user_id, fixture_id, home_score, away_score) values
 (15, 8, 9, 3, 2),
 (16, 9, 9, 1, 0),
 (17, 10, 9, 0, 2);
+
+insert into blog_post(id, post_time, league_id, title, lead_text, posted_text, draft_text) values
+(1,'2014-06-01:15:00:00', 2,'The title of post 1',null,'This is the post text from post 1','Draft 1'),
+(2,'2014-06-02:15:00:00', 2,'The title of post 2','Some lead text','This is the post text from post 2','Draft 2'),
+(3,'2014-06-03:15:00:00', 1,'The title of post 3', 'Wrong league','This is the post text from post 3','Draft 3');
