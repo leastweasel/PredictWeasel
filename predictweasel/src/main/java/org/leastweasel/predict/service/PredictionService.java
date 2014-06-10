@@ -50,6 +50,15 @@ public interface PredictionService {
 	void getPredictionsForFutureFixtures(UserSubscription subscription, List<Prediction> predictions);
 	
 	/**
+	 * Get the predictions that have been made (if any) by players in a given league, for the given fixture. 
+	 * 
+	 * @param league only predictions from this league are considered
+	 * @param fixture the fixture whose predictions we're after
+	 * @return the predictions for the fixture
+	 */
+	List<Prediction> getPredictionsInLeagueForFixture(League league, Fixture fixture);
+	
+	/**
 	 * Either create, or update, a prediction by a user for the given fixture. If no
 	 * prediction yet exists for the user then a new one is created. If one does
 	 * already exist then it'll be updated.

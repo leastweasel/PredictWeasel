@@ -135,8 +135,7 @@ public class Competition implements Serializable {
      */
 
     /**
-     * Equality operator. Note that the stages are not included in the comparison. Also, whether a
-     * competition is active is irrelevant as far as equality goes.
+     * Equality operator. Only the unique ID is used in the comparison.
      *
      * @param other the object we're comparing against
      * @return true if the objects are equal
@@ -157,19 +156,19 @@ public class Competition implements Serializable {
 
         final Competition competition = (Competition) other;
 
-        return new EqualsBuilder().append(getName(), competition.getName())
+        return new EqualsBuilder().append(id, competition.id)
                                   .isEquals();
     }
 
     /**
      * Generate a hash code for this object. To be consistent with the <code>equals</code> method,
-     * the stages are not included in the calculation.
+     * only the ID is included in the calculation.
      *
      * @return a hash code
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getName())
+        return new HashCodeBuilder().append(id)
                                     .toHashCode();
     }
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html layout:decorator="mainLayout">
+<head>
+<title>Fixture Predictions</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<h3 class="title-divider">
+				Fixture <span class="de-em">Predictions</span>
+			</h3>
+			<div th:if="${fixture != null}" th:class="${'bs-callout bs-callout-info'}">
+				<h4 th:text="'Predictions for ' + ${fixture.homeTeam.name} + ' v ' + ${fixture.awayTeam.name}"></h4>
+				<p th:text="${fixture.result != null} ? ('Result: ' + ${fixture.result}) : 'Result not known'"></p>
+			</div>
+			<div th:if="${#lists.isEmpty(fixturePredictions)}" th:class="${'bs-callout bs-callout-info'}">
+				<h4>No predictions</h4>
+				<p>There are no predictions to see for this fixture, probably because the game hasn't started yet.</p>
+			</div>
+			<div class="table" th:unless="${#lists.isEmpty(fixturePredictions)}">
+				<div class="row">
+				<div class="col-xs-3 col-sm-3 col-md-2"><strong>Player</strong></div>
+				<div class="col-xs-2 text-center"><strong>Prediction</strong></div>
+				<div class="col-xs-2 text-center" th:each="prize : ${prizes}">
+					<strong th:text="${prize.name}"></strong>
+				</div>
+				</div>
+				<div class="row" th:each="prediction : ${fixturePredictions}">
+					<div class="col-xs-3 col-sm-3 col-md-2" th:text="${prediction.predictor.name}"></div>
+					<div class="col-xs-2 text-center" th:text="${prediction.predictedResult}"></div>
+					<div class="col-xs-2 text-center" th:each="prize : ${prizes}">
+						<span th:text="${prediction.pointsPerPrize[__${prizeStat.index}__]}"></span>
+					</div>
+				</div>
+			</div>					
+		</div>
+	</div>
+</body>
+</html>

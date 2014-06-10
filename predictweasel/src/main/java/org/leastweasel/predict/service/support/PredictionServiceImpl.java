@@ -26,6 +26,7 @@ import org.leastweasel.predict.repository.PrizePointsRepository;
 import org.leastweasel.predict.repository.UserSubscriptionRepository;
 import org.leastweasel.predict.service.Clock;
 import org.leastweasel.predict.service.PredictionService;
+import org.leastweasel.predict.web.domain.PredictionBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,8 +103,12 @@ public class PredictionServiceImpl implements PredictionService {
 					prediction.setFixture(fixture);
 					prediction.setPredictor(subscription.getUser());
 				}
+
+				// Wrap the prediction in a bean that will allow us to test whether the match has started.
+				PredictionBean bean = new PredictionBean(prediction);
+				bean.setStarted(fixture.getMatchTime().isBefore(systemClock.getCurrentDateTime()));
 				
-				predictions.add(prediction);
+				predictions.add(bean);
 			}
 			
 			return predictions;
@@ -165,6 +170,23 @@ public class PredictionServiceImpl implements PredictionService {
 			// Get any existing predictions for these fixtures, or create a dummy one if none exists.
 			generatePredictionsFromFixtures(subscription.getUser(), fixtures, predictionsToReturn);
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Prediction> getPredictionsInLeagueForFixture(League league, Fixture fixture) {
+		List<Prediction> predictions = null;
+
+		if (league != null && fixture != null) {
+			predictions = predictionRepository.findFixturePredictionsFromLeague(league, fixture);
+		}
+
+		if (predictions == null) {
+			predictions = new ArrayList<>();
+		}
+		
+		return predictions;
 	}
 	
 	/**
