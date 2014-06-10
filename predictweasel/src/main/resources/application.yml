@@ -43,7 +43,7 @@ webapp:
 
 predictWeasel:
     passwordResetExpiryIntervalDays: 1
-    minimumNumberOfFixturesToDisplay: 3
+    minimumNumberOfFixturesToDisplay: 5
     maximumNumberOfStandingsToDisplay: 5
     elapsedTimeClockStartTime:
     adminEmailAddress: andrew@leastweasel.org            
