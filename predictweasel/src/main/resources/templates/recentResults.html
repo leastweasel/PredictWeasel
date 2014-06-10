@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<div th:fragment="recent-results (isAbbreviated)" th:class="col-xs-12">
+
+	<div class="table-responsive">
+		<div th:if="${#lists.isEmpty(matchResults)}" th:class="${'bs-callout bs-callout-info'}">
+			<h4>No results</h4>
+			<p>There are no results to display.</p>
+		</div>
+		<div class="blog-roll" th:unless="${#lists.isEmpty(matchResults)}">
+			<div th:replace="resultRows"></div>
+			<div class="pagination" th:if="${isAbbreviated}">
+				<a th:href="@{/league/results}">
+				<button type="button" class="btn btn-default btn-lg btn-block">View All Results</button></a>
+			</div>
+		</div>					
+	</div>
+</div>
