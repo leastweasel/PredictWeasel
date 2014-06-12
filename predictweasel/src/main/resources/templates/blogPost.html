@@ -9,16 +9,16 @@
 		<div class="media row">
 			<div class="col-md-1 date-md">
 				<div class="date-wrapper">
-					<span class="date-m">Jun</span> <span class="date-d">06</span>
+					<span class="date-m" th:text="${#calendars.format(blogPost.postTime,'MMM')}"></span> <span class="date-d" th:text="${#calendars.format(blogPost.postTime,'dd')}"></span>
 				</div>
 			</div>
 			<div class="col-md-11 media-body">
 				<h3 class="title media-heading" th:text="${blogPost.title}">Launch Day is Here</h3>
 				<ul class="list-inline meta text-muted">
-					<li><i class="fa fa-calendar">Wed 11th June 2014</i></li>
+					<li><i class="fa fa-calendar" th:text="${#calendars.format(blogPost.postTime,'E dd MMMM YYYY')}"></i></li>
 				</ul>
-				<p class="lead" th:text="${blogPost.leadText}">New-look PredictWeasel is now live.</p>
-				<div th:text="${blogPost.postedText}">Wibble.</div>
+				<p class="lead" th:utext="${blogPost.leadText}"></p>
+				<div th:utext="${blogPost.postedText}"></div>
 			</div>
 		</div>
 	</div>
