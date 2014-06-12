@@ -27,7 +27,7 @@ public class MatchResultFormatter implements Formatter<MatchResult> {
 	 * an optional separator, which should be a space, a 'v' or a '-', surrounded by as
 	 * many spaces as desired. Input strings should be trimmed before an attempted match is made.
 	 */
-	private static final Pattern parsingPattern = Pattern.compile("(\\d{1,3}) *[v\\- ] *(\\d{1,3})");
+	private static final Pattern parsingPattern = Pattern.compile("(\\d{1,3}) *[v\\-\\+\\*\\# ] *(\\d{1,3})");
 
 	private static final Logger logger = LoggerFactory.getLogger(MatchResultFormatter.class);
 	
