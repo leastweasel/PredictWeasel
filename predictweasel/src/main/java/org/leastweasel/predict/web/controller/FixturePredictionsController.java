@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.leastweasel.predict.domain.Fixture;
 import org.leastweasel.predict.domain.League;
 import org.leastweasel.predict.domain.Prediction;
@@ -23,6 +25,7 @@ import org.leastweasel.predict.web.domain.FixturePredictionBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +69,8 @@ public class FixturePredictionsController {
     @RequestMapping(value="/league/fixturePredictions", method = RequestMethod.GET)
 	public String navigateToPage(UserSubscription subscription,
 			 					@RequestParam(value = "fixture", required = true) Fixture fixture,
-			 					Model model) {
+			 					Model model,
+			 					HttpServletResponse response) {
 
 		if (fixture != null) {
 			League league = subscription.getLeague();
@@ -81,6 +85,18 @@ public class FixturePredictionsController {
 				}
 				
 				return "invalidFixture";
+			}
+
+			// For the same reason, we also need to check that the fixture has kicked off.
+			
+			if (fixture.getMatchTime().isAfter(systemClock.getCurrentDateTime())) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("Fixture ID {} hasn't kicked off yet.", fixture.getId());
+				}
+				
+				response.setStatus(HttpStatus.FORBIDDEN.value());
+				
+				return "fixtureNotStarted";
 			}
 			
 			List<Prize> prizes = leagueService.getLeaguePrizes(subscription.getLeague());
