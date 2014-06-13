@@ -46,7 +46,7 @@ predictWeasel:
     minimumNumberOfFixturesToDisplay: 5
     maximumNumberOfStandingsToDisplay: 5
     elapsedTimeClockStartTime:
-    adminEmailAddress: andrew@leastweasel.org            
+    adminEmailAddress: andrew@braycastle.co.uk            
     allowAutoSubscription: true
     
 ---
