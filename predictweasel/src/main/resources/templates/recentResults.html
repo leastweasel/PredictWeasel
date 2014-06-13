@@ -10,8 +10,7 @@
 		<div class="blog-roll" th:unless="${#lists.isEmpty(matchResults)}">
 			<div th:replace="resultRows"></div>
 			<div class="pagination" th:if="${isAbbreviated}">
-				<a th:href="@{/league/results}">
-				<button type="button" class="btn btn-default btn-lg btn-block">View All Results</button></a>
+				<a class="btn btn-default btn-lg btn-block" th:href="@{/league/results}">View All Results</a>
 			</div>
 		</div>					
 	</div>
