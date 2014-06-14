@@ -2,8 +2,11 @@ package org.leastweasel.predict.web.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.domain.UserSubscription;
+import org.leastweasel.predict.exception.FixtureNotStartedException;
 import org.leastweasel.predict.exception.NoUserSubscriptionException;
 import org.leastweasel.predict.service.SubscriptionService;
 import org.slf4j.Logger;
@@ -11,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Assist controllers by providing exception handler methods that can be used
@@ -57,4 +61,20 @@ public class ExceptionHandlers {
 			return "redirect:/";
 		}
 	}
+
+	/**
+	 * Handle an exception indicating the fixture, whose predictions the user is trying to
+	 * view, has not yet started. So the user is told they are forbidden from doing this. 
+	 * 
+	 * @param exception the exception that was thrown
+	 * @param response the HTTP response to we can set the response status
+	 * @return a blank ModelAndView as the view will be determined by the response status
+	 */
+	@ExceptionHandler(FixtureNotStartedException.class)
+	public ModelAndView handleFixtureNotStartedException(FixtureNotStartedException exception, HttpServletResponse response) throws Exception {
+		
+		response.sendError(HttpServletResponse.SC_FORBIDDEN);
+		
+		return new ModelAndView();
+	}	
 }
