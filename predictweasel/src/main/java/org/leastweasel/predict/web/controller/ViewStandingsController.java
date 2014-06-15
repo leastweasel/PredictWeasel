@@ -45,14 +45,6 @@ public class ViewStandingsController {
 	@RequestMapping(value="/league/standings", method = RequestMethod.GET)
 	public String navigateToPage(UserSubscription subscription) {
 		
-		if (subscription == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Can't navigate to league standings page as user subscription is null");
-			}
-			
-			return "redirect:/";
-		}
-		
 		if (logger.isDebugEnabled()) {
 			logger.debug("Rendering standings view of league with code: {} for user ID: {}",
 						 subscription.getLeague().getCode(),

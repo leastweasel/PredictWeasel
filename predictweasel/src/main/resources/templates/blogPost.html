@@ -17,7 +17,7 @@
 				<ul class="list-inline meta text-muted">
 					<li><i class="fa fa-calendar" th:text="${#calendars.format(blogPost.postTime,'E dd MMMM YYYY')}"></i></li>
 				</ul>
-				<p class="lead" th:utext="${blogPost.leadText}"></p>
+				<div class="lead" th:utext="${blogPost.leadText}"></div>
 				<div th:utext="${blogPost.postedText}"></div>
 			</div>
 		</div>

@@ -9,6 +9,7 @@ import java.util.List;
 import org.leastweasel.predict.domain.BlogPost;
 import org.leastweasel.predict.domain.League;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -17,10 +18,20 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface BlogPostRepository extends CrudRepository<BlogPost, Long> {
     /**
-     * Find the most recent blog post for the given league.
+     * Fetch some blog posts for the given league. The {@link Pageable} parameter
+     * determines how many to return and the order in which they're sorted. 
      *
-     * @param league whose blog post we're after
-     * @return a list of one or no blog posts
+     * @param league whose blog posts we're after
+     * @return a list of blog posts
      */
      List<BlogPost>findByLeague(League league, Pageable pageable);
+
+     /**
+      * Fetch some blog posts for the given league. The {@link Sort} parameter
+      * determines the order in which they're sorted. 
+      *
+      * @param league whose blog posts we're after
+      * @return a list of blog posts
+      */
+     List<BlogPost>findByLeague(League league, Sort pageable);
 }

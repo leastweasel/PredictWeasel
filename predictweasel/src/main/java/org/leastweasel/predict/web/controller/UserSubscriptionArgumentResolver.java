@@ -8,7 +8,7 @@ import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.domain.UserSubscription;
 import org.leastweasel.predict.exception.NoUserSubscriptionException;
 import org.leastweasel.predict.service.SubscriptionService;
-import org.leastweasel.predict.web.WebUtil;
+import org.leastweasel.predict.web.SessionSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -38,6 +38,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class UserSubscriptionArgumentResolver implements HandlerMethodArgumentResolver {
 	@Autowired
 	private SubscriptionService subscriptionService;
+	
+	@Autowired
+	private SessionSettings sessionSettings;
 	
 	/**
 	 * Indicates whether this resolver supports the given parameter to a controller method.
@@ -69,7 +72,7 @@ public class UserSubscriptionArgumentResolver implements HandlerMethodArgumentRe
 								  WebDataBinderFactory binderFactory) throws Exception {
 		
 		if (UserSubscription.class.isAssignableFrom(parameter.getParameterType())) {
-			String leagueCode = WebUtil.Session.getCurrentLeagueCode(webRequest);
+			String leagueCode = sessionSettings.getCurrentLeagueCode();
 
 			UserSubscription subscription = subscriptionService.getSubscriptionFromLeagueCode(leagueCode);
 

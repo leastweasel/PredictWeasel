@@ -97,17 +97,23 @@
 						<li id="home-menu" class="home-link">
 						<a href="/"><i class="fa fa-home"></i><span class="hidden">Home</span></a>
 						</li>
-						<!--
-						<li sec:authorize="!hasRole('ROLE_ANONYMOUS')" class="dropdown">
-						<a href="play.htm" class="dropdown-toggle menu-item" data-toggle="dropdown" data-hover="dropdown">Play +</a> 
+						<li sec:authorize="!hasRole('ROLE_ANONYMOUS')" th:if="${@sesh.hasLeague}" id="league-menu" class="dropdown">
+							<a href="@{/league/}" class="dropdown-toggle menu-item" data-toggle="dropdown" data-hover="dropdown">League +</a> 
+							<ul class="dropdown-menu" role="menu" aria-labelledby="league-drop">
+	                      		<li class="active" role="presentation"><a role="menuitem" th:href="@{/league/}" tabindex="-1" class="menu-item">Home</a></li>
+	                      		<li role="presentation"><a role="menuitem" th:href="@{/league/futurePredictions}" tabindex="-1" class="menu-item">Predictions</a></li>
+	                      		<li role="presentation"><a role="menuitem" th:href="@{/league/results}" tabindex="-1" class="menu-item">Results</a></li>
+	                      		<li role="presentation"><a role="menuitem" th:href="@{/league/standings}" tabindex="-1" class="menu-item">Standings</a></li>
+	                      		<li role="presentation"><a role="menuitem" th:href="@{/league/blog}" tabindex="-1" class="menu-item">Blog</a></li>
+	                      		<li th:if="${@sesh.isLeagueAdmin}" role="presentation"><a role="menuitem" th:href="@{/league/editBlog}" tabindex="-1" class="menu-item">Edit Blog</a></li>
+							</ul> 
 						</li>
-						-->
 						<li sec:authorize="hasRole('ROLE_COMP_ADMIN')" id="competition-menu">
 						<a th:href="@{/competitions}" class="menu-item">Competition</a> 
 						</li>
 						<li id="help-menu" class="dropdown">
 							<a th:href="@{/help/start}" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">Help +</a>
-							<ul class="dropdown-menu" role="menu" aria-labelledby="about-drop">
+							<ul class="dropdown-menu" role="menu" aria-labelledby="help-drop">
 	                      		<li class="active" role="presentation"><a role="menuitem" th:href="@{/help/start}" tabindex="-1" class="menu-item">Getting Started</a></li>
 	                      		<li role="presentation"><a role="menuitem" th:href="@{/help/playing}" tabindex="-1" class="menu-item">Playing the game</a></li>
 	                      		<li role="presentation"><a role="menuitem" th:href="@{/help/scoring}" tabindex="-1" class="menu-item">Scoring Predictions</a></li>

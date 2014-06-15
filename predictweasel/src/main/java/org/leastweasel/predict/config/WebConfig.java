@@ -6,6 +6,8 @@ package org.leastweasel.predict.config;
 
 import java.util.List;
 
+import org.leastweasel.predict.web.SessionAccess;
+import org.leastweasel.predict.web.SessionSettings;
 import org.leastweasel.predict.web.controller.LeagueCodeResolvingHandlerInterceptor;
 import org.leastweasel.predict.web.controller.UserSubscriptionArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomi
 import org.springframework.boot.context.embedded.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -99,5 +103,29 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     								  new ErrorPage(HttpStatus.NOT_FOUND, "/error/404"),
     								  new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/error/500"));
     		}
+    }
+
+    /**
+     * A bean to give easy access to the session settings (see below) in Thymeleaf templates.
+     * Not needed in a Java class: just inject the session settings bean.
+     * 
+     * @return a session settings easy access bean
+     */
+    @Bean
+    public SessionAccess sesh() {
+    		return new SessionAccess();
+    }
+    
+    /**
+     * A session scoped bean storing some settings for each user. The bean will be
+     * injected into others as a proxy so that the correct one is extracted from
+     * the appropriate user's session.
+     * 
+     * @return settings for the user
+     */
+    @Bean
+    @Scope(value = "session", proxyMode=ScopedProxyMode.TARGET_CLASS)
+    public SessionSettings sessionSettings() {
+    		return new SessionSettings();
     }
 }

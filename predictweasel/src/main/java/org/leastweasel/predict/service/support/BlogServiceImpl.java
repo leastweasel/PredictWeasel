@@ -4,6 +4,7 @@
  */
 package org.leastweasel.predict.service.support;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.leastweasel.predict.domain.BlogPost;
@@ -13,6 +14,7 @@ import org.leastweasel.predict.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
@@ -40,4 +42,21 @@ public class BlogServiceImpl implements BlogService {
 		
 		return posts.get(0);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<BlogPost> getAllPostsForLeague(League league) {
+		Sort sortOrder = new Sort(Direction.DESC, "postTime");
+		
+		List<BlogPost> posts = blogPostRepository.findByLeague(league, sortOrder);
+		
+		if (posts == null) {
+			posts = new ArrayList<>();
+		}
+		
+		return posts;
+	}
 }
+

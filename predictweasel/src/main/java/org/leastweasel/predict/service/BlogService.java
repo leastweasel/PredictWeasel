@@ -4,6 +4,8 @@
  */
 package org.leastweasel.predict.service;
 
+import java.util.List;
+
 import org.leastweasel.predict.domain.BlogPost;
 import org.leastweasel.predict.domain.League;
 
@@ -12,8 +14,17 @@ import org.leastweasel.predict.domain.League;
  */
 public interface BlogService {
 	/**
+	 * Get all posts for league.
+	 * 
+	 * @param league the league whose posts we're after
+	 * @return a list of posts for the given league
+	 */
+	List<BlogPost> getAllPostsForLeague(League league);
+	
+	/**
 	 * Get the most recent post from the given league's blog.
 	 * 
+	 * @param league the league whose most recent post we're after
 	 * @return the most recent blog post, of null if there isn't one
 	 */
 	BlogPost getLatestPostForLeague(League league);

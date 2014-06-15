@@ -14,6 +14,7 @@ import org.leastweasel.predict.domain.User;
 import org.leastweasel.predict.domain.UserSubscription;
 import org.leastweasel.predict.service.SecurityService;
 import org.leastweasel.predict.service.SubscriptionService;
+import org.leastweasel.predict.web.SessionSettings;
 import org.leastweasel.predict.web.WebUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,9 @@ public class LeagueCodeResolvingHandlerInterceptor extends HandlerInterceptorAda
 	@Autowired
 	private SubscriptionService subscriptionService;
 	
+	@Autowired
+	private SessionSettings sessionSettings;
+	
 	private static final Logger logger = LoggerFactory.getLogger(LeagueCodeResolvingHandlerInterceptor.class);
 	
 	/**
@@ -51,85 +55,95 @@ public class LeagueCodeResolvingHandlerInterceptor extends HandlerInterceptorAda
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 		throws Exception {
 	
-		String leagueCode = null;
+		UserSubscription currentSubscription  = null;
 		
 		// Check that the user is logged in.
 		User loggedInUser = securityService.getLoggedInUser();
 		
-		if (loggedInUser != null) {
-			// Check the user has at least one subscription.
-			List<UserSubscription> subscriptions = subscriptionService.getSubscriptions(loggedInUser);
-
-			if (!subscriptions.isEmpty()) {
-				// Has current league code already been set in the session? If so, check that it's
-				// still valid for the user.
-				String sessionLeagueCode = WebUtil.Session.getCurrentLeagueCode(request.getSession());
-
-				if (sessionLeagueCode != null) {
-					if (isSubscribedLeague(subscriptions, sessionLeagueCode)) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("User with ID {} already has a subscription to league code {} in the session", 
-										 loggedInUser.getId(), sessionLeagueCode);
-						}
-						
-						leagueCode = sessionLeagueCode;
-					}
-				}
-			} else {
-				if (logger.isDebugEnabled()) {
-					logger.debug("User with ID {} has no subscriptions", loggedInUser.getId());
-				}
+		if (loggedInUser == null) {
+			sessionSettings.noLeague();
 			
-				// Set to a special league code so that we know the user has no subscriptions,
-				// rather than the user hasn't selected one yet.
-				leagueCode = WebUtil.Session.NO_SUBSCRIPTIONS;
-			}
-				
-			// If still not got one, check for the cookie.
-			if (leagueCode == null) {
-				String cookieLeagueCode = WebUtil.Request.getCurrentLeagueCodeFromCookie(request);
-				
-				if (cookieLeagueCode != null) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Current league cookie set to {}", leagueCode);
-					}
-					
-					if (isSubscribedLeague(subscriptions, cookieLeagueCode)) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("User with ID {} has a subscription to league code fromCookie, {}", 
-										 loggedInUser.getId(), cookieLeagueCode);
-						}
-						
-						leagueCode = cookieLeagueCode;
-					}
-				}
-			} 
-				
-			// If still not got one, check for single subscription.
-			if (leagueCode == null) {
-				if (subscriptions.size() == 1) {
-					String singleLeagueCode = subscriptions.get(0).getLeague().getCode();
-					
-					if (isSubscribedLeague(subscriptions, singleLeagueCode)) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("User with ID {} has a single subscription to league with code {}", loggedInUser.getId(), singleLeagueCode);
-						}
-						
-						leagueCode = singleLeagueCode;
-					}
-				} else {
-					// Must have multiple selections, so the user needs to select one of them.
-					leagueCode = WebUtil.Session.MULTIPLE_SUBSCRIPTIONS;
-				}
-			} 
-		} else {
-			if (logger.isDebugEnabled()) {
-				logger.debug("No user logged in");
-			}
+			return true;
 		}
 		
-		// This will remove the session attribute if the value is null.
-		WebUtil.Session.setCurrentLeagueCode(request.getSession(), leagueCode);
+		// Check the user has at least one subscription.
+		List<UserSubscription> subscriptions = subscriptionService.getSubscriptions(loggedInUser);
+
+		if (subscriptions.isEmpty()) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("User with ID {} has no subscriptions", loggedInUser.getId());
+			}
+		
+			sessionSettings.noLeague();
+		}
+		
+		// Has current league code already been set in the session? If so, check that it's
+		// still valid for the user.
+		String sessionLeagueCode = sessionSettings.getCurrentLeagueCode();
+
+		if (sessionLeagueCode != null) {
+			currentSubscription = getSubscription(subscriptions, sessionLeagueCode);
+			
+			if (currentSubscription != null) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("User with ID {} already has a subscription to league code {} in the session", 
+								 loggedInUser.getId(), sessionLeagueCode);
+				}
+			}
+		}
+			
+		// If still not got one, check for the cookie.
+		if (currentSubscription == null) {
+			String cookieLeagueCode = WebUtil.Request.getCurrentLeagueCodeFromCookie(request);
+			
+			if (cookieLeagueCode != null) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("Current league cookie set to {}", cookieLeagueCode);
+				}
+				
+				currentSubscription = getSubscription(subscriptions, cookieLeagueCode);
+				
+				if (currentSubscription != null) {
+					if (logger.isDebugEnabled()) {
+						logger.debug("User with ID {} has a subscription to league code from cookie, {}", 
+									 loggedInUser.getId(), cookieLeagueCode);
+					}
+				}
+			}
+		} 
+			
+		// If still not got one, check for single subscription.
+		if (currentSubscription == null) {
+			if (subscriptions.size() == 1) {
+				String singleLeagueCode = subscriptions.get(0).getLeague().getCode();
+				
+				currentSubscription = getSubscription(subscriptions, singleLeagueCode);
+				
+				if (currentSubscription != null) {
+					if (logger.isDebugEnabled()) {
+						logger.debug("User with ID {} has a single subscription to league with code {}", loggedInUser.getId(), singleLeagueCode);
+					}
+				}
+			}
+		} 
+		
+		// Update the league-related session settings for the current user.
+		
+		sessionSettings.setHasMultipleSubscriptions(subscriptions.size() > 1);
+		
+		if (currentSubscription != null) {
+			sessionSettings.setCurrentLeagueCode(currentSubscription.getLeague().getCode());
+			sessionSettings.setLeagueAdmin(currentSubscription.getLeague().getOwner().equals(loggedInUser));
+			
+			if (sessionSettings.isLeagueAdmin()) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("User ID {} is admin for league with code {}",
+								 loggedInUser.getId(), currentSubscription.getLeague().getId());
+				}
+			}
+		} else {
+			sessionSettings.noLeague();
+		}
 		
 		return true;
 	}
@@ -139,15 +153,15 @@ public class LeagueCodeResolvingHandlerInterceptor extends HandlerInterceptorAda
 	 *  
 	 * @param subscriptions the user's subscriptions
 	 * @param leagueCode the league code to check
-	 * @return true if the league code is one of the user's subscriptions
+	 * @return the subscription for the league code, or null if there isn't one
 	 */
-	private boolean isSubscribedLeague(List<UserSubscription> subscriptions, String leagueCode) {
+	private UserSubscription getSubscription(List<UserSubscription> subscriptions, String leagueCode) {
 		for (UserSubscription subscription : subscriptions) {
 			if (subscription.getLeague().getCode().equals(leagueCode)) {
-				return true;
+				return subscription;
 			}
 		}
 		
-		return false;
+		return null;
 	}
 }
