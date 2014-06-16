@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<div th:fragment="league-blog">
+
+	<h3 class="title-divider">
+		League <span class="de-em">Blog</span>
+	</h3>
+	<div class="blog-post">
+		<div class="media row">
+			<div class="col-md-1 date-md">
+				<div class="date-wrapper">
+					<span class="date-m" th:text="${#calendars.format(blogPost.postTime,'MMM')}"></span> <span class="date-d" th:text="${#calendars.format(blogPost.postTime,'dd')}"></span>
+				</div>
+			</div>
+			<div class="col-md-11 media-body">
+				<h3 class="title media-heading" th:text="${blogPost.title}">Launch Day is Here</h3>
+				<ul class="list-inline meta text-muted">
+					<li><i class="fa fa-calendar" th:text="${#calendars.format(blogPost.postTime,'E dd MMMM YYYY')}"></i></li>
+				</ul>
+				<div class="lead" th:utext="${blogPost.leadText}"></div>
+				<div th:utext="${blogPost.postedText}"></div>
+			</div>
+		</div>
+	</div>
+
+</div>

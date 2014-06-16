@@ -1,3 +1,4 @@
+drop table if exists blog_post;
 drop table if exists prize_points;
 drop table if exists user_subscription;
 drop table if exists prediction;
@@ -153,4 +154,16 @@ create table prize_points (
   primary key (id),
   constraint PRIZE_POINTS_FIXTURE_ID foreign key (fixture_id) references fixture (id),
   constraint PRIZE_POINTS_SUBSCRIPTON_ID foreign key (subscription_id) references user_subscription (id)
+) engine=InnoDB;
+
+create table blog_post (
+  id bigint(20) not null auto_increment,
+  league_id bigint(20) not null,
+  post_time datetime not null,
+  title varchar(255) not null,
+  lead_text varchar(255) null,
+  posted_text text not null,
+  draft_text text null,
+  primary key (id),
+  constraint BLOG_POST_LEAGUE_ID foreign key (league_id) references league (id)
 ) engine=InnoDB;

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html layout:decorator="mainLayout">
+<head>
+	<title>League Blog</title>
+</head>
+<body>
+	<div layout:fragment="content" class="container">
+		<h3 class="title-divider">
+			League <span class="de-em">Blog</span> <small th:text="${currentLeague.name}"></small>
+		</h3>
+		<div class="row">
+			<div class="col-md-9 blog-roll blog-list">
+				<div class="media row" th:each="blogPost : ${blogPosts}">
+					<div class="col-md-1 date-md">
+						<div class="date-wrapper">
+							<span class="date-m" th:text="${#calendars.format(blogPost.postTime,'MMM')}"></span>
+							<span class="date-d" th:text="${#calendars.format(blogPost.postTime,'dd')}"></span>
+						</div>
+					</div>
+					<div class="col-md-11 media-body">
+						<h4 class="title media-heading">
+							<a th:href="@{/league/blogPost(post=${blogPost.id})}" th:text="${blogPost.title}"></a>
+						</h4>
+						<ul class="list-inline meta text-muted">
+							<li><i class="fa fa-calendar" th:text="${#calendars.format(blogPost.postTime,'E dd MMMM YYYY')}"></i></li>
+						</ul>
+						<p th:utext="${blogPost.leadText}"></p>
+						<ul class="list-inline links">
+							<li>
+								<a th:href="@{/league/blogPost(post=${blogPost.id})}" class="btn btn-default btn-xs">
+									<i class="fa fa-circle-arrow-right"></i>Read more
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
