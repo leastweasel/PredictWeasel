@@ -80,5 +80,7 @@ insert into prediction(id, user_id, fixture_id, home_score, away_score) values
 
 insert into blog_post(id, post_time, league_id, title, lead_text, posted_text, draft_text) values
 (1,'2014-06-01:15:00:00', 2,'The title of post 1',null,'This is the post text from post 1','Draft 1'),
-(2,'2014-06-02:15:00:00', 2,'The title of post 2','<p>Wednesday June 11th saw the launch of PredictWeasel 2.0, in time for the 2014 FIFA World Cup. Version 2.0 is a much needed upgrade to the venerable prediction game that first appeared in 2004.</p>','<p>Potential players should sign up and start making their predictions.</p>	<p>The first match of the World Cup will be played on Thursday 12th June at 21:00. Note that all times in PredictWeasel are in British Daylight Saving Time (BST)</p>','Draft 2'),
 (3,'2014-06-03:15:00:00', 1,'The title of post 3', 'Wrong league','This is the post text from post 3','Draft 3');
+
+insert into blog_post(id, post_time, league_id, title, lead_text, posted_text, draft_text) values
+(2,'2014-06-02:15:00:00', 1,'Launch Day is Here','<p>Wednesday June 11th saw the launch of PredictWeasel 2.0, in time for the 2014 FIFA World Cup.</p>','<p>Version 2.0 is a much needed upgrade to the venerable prediction game that first appeared in 2004. Potential players should sign up and start making their predictions.</p><p>The first match of the World Cup will be played on Thursday 12th June at 21:00. Note that all times in PredictWeasel are in British Daylight Saving Time (BST)</p>','');
