@@ -104,8 +104,8 @@
 	                      		<li role="presentation"><a role="menuitem" th:href="@{/league/futurePredictions}" tabindex="-1" class="menu-item">Predictions</a></li>
 	                      		<li role="presentation"><a role="menuitem" th:href="@{/league/results}" tabindex="-1" class="menu-item">Results</a></li>
 	                      		<li role="presentation"><a role="menuitem" th:href="@{/league/standings}" tabindex="-1" class="menu-item">Standings</a></li>
-	                      		<li role="presentation"><a role="menuitem" th:href="@{/league/blog}" tabindex="-1" class="menu-item">Blog</a></li>
-	                      		<li th:if="${@sesh.isLeagueAdmin}" role="presentation"><a role="menuitem" th:href="@{/league/editBlog}" tabindex="-1" class="menu-item">Edit Blog</a></li>
+<!-- 	                      		<li role="presentation"><a role="menuitem" th:href="@{/league/blog}" tabindex="-1" class="menu-item">Blog</a></li> -->
+<!-- 	                      		<li th:if="${@sesh.isLeagueAdmin}" role="presentation"><a role="menuitem" th:href="@{/league/editBlog}" tabindex="-1" class="menu-item">Edit Blog</a></li> -->
 							</ul> 
 						</li>
 						<li sec:authorize="hasRole('ROLE_COMP_ADMIN')" id="competition-menu">
