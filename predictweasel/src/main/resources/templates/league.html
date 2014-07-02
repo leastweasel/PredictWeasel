@@ -14,6 +14,12 @@
 				Upcoming <span class="de-em">Fixtures</span>
 			</h3>
 			<div th:include="upcomingFixtures :: upcoming-fixtures (true)"></div>
+			<div th:unless="${#lists.isEmpty(missingResults)}">
+				<h3 class="title-divider">
+					No <span class="de-em">Result</span>
+				</h3>
+				<div th:include="missingResults :: missing-results"></div>
+			</div>
 			<h3 class="title-divider">
 				Latest <span class="de-em">Results</span>
 			</h3>

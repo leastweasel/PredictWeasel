@@ -110,6 +110,18 @@ public class LeagueController {
 	}
 
 	/**
+	 * Set up the most missing results, and their predictions, so that we can show
+	 * them in the view. These are the fixtures that have started but for which we
+	 * do not yet have a result.    
+	 * 
+	 * @return a list of the predictions for the started fixtures without a result
+	 */
+	@ModelAttribute("missingResults")
+	public List<Prediction> getMissingResults(UserSubscription subscription) {
+		return predictionService.getPredictionsForMissingResults(subscription);
+	}
+	
+	/**
 	 * Get the standings for the current league in each of the prize categories.    
 	 * 
 	 * @param subscription identifies the user and the league they're currently playing

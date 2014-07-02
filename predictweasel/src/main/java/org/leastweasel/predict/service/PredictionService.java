@@ -27,6 +27,17 @@ public interface PredictionService {
 	List<Prediction> getPredictionsForRecentResults(UserSubscription subscription);
 
 	/**
+	 * Get the predictions that were made by the given user for any {@link Fixture}s that
+	 * have started but for which we do not have a result. This could be because the match
+	 * is still in progress, or the competition administrator may not have entered the
+	 * result yet.
+	 * 
+	 * @param subscription defines the {@link User} and the {@link League} they're playing
+	 * @return the list of predictions for any started fixtures without a result
+	 */
+	List<Prediction> getPredictionsForMissingResults(UserSubscription subscription);
+
+	/**
 	 * Get the predictions that were made by the given user for all completed {@link Fixture}s.
 	 * 
 	 * @param subscription defines the {@link User} and the {@link League} they're playing

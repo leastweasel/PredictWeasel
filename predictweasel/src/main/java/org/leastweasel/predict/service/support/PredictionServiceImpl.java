@@ -86,6 +86,31 @@ public class PredictionServiceImpl implements PredictionService {
 	/**
 	 * {@inheritDoc}
 	 */
+	public List<Prediction> getPredictionsForMissingResults(UserSubscription subscription) {
+		if (subscription != null) {
+			// Get all the fixtures that have started, but that don't yet have a result,
+			// ordered by match time so that the most recent is first.
+			
+			Sort sortOrder = new Sort(Direction.DESC, "matchTime");
+			
+			List<Fixture> fixtures = 
+					fixtureRepository.findByCompetitionAndMatchTimeBeforeAndResultIsNull(subscription.getLeague().getCompetition(),
+																						systemClock.getCurrentDateTime(),
+																						sortOrder);
+			
+			if (logger.isDebugEnabled()) {
+				logger.debug("Got {} started fixtures with no result", fixtures.size());
+			}
+
+			return createPredictionBeansForResults(fixtures, subscription.getUser());
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	public List<Prediction> getPredictionsForAllResults(UserSubscription subscription) {
 		
 		if (subscription != null) {
