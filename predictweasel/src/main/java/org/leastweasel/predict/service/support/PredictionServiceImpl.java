@@ -157,10 +157,14 @@ public class PredictionServiceImpl implements PredictionService {
 		int numberOfEditableFixtures = 0;
 		
 		if (subscription != null) {
-			// Get all the fixtures that haven't started yet.
+			// Get all the fixtures that haven't started yet. We want the next match to start to
+			// be the first in the list.
+			Sort sortOrder = new Sort(Direction.ASC, "matchTime");
+			
 			List<Fixture> fixtures = 
 					fixtureRepository.findByCompetitionAndMatchTimeAfter(subscription.getLeague().getCompetition(),
-																		systemClock.getCurrentDateTime());
+																		systemClock.getCurrentDateTime(),
+																		sortOrder);
 
 			numberOfEditableFixtures = fixtures.size();
 			
@@ -190,9 +194,12 @@ public class PredictionServiceImpl implements PredictionService {
 
 		if (subscription != null) {
 			// Get all the fixtures that haven't started yet.
+			Sort sortOrder = new Sort(Direction.ASC, "matchTime");
+
 			List<Fixture> fixtures = 
 					fixtureRepository.findByCompetitionAndMatchTimeAfter(subscription.getLeague().getCompetition(),
-																		systemClock.getCurrentDateTime());
+																		systemClock.getCurrentDateTime(),
+																		sortOrder);
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("Got {} future fixtures", fixtures.size());

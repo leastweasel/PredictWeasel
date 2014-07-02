@@ -36,12 +36,12 @@ insert into fixture(id, competition_id, home_team_id, away_team_id, home_score, 
 (7,1,1,4,1,1,'2013-09-19:19:30:00',0),
 (8,1,2,5,null,null,'2013-09-19:19:30:00',0),
 (9,1,6,3,null,null,'2013-09-19:19:30:00',0),
-(10,1,5,1,null,null,'2014-06-02:15:00:00',1),
-(11,1,2,6,null,null,'2014-06-02:15:05:00',1),
-(12,1,4,3,null,null,'2014-06-02:15:10:00',1),
-(13,1,1,3,null,null,'2014-06-03:16:00:00',1),
-(14,1,5,2,null,null,'2014-06-03:17:00:00',1),
-(15,1,6,4,null,null,'2014-06-03:17:30:00',1);
+(13,1,5,1,null,null,'2014-06-02:15:00:00',1),
+(14,1,2,6,null,null,'2014-06-02:15:05:00',1),
+(15,1,4,3,null,null,'2014-06-02:15:10:00',1),
+(10,1,1,3,null,null,'2014-06-03:16:00:00',1),
+(11,1,5,2,null,null,'2014-06-03:17:00:00',1),
+(12,1,6,4,null,null,'2014-06-03:17:30:00',1);
 
 insert into league(id, name, code, state, competition_id, owner_id, prize_one_code, prize_two_code, prize_three_code) values
 (1, 'Andrew''s Conference League', 'AN7h2KhA', 'OPEN', 1, 2, "O", null, null),

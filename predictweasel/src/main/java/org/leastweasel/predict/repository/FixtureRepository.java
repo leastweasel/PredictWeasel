@@ -31,9 +31,10 @@ public interface FixtureRepository extends CrudRepository<Fixture, Long> {
      *
      * @param competition the competition whose fixtures we're after
      * @param cutoffTime any fixtures starting before this time will be ignored
+     * @param sortOrder defines the property we want to sort by, and the order (ascending or descending)
      * @return all of the competition's fixtures that have yet to start
      */
-    List<Fixture> findByCompetitionAndMatchTimeAfter(Competition competition, DateTime cutoffTime);
+    List<Fixture> findByCompetitionAndMatchTimeAfter(Competition competition, DateTime cutoffTime, Sort sortOrder);
     
     /**
      * Fetch all the fixtures for the given competition that have started.
